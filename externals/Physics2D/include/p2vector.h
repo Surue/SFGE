@@ -76,6 +76,7 @@ struct p2Vec2
 struct p2Vec3
 {
 	p2Vec3();
+
 	p2Vec3(float x, float y, float z);
 	/**
 	* \brief Dot product of two vectors
