@@ -71,6 +71,26 @@ int main()
 	std::cout << "Vec1 apres normalisation = ";
 	vec1.Show();
 
+	p2Vec3 a(1.0f, 2.0f, 3.0f);
+	p2Vec3 b(4.0f, 5.0f, 6.0f);
+
+	(a + b).Show();
+	(a - b).Show();
+
+	std::cout << "Dot product: " << p2Vec3::Dot(a, b) << "\n";
+
+	p2Vec3::Cross(a, b).Show();
+
+	p2Vec3::Lerp(a, b, 0.5f).Show();
+
+	p2Vec3::Proj(a, b).Show();
+	p2Vec3::Proj(b, a).Show();
+
+	p2Vec3::Refl(a, b).Show();
+	p2Vec3::Refl(b, a).Show();
+
+	std::cout << "Angle between the vectors: " << p2Vec3::AnglesBetween(a, b) << "\n";
+
 #if WIN32
 	system("pause");
 #endif

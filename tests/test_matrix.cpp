@@ -21,18 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#include <p2physics.h>
+#include <iostream>
+int main()
+{
+	
 
-#ifndef SFGE_P2PHYSICS_H
-#define SFGE_P2PHYSICS_H
-
-#include <p2aabb.h>
-#include <p2body.h>
-#include <p2collider.h>
-#include <p2contact.h>
-#include <p2quadtree.h>
-#include <p2shape.h>
-#include <p2matrix.h>
-#include <p2world.h>
-
-
+#if WIN32
+	system("pause");
 #endif
+	return EXIT_SUCCESS;
+}

@@ -22,17 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_P2PHYSICS_H
-#define SFGE_P2PHYSICS_H
+#define _USE_MATH_DEFINES
 
-#include <p2aabb.h>
-#include <p2body.h>
-#include <p2collider.h>
-#include <p2contact.h>
-#include <p2quadtree.h>
-#include <p2shape.h>
 #include <p2matrix.h>
-#include <p2world.h>
 
+p2Matrix22::p2Matrix22()
+{
+}
 
-#endif
+p2Matrix22::p2Matrix22(p2Vec2 v1, p2Vec2 v2)
+{
+	this->v1 = v1;
+	this->v2 = v2;
+}

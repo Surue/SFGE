@@ -180,8 +180,8 @@ p2Vec3 p2Vec3::Lerp(p2Vec3 v1, p2Vec3 v2, float ratio)
 
 p2Vec3 p2Vec3::Proj(p2Vec3 v1, p2Vec3 v2)
 {
-	float f = Dot(v1, v2) / (v1.GetMagnitude() * v1.GetMagnitude());
-	return p2Vec3(v1 * f);
+	float f = Dot(v1, v2) / (v2.GetMagnitude() * v2.GetMagnitude());
+	return p2Vec3(v2 * f);
 }
 
 p2Vec3 p2Vec3::Refl(p2Vec3 inDir, p2Vec3 normal)
