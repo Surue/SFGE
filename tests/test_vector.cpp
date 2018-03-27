@@ -28,39 +28,48 @@ int main()
 	p2Vec2 vec1(3, 1);
 	p2Vec2 vec2(5, 3);
 
-	std::cout << "Vec1 (" << vec1.x << ", "<< vec1.y << ")" << "\n";
-	std::cout << "Vec2 (" << vec2.x << ", " << vec2.y << ")" << "\n";
+	vec1.Show();
+	vec2.Show();
 	
-	std::cout << "Addition: vec1 + vec2 = (" << (vec1 + vec2).x << ", " << (vec1 + vec2).y << ")" << "\n";
+	std::cout << "Addition: vec1 + vec2 = ";
+	(vec1 + vec2).Show();
 
 	vec1 += vec2;
-	std::cout << "Vec1 apres += (" << vec1.x << ", " << vec1.y << ")" << "\n";
-	std::cout << "Vec2 apres += (" << vec2.x << ", " << vec2.y << ")" << "\n";
+	std::cout << "Vec1 apres += ";
+	vec1.Show();
+	std::cout << "Vec2 apres += ";
+	vec2.Show();
 
-	std::cout << "Soustraction: vec1 - vec2 (" << (vec1 - vec2).x << ", " << (vec1 - vec2).y << ")" << "\n";
+	std::cout << "Soustraction: vec1 - vec2 = ";
+	(vec1 - vec2).Show();
 	vec1 -= vec2;
-	std::cout << "Vec1 apres -= (" << vec1.x << ", " << vec1.y << ")" << "\n";
-	std::cout << "Vec2 apres -= (" << vec2.x << ", " << vec2.y << ")" << "\n";
+	std::cout << "Vec1 apres -= ";
+	vec1.Show();
+	std::cout << "Vec2 apres -= ";
+	vec2.Show();
 
 	vec1 = vec1 / 5;
-	std::cout << "Vec1 / 5 = (" << vec1.x << ", " << vec1.y << ")" << "\n";
+	std::cout << "Vec1 / 5 = ";
+	vec1.Show();
 
 	vec1 = vec1 * 5;
-	std::cout << "Vec1 * 5 = (" << vec1.x << ", " << vec1.y << ")" << "\n";
+	std::cout << "Vec1 * 5 = ";
+	vec1.Show();
 
-	float vec2Dot = p2Vec2::Dot(vec1, vec2);
-	std::cout << "Dot de vec1 et vec2 = " << vec2Dot << "\n";
+	std::cout << "Dot de vec1 et vec2 = " << p2Vec2::Dot(vec1, vec2) << "\n";
 
-	p2Vec3 vec2Cross = p2Vec2::Cross(vec1, vec2);
-	std::cout << "Cross vec1 et vec2 = (" << vec2Cross.x << ", " << vec2Cross.y << ", " << vec2Cross.z << ")" << "\n";
+	std::cout << "Cross vec1 et vec2 = ";
+	p2Vec2::Cross(vec1, vec2).Show();
 
 	std::cout << "Vec1 magnitude = " << vec1.GetMagnitude() << "\n";
 
-	p2Vec2 vec2Normalized = vec1.Normalized();
-	std::cout << "Vec1 normalise = (" << vec2Normalized.x << ", " << vec2Normalized.y << ")" << "\n";
-	std::cout << "Vec1 = (" << vec1.x << ", " << vec1.y << ")" << "\n";
+	std::cout << "Vec1 normalise = ";
+	vec1.Normalized().Show();
+	std::cout << "Vec1 = ";
+	vec1.Show();
 	vec1.Normalize();
-	std::cout << "Vec1 apres normalisation = (" << vec1.x << ", " << vec1.y << ")" << "\n";
+	std::cout << "Vec1 apres normalisation = ";
+	vec1.Show();
 
 #if WIN32
 	system("pause");
