@@ -223,6 +223,9 @@ p2Mat33 p2Mat33::Invert()
 	float det = 1 / ((v1.x * v2.y * v3.z) + (v1.z * v2.x * v3.y) + (v1.y * v2.z * v3.x) - (v1.z * v2.y * v3.x) - (v1.x * v2.z * v3.y) - (v1.y * v2.x * v3.z));
 
 	p2Mat33 signe(p2Vec3(1, -1, 1), p2Vec3(-1, 1, -1), p2Vec3(1, -1, 1));
+
+	//TO DO t
+
 	p2Mat33 adjacent(p2Vec3((v2.y * v3.z - v2.z * v3.y) * signe.v1.x, 
 							   (v1.y * v3.z - v1.z * v3.y) * signe.v1.y,
 							   (v1.y * v2.z - v1.z * v2.y) * signe.v1.z),
