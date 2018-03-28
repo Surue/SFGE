@@ -27,39 +27,36 @@ SOFTWARE.
 
 #include <p2vector.h>
 
-struct p2Matrix33;
+struct p2Mat33;
 
 /**
 * \brief Matrix22 class
 */
-struct p2Matrix22
+struct p2Mat22
 {
 	//Constructors
-	p2Matrix22();
+	p2Mat22();
 
-	p2Matrix22(p2Vec2 v1, p2Vec2 v2);
+	p2Mat22(p2Vec2 v1, p2Vec2 v2);
 
 	//Operators
-	p2Matrix22 operator+(p2Matrix22 m);
-	p2Matrix22 operator+=(p2Matrix22 m);
-	p2Matrix22 operator-(p2Matrix22 m);
-	p2Matrix22 operator-=(p2Matrix22 m);
-	p2Matrix22 operator*(p2Vec2 v);
-	p2Matrix22 operator*=(p2Vec2 v);
-	p2Matrix22 operator*(p2Matrix22 m);
-	p2Matrix22 operator*=(p2Matrix22 m);
+	p2Mat22 operator+(p2Mat22 m);
+	p2Mat22 operator+=(p2Mat22 m);
+	p2Mat22 operator-(p2Mat22 m);
+	p2Mat22 operator-=(p2Mat22 m);
+	p2Vec2 operator*(p2Vec2 v);
+	p2Mat22 operator*(p2Mat22 m);
+	p2Mat22 operator*=(p2Mat22 m);
 
 	//function
 	/**
 	* \brief generate tthe rotation matrix with the given angle (in radian)
 	*/
-	static p2Matrix22 RotationMatrix(float angle);
-
+	static p2Mat22 RotationMatrix(float angle);
 	/**
-	* \brief calcul the matrix's inverse
+	* \brief Calculate the invert of the 2x2 matrix
 	*/
-	p2Matrix22 Inverse();
-
+	p2Mat22 Invert();
 	/**
 	* \brief display the matrix in the console
 	*/
@@ -73,9 +70,40 @@ struct p2Matrix22
 /**
 * \brief Matrix33 class
 */
-struct p2Matrix33
+struct p2Mat33
 {
-	
+	p2Mat33();
+
+	p2Mat33(p2Vec3 v1, p2Vec3 v2, p2Vec3 v3);
+
+	p2Mat33 operator+(p2Mat33 m);
+	p2Mat33 operator+=(p2Mat33 m);
+	p2Mat33 operator-(p2Mat33 m);
+	p2Mat33 operator-=(p2Mat33 m);
+	p2Vec3 operator*(p2Vec3 v);
+	p2Mat33 operator*(p2Mat33 m);
+	p2Mat33 operator*=(p2Mat33 m);
+	p2Mat33 operator*(float f);
+	p2Mat33 operator+=(float f);
+
+	//function
+	/**
+	* \brief generate tthe rotation matrix with the given angle (in radian) and the axis
+	*/
+	static p2Mat33 RotationMatrix(float angle, p2Vec3 axis);
+	/**
+	* \brief Calculate the invert of the 3x3 matrix
+	*/
+	p2Mat33 Invert();
+	/**
+	* \brief display the matrix in the console
+	*/
+	void Show();
+
+	p2Vec3 v1 = p2Vec3(0.0f, 0.0f, 0.0f);
+	p2Vec3 v2 = p2Vec3(0.0f, 0.0f, 0.0f);
+	p2Vec3 v3 = p2Vec3(0.0f, 0.0f, 0.0f);
+
 };
 
 #endif
