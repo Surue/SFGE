@@ -32,10 +32,8 @@ p2Vec2::p2Vec2()
 {
 }
 
-p2Vec2::p2Vec2(float x, float y)
+p2Vec2::p2Vec2(float x, float y):x(x), y(y)
 {
-	this->x = x;
-	this->y = y;
 }
 
 p2Vec2 p2Vec2::operator+(p2Vec2 v)
@@ -79,8 +77,8 @@ float p2Vec2::Dot(p2Vec2 v1, p2Vec2 v2)
 
 p2Vec3 p2Vec2::Cross(p2Vec2 v1, p2Vec2 v2)
 {
-	return p2Vec3((v1.y * 0) - (0 * v2.y),
-				  (0 * v2.x) - (v1.x * 0),
+	return p2Vec3(0,
+				  0,
 				  (v1.x * v2.y) - (v1.y * v2.x));
 }
 
@@ -108,18 +106,15 @@ p2Vec3 p2Vec2::to3()
 
 void p2Vec2::Show()
 {
-	std::cout << "Vecteur (" << x << ", " << y << ")" << "\n";
+	std::cout << "(" << x << ", " << y << ")" << "\n";
 }
 
 p2Vec3::p2Vec3()
 {
 }
 
-p2Vec3::p2Vec3(float x, float y, float z)
+p2Vec3::p2Vec3(float x, float y, float z) : x(x), y(y), z(z)
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
 }
 
 p2Vec3 p2Vec3::operator+(p2Vec3 v)
@@ -214,5 +209,5 @@ void p2Vec3::Normalize()
 
 void p2Vec3::Show()
 {
-	std::cout << "Vecteur (" << x << ", " << y << ", " << z << ")" << "\n";
+	std::cout << "(" << x << ", " << y << ", " << z << ")" << "\n";
 }

@@ -36,7 +36,6 @@ struct p2Mat22
 {
 	//Constructors
 	p2Mat22();
-
 	p2Mat22(p2Vec2 v1, p2Vec2 v2);
 
 	//Operators
@@ -72,10 +71,11 @@ struct p2Mat22
 */
 struct p2Mat33
 {
+	//Constructors
 	p2Mat33();
-
 	p2Mat33(p2Vec3 v1, p2Vec3 v2, p2Vec3 v3);
 
+	//Variables
 	p2Mat33 operator+(p2Mat33 m);
 	p2Mat33 operator+=(p2Mat33 m);
 	p2Mat33 operator-(p2Mat33 m);
@@ -96,10 +96,15 @@ struct p2Mat33
 	*/
 	p2Mat33 Invert();
 	/**
+	* \brief return the transposed matrix
+	*/
+	p2Mat33 Transposed();
+	/**
 	* \brief display the matrix in the console
 	*/
 	void Show();
 
+	//Variables
 	p2Vec3 v1 = p2Vec3(0.0f, 0.0f, 0.0f);
 	p2Vec3 v2 = p2Vec3(0.0f, 0.0f, 0.0f);
 	p2Vec3 v3 = p2Vec3(0.0f, 0.0f, 0.0f);

@@ -28,20 +28,23 @@ SOFTWARE.
 struct p2Vec3;
 
 /**
-* \brief Vector class
+* \brief Vector 2 class
 */
 struct p2Vec2
 {
+	//Constructors
 	p2Vec2();
-
 	p2Vec2(float x, float y);
 
+	//Operators
 	p2Vec2 operator+(p2Vec2 v);
 	p2Vec2 operator+=(p2Vec2 v);
 	p2Vec2 operator-(p2Vec2 v);
 	p2Vec2 operator-=(p2Vec2 v);
 	p2Vec2 operator /(float f);
 	p2Vec2 operator *(float f);
+
+	//Functions
 	/**
 	* \brief Dot product of two vectors
 	*/
@@ -62,7 +65,6 @@ struct p2Vec2
 	* \brief Normalize the p2Vec2
 	*/
 	void Normalize();
-
 	/**
 	* \brief 
 	*/
@@ -72,23 +74,29 @@ struct p2Vec2
 	*/
 	void Show();
 
+	//Variables
 	float x = 0.0f;
 	float y = 0.0f;
-
 };
 
+/**
+* \brief Vector 3 class
+*/
 struct p2Vec3
 {
+	//Constructors
 	p2Vec3();
-
 	p2Vec3(float x, float y, float z);
 
+	//Operator
 	p2Vec3 operator+(p2Vec3 v);
 	p2Vec3 operator+=(p2Vec3 v);
 	p2Vec3 operator-(p2Vec3 v);
 	p2Vec3 operator-=(p2Vec3 v);
 	p2Vec3 operator /(float f);
 	p2Vec3 operator *(float f);
+
+	//Function
 	/**
 	* \brief Dot product of two vectors
 	*/
@@ -130,6 +138,7 @@ struct p2Vec3
 	*/
 	void Show();
 
+	//Variables
 	float x = 0.0f;
 	float y = 0.0f;
 	float z = 0.0f;
