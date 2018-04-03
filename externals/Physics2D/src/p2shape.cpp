@@ -26,8 +26,10 @@ SOFTWARE.
 
 void p2CircleShape::SetRadius(float radius)
 {
+	this->m_Radius = radius;
 }
 
 void p2RectShape::SetSize(p2Vec2 size)
 {
+	this->m_Size = size;
 }

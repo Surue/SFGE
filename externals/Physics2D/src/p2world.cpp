@@ -26,15 +26,22 @@ SOFTWARE.
 
 p2World::p2World(p2Vec2 gravity)
 {
+	m_Gravity = gravity;
 }
 
 void p2World::Step(float dt)
 {
+	for each (p2Body body in m_BodyList)
+	{
+		
+	}
 }
 
 p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
 {
-	return nullptr;
+	p2Body* tmpBody = new p2Body(*bodyDef);
+	m_BodyList.push_front(*tmpBody);
+	return tmpBody;
 }
 
 void p2World::SetContactListener(p2ContactListener * contactListener)

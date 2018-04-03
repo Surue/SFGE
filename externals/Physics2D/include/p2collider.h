@@ -46,6 +46,8 @@ struct p2ColliderDef
 class p2Collider
 {
 public:
+	p2Collider();
+	p2Collider(p2ColliderDef colliderDef);
 	/**
 	* \brief Check if the p2Collider is a sensor
 	*/
@@ -56,6 +58,9 @@ public:
 	void* GetUserData();
 private:
 	void* userData;
+	bool isSensor;
+	float restitution;
+	p2Shape * shape;
 };
 
 
