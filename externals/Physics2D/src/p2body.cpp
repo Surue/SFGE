@@ -54,6 +54,16 @@ p2Vec2 p2Body::GetPosition()
 	return position;
 }
 
+void p2Body::AddForce(p2Vec2 f)
+{
+	linearVelocity += f;
+}
+
+void p2Body::Step(float dt)
+{
+
+}
+
 p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
 	p2Collider* tmpCollider = new p2Collider(*colliderDef);

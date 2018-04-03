@@ -66,6 +66,10 @@ public:
 	float GetAngularVelocity();
 	
 	p2Vec2 GetPosition();
+
+	void AddForce(p2Vec2 f);
+
+	void Step(float dt);
 	/**
 	* \brief Factory method creating a p2Collider
 	* \param colliderDef p2ColliderDef definition of the collider
