@@ -80,7 +80,7 @@ public:
 	*/
 	p2Collider* CreateCollider(p2ColliderDef* colliderDef);
 
-	std::list<p2Shape> GetShape();
+	std::list<p2Shape *> GetShape();
 
 	p2AABB aabb;
 

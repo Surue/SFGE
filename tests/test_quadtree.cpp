@@ -50,12 +50,13 @@ int main()
 	srand(time(NULL));
 
 	std::list<p2Body*> bodiesList;
-	const int objNmb = 1000;
+	const int objNmb = 500;
+	p2Vec2 sizeTable[objNmb];
 	for (int i = 0; i < objNmb; i++)
 	{
 		p2BodyDef bodyDef;
 		bodyDef.position = sfge::pixel2meter(sf::Vector2f(rand() % 800, rand() % 800));
-		bodyDef.linearVelocity = sfge::pixel2meter(sf::Vector2f(rand() % 10, rand() % 10));
+		bodyDef.linearVelocity = sfge::pixel2meter(sf::Vector2f(rand() % 20 - 10, rand() % 20 - 10));
 		bodyDef.type = p2BodyType::DYNAMIC;
 		p2Body* body = world.CreateBody(&bodyDef);
 
@@ -63,8 +64,9 @@ int main()
 		
 		p2RectShape rectShape;
 		rectShape.SetSize(sfge::pixel2meter(sf::Vector2f((rand() % 100) - 50, (rand() % 100) - 50)));
+		sizeTable[i] = rectShape.GetSize();
 		colliderDef.shape = &rectShape;
-
+		
 		body->CreateCollider(&colliderDef);
 
 		bodiesList.push_back(body);
@@ -122,19 +124,18 @@ int main()
 
 		window.clear(sf::Color::Black);
 
+		int i = 0;
+
 		for (auto& obj : bodiesList)
 		{
 			//obj->Draw(window);
+			sf::RectangleShape rectangle;
+			rectangle.setPosition(sfge::meter2pixel(obj->GetPosition()));
+			rectangle.setSize(sfge::meter2pixel(sizeTable[i]));
 
-			for each (p2Shape shape in obj->GetShape())
-			{
-				//static_cast<p2RectShape&>(shape).GetSize().Show();
-				sf::RectangleShape rectangle;
-				rectangle.setPosition(sfge::meter2pixel(obj->GetPosition()) - sfge::meter2pixel(p2Vec2(0.01, 0.01)));
-				rectangle.setSize(sfge::meter2pixel(p2Vec2(0.01, 0.01))*2.0f);
+			window.draw(rectangle);
 
-				window.draw(rectangle);
-			}
+			i++;
 		}
 
 		//quad.Update(dt.asSeconds());

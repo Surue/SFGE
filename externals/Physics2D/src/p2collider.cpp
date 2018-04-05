@@ -12,6 +12,10 @@ p2Collider::p2Collider(p2ColliderDef colliderDef)
 	shape = colliderDef.shape;
 }
 
+p2Collider::~p2Collider()
+{
+}
+
 bool p2Collider::IsSensor()
 {
 	return isSensor;
@@ -22,7 +26,7 @@ void * p2Collider::GetUserData()
 	return nullptr;
 }
 
-p2Shape p2Collider::GetShape()
+p2Shape* p2Collider::GetShape()
 {
-	return *shape;
+	return shape;
 }

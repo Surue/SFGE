@@ -60,6 +60,10 @@ struct p2Mat22
 	* \brief display the matrix in the console
 	*/
 	void Show();
+	/**
+	* \brief return the identary matrix22
+	*/
+	static p2Mat22 Identity();
 
 	//Variables
 	p2Vec2 v1 = p2Vec2(0.0f, 0.0f);;
@@ -84,7 +88,7 @@ struct p2Mat33
 	p2Mat33 operator*(p2Mat33 m);
 	p2Mat33 operator*=(p2Mat33 m);
 	p2Mat33 operator*(float f);
-	p2Mat33 operator+=(float f);
+	p2Mat33 operator*=(float f);
 
 	//function
 	/**
@@ -103,6 +107,10 @@ struct p2Mat33
 	* \brief display the matrix in the console
 	*/
 	void Show();
+	/**
+	* \brief return the identary matrix33
+	*/
+	static p2Mat33 Identity();
 
 	//Variables
 	p2Vec3 v1 = p2Vec3(0.0f, 0.0f, 0.0f);

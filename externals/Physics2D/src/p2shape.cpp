@@ -30,9 +30,9 @@ void p2CircleShape::SetRadius(float radius)
 	this->m_Radius = radius;
 }
 
-float p2CircleShape::GetSize()
+p2Vec2 p2CircleShape::GetSize()
 {
-	return m_Radius;
+	return p2Vec2();
 }
 
 void p2RectShape::SetSize(p2Vec2 size)
@@ -40,9 +40,8 @@ void p2RectShape::SetSize(p2Vec2 size)
 	this->m_Size = size;
 }
 
-p2Vec2 p2RectShape::GetSize()
+p2Vec2 p2RectShape::GetSize() 
 {
-	m_Size.Show();
 	return m_Size;
 }
 

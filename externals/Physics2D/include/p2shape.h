@@ -33,7 +33,7 @@ SOFTWARE.
 class p2Shape
 {
 public:
-	p2Vec2 GetSize();
+	virtual p2Vec2 GetSize();
 };
 
 /**
@@ -46,7 +46,7 @@ public:
 	* \brief Setter for the radius
 	*/
 	void SetRadius(float radius);
-	float GetSize();
+	virtual p2Vec2 GetSize();
 private:
 	float m_Radius;
 };
@@ -58,7 +58,7 @@ class p2RectShape : public p2Shape
 {
 public:
 	void SetSize(p2Vec2 size);
-	p2Vec2 GetSize();
+	virtual p2Vec2 GetSize();
 private:
 	p2Vec2 m_Size;
 };

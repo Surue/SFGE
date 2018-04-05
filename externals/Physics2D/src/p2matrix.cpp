@@ -43,9 +43,7 @@ p2Mat22 p2Mat22::operator+(p2Mat22 m)
 
 p2Mat22 p2Mat22::operator+=(p2Mat22 m)
 {
-	v1 += m.v1;
-	v2 += m.v2;
-	return p2Mat22(v1, v2);
+	return *this = *this + m;
 }
 
 p2Mat22 p2Mat22::operator-(p2Mat22 m)
@@ -55,9 +53,7 @@ p2Mat22 p2Mat22::operator-(p2Mat22 m)
 
 p2Mat22 p2Mat22::operator-=(p2Mat22 m)
 {
-	v1 -= m.v1;
-	v2 -= m.v2;
-	return p2Mat22(v1, v2);
+	return *this = *this - m;
 }
 
 p2Vec2 p2Mat22::operator*(p2Vec2 v)
@@ -77,13 +73,7 @@ p2Mat22 p2Mat22::operator*(p2Mat22 m)
 
 p2Mat22 p2Mat22::operator*=(p2Mat22 m)
 {
-	p2Vec2 a = p2Vec2((v1.x * m.v1.x) + (v2.x * m.v1.y),
-					  (v1.y * m.v1.x) + (v2.y * m.v1.y));
-	v2 = p2Vec2((v1.x * m.v2.x) + (v2.x * m.v2.y),
-				(v1.y * m.v2.x) + (v2.y * m.v2.y));
-
-	v1 = a;
-	return p2Mat22(v1, v2);
+	return *this = *this * m;
 }
 
 p2Mat22 p2Mat22::RotationMatrix(float angle)
@@ -96,6 +86,10 @@ p2Mat22 p2Mat22::Invert()
 {
 	float det = 1 / ((v1.x * v2.y) - (v1.y * v2.x));
 
+	if (det == 0) {
+		return p2Mat22::Identity();
+	}
+
 	return p2Mat22(p2Vec2(v2.y * det, -v1.y * det), 
 				   p2Vec2(-v2.x * det, v1.x * det));
 }
@@ -104,6 +98,11 @@ void p2Mat22::Show()
 {
 	std::cout << "| " << v1.x << " " << v2.x << " | \n| " 
 					  << v1.y << " " << v2.y << " |" << "\n \n";
+}
+
+p2Mat22 p2Mat22::Identity()
+{
+	return p2Mat22(p2Vec2(1, 0), p2Vec2(0, 1));
 }
 
 p2Mat33::p2Mat33()
@@ -121,10 +120,7 @@ p2Mat33 p2Mat33::operator+(p2Mat33 m)
 
 p2Mat33 p2Mat33::operator+=(p2Mat33 m)
 {
-	v1 += m.v1;
-	v2 += m.v2;
-	v3 += m.v3;
-	return p2Mat33(v1, v2, v3);
+	return *this = *this + m;
 }
 
 p2Mat33 p2Mat33::operator-(p2Mat33 m)
@@ -134,10 +130,7 @@ p2Mat33 p2Mat33::operator-(p2Mat33 m)
 
 p2Mat33 p2Mat33::operator-=(p2Mat33 m)
 {
-	v1 -= m.v1;
-	v2 -= m.v2;
-	v3 -= m.v3;
-	return p2Mat33(v1, v2, v3);
+	return *this = *this - m;
 }
 
 p2Vec3 p2Mat33::operator*(p2Vec3 v)
@@ -163,21 +156,7 @@ p2Mat33 p2Mat33::operator*(p2Mat33 m)
 
 p2Mat33 p2Mat33::operator*=(p2Mat33 m)
 {
-	p2Vec3 a = p2Vec3(v1.x * m.v1.x + v2.x * m.v1.y + v3.x * m.v1.z,
-					  v1.y * m.v1.x + v2.y * m.v1.y + v3.y * m.v1.z,
-					  v1.z * m.v1.x + v2.z * m.v1.y + v3.z * m.v1.z);
-
-	p2Vec3 b = p2Vec3(v1.x * m.v2.x + v2.x * m.v2.y + v3.x * m.v2.z,
-					  v1.y * m.v2.x + v2.y * m.v2.y + v3.y * m.v2.z,
-					  v1.z * m.v2.x + v2.z * m.v2.y + v3.z * m.v2.z);
-
-	v3 = p2Vec3(v1.x * m.v3.x + v2.x * m.v3.y + v3.x * m.v3.z,
-				v1.y * m.v3.x + v2.y * m.v3.y + v3.y * m.v3.z,
-				v1.z * m.v3.x + v2.z * m.v3.y + v3.z * m.v3.z);
-	v1 = a;
-	v2 = b;
-
-	return p2Mat33(v1, v2, v3);
+	return *this = *this * m;
 }
 
 p2Mat33 p2Mat33::operator*(float f)
@@ -185,12 +164,9 @@ p2Mat33 p2Mat33::operator*(float f)
 	return p2Mat33(v1 * f, v2 * f, v3 * f);
 }
 
-p2Mat33 p2Mat33::operator+=(float f)
+p2Mat33 p2Mat33::operator*=(float f)
 {
-	v1 = v1 * f;
-	v2 = v2 * f;
-	v3 = v3 * f;
-	return p2Mat33(v1, v2, v3);
+	return *this = *this * f;
 }
 
 p2Mat33 p2Mat33::RotationMatrix(float angle, p2Vec3 axis)
@@ -216,6 +192,10 @@ p2Mat33 p2Mat33::RotationMatrix(float angle, p2Vec3 axis)
 p2Mat33 p2Mat33::Invert()
 {
 	float det = 1 / ((v1.x * v2.y * v3.z) + (v1.z * v2.x * v3.y) + (v1.y * v2.z * v3.x) - (v1.z * v2.y * v3.x) - (v1.x * v2.z * v3.y) - (v1.y * v2.x * v3.z));
+
+	if (det == 0) {
+		return p2Mat33::Identity();
+	}
 
 	p2Mat33 signe(p2Vec3(1, -1, 1), p2Vec3(-1, 1, -1), p2Vec3(1, -1, 1));
 
@@ -246,4 +226,9 @@ void p2Mat33::Show()
 	std::cout << "| " << v1.x << " " << v2.x << " " << v3.x << " | \n| " 
 					  << v1.y << " " << v2.y << " " << v3.y << " | \n| " 
 					  << v1.z << " " << v2.z << " " << v3.z << " |" << "\n \n";
+}
+
+p2Mat33 p2Mat33::Identity()
+{
+	return p2Mat33(p2Vec3(1, 0, 0), p2Vec3(0, 1, 0), p2Vec3(0, 0, 1));
 }

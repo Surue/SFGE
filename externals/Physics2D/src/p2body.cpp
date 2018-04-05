@@ -75,12 +75,12 @@ void p2Body::AddForce(p2Vec2 f)
 
 void p2Body::Step(float dt)
 {
-	if (type == p2BodyType::DYNAMIC) {
-		position.x += linearVelocity.x * dt;
-		linearVelocity.x += dt * world->GetGravity().x * gravityScale;
+	//Move the object regarding the current linear velocity
+	position += linearVelocity * dt;
 
-		position.y += linearVelocity.y * dt;
-		linearVelocity.y += dt * world->GetGravity().y * gravityScale;
+	//If dynamic => appli the gravity
+	if (type == p2BodyType::DYNAMIC) {
+		linearVelocity += world->GetGravity() * gravityScale * dt;
 	}
 
 }
@@ -92,9 +92,9 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 	return tmpCollider;
 }
 
-std::list<p2Shape> p2Body::GetShape()
+std::list<p2Shape *> p2Body::GetShape()
 {
-	std::list<p2Shape> tmp;
+	std::list<p2Shape *> tmp;
 
 	for each (auto collider in m_CollidersList)
 	{

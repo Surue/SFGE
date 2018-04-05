@@ -48,6 +48,9 @@ class p2Collider
 public:
 	p2Collider();
 	p2Collider(p2ColliderDef colliderDef);
+
+	~p2Collider();
+
 	/**
 	* \brief Check if the p2Collider is a sensor
 	*/
@@ -57,13 +60,13 @@ public:
 	*/
 	void* GetUserData();
 
-	p2Shape GetShape();
+	p2Shape* GetShape();
 
 private:
 	void* userData;
 	bool isSensor;
 	float restitution;
-	p2Shape * shape;
+	p2Shape *shape;
 };
 
 
