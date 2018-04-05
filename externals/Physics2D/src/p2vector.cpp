@@ -43,9 +43,7 @@ p2Vec2 p2Vec2::operator+(p2Vec2 v)
 
 p2Vec2 p2Vec2::operator+=(p2Vec2 v)
 {
-	x += v.x;
-	y += v.y;
-	return p2Vec2(x, y);
+	return *this = *this + v;
 }
 
 p2Vec2 p2Vec2::operator-(p2Vec2 v)
@@ -55,9 +53,7 @@ p2Vec2 p2Vec2::operator-(p2Vec2 v)
 
 p2Vec2 p2Vec2::operator-=(p2Vec2 v)
 {
-	x -= v.x;
-	y -= v.y;
-	return p2Vec2(x, y);
+	return *this = *this - v;
 }
 
 p2Vec2 p2Vec2::operator/(float f)
@@ -72,10 +68,7 @@ p2Vec2 p2Vec2::operator*(float f)
 
 p2Vec2 p2Vec2::operator*=(float f)
 {
-	x *= f;
-	y *= f;
-
-	return p2Vec2(x, y);
+	return *this = *this * f;
 }
 
 float p2Vec2::Dot(p2Vec2 v1, p2Vec2 v2)
@@ -132,10 +125,7 @@ p2Vec3 p2Vec3::operator+(p2Vec3 v)
 
 p2Vec3 p2Vec3::operator+=(p2Vec3 v)
 {
-	x += v.x;
-	y += v.y;
-	z += v.z;
-	return p2Vec3(x, y, z);
+	return *this = *this + v;
 }
 
 p2Vec3 p2Vec3::operator-(p2Vec3 v)
@@ -145,10 +135,7 @@ p2Vec3 p2Vec3::operator-(p2Vec3 v)
 
 p2Vec3 p2Vec3::operator-=(p2Vec3 v)
 {
-	x -= v.x;
-	y -= v.y;
-	z -= v.z;
-	return p2Vec3(x, y, z);
+	return *this = *this - v;
 }
 
 p2Vec3 p2Vec3::operator /(float f)
