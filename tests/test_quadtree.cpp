@@ -39,13 +39,13 @@ SOFTWARE.
 #include <cstdlib>     /* srand, rand */
 #include <ctime>       /* time */
 
-
+#include <iostream>
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 800), "QuadTree test");
 	//QuadTree quad(0, { b2Vec2(0,0), sfge::pixel2meter(sf::Vector2i(800,800)) });
-	p2World world(p2Vec2(0.0f, 9.81f));
+	p2World world(p2Vec2(0.0f, 0.0f));
 
 	srand(time(NULL));
 
@@ -56,6 +56,7 @@ int main()
 		p2BodyDef bodyDef;
 		bodyDef.position = sfge::pixel2meter(sf::Vector2f(rand() % 800, rand() % 800));
 		bodyDef.linearVelocity = sfge::pixel2meter(sf::Vector2f(rand() % 10, rand() % 10));
+		bodyDef.type = p2BodyType::DYNAMIC;
 		p2Body* body = world.CreateBody(&bodyDef);
 
 		p2ColliderDef colliderDef;
@@ -97,7 +98,8 @@ int main()
 		world.Step(dt.asSeconds());
 		for (auto& body : bodiesList)
 		{
-			//obj.Update(dt.asSeconds());
+			body->Step(dt.asSeconds());
+			
 			sf::Vector2f pos = sfge::meter2pixel(body->GetPosition());
 			p2Vec2 v = body->GetLinearVelocity();
 			if (pos.x < 0.0f && v.x<0.0f)
@@ -122,7 +124,17 @@ int main()
 
 		for (auto& obj : bodiesList)
 		{
-			//obj.Draw(window);
+			//obj->Draw(window);
+
+			for each (p2Shape shape in obj->GetShape())
+			{
+				//static_cast<p2RectShape&>(shape).GetSize().Show();
+				sf::RectangleShape rectangle;
+				rectangle.setPosition(sfge::meter2pixel(obj->GetPosition()) - sfge::meter2pixel(p2Vec2(0.01, 0.01)));
+				rectangle.setSize(sfge::meter2pixel(p2Vec2(0.01, 0.01))*2.0f);
+
+				window.draw(rectangle);
+			}
 		}
 
 		//quad.Update(dt.asSeconds());

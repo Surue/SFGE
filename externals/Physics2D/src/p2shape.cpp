@@ -23,13 +23,30 @@ SOFTWARE.
 */
 
 #include <p2shape.h>
+#include <iostream>
 
 void p2CircleShape::SetRadius(float radius)
 {
 	this->m_Radius = radius;
 }
 
+float p2CircleShape::GetSize()
+{
+	return m_Radius;
+}
+
 void p2RectShape::SetSize(p2Vec2 size)
 {
 	this->m_Size = size;
+}
+
+p2Vec2 p2RectShape::GetSize()
+{
+	m_Size.Show();
+	return m_Size;
+}
+
+p2Vec2 p2Shape::GetSize()
+{
+	return p2Vec2();
 }

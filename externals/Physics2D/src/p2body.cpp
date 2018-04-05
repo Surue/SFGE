@@ -23,15 +23,29 @@ SOFTWARE.
 */
 #include <p2body.h>
 #include <p2Collider.h>
+#include <p2World.h>
+
+#include <iostream>
 
 p2Body::p2Body()
 {
 }
 
-p2Body::p2Body(p2BodyDef bodyDef)
+p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 {
 	position = bodyDef.position;
 	linearVelocity = bodyDef.linearVelocity;
+	type = bodyDef.type;
+	this->world = world;
+	gravityScale = bodyDef.gravityScale;
+}
+
+p2Body::~p2Body()
+{
+	for each (p2Collider* collider in m_CollidersList)
+	{
+		delete(collider);
+	}
 }
 
 p2Vec2 p2Body::GetLinearVelocity()
@@ -61,12 +75,31 @@ void p2Body::AddForce(p2Vec2 f)
 
 void p2Body::Step(float dt)
 {
+	if (type == p2BodyType::DYNAMIC) {
+		position.x += linearVelocity.x * dt;
+		linearVelocity.x += dt * world->GetGravity().x * gravityScale;
+
+		position.y += linearVelocity.y * dt;
+		linearVelocity.y += dt * world->GetGravity().y * gravityScale;
+	}
 
 }
 
 p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
 	p2Collider* tmpCollider = new p2Collider(*colliderDef);
-	m_CollidersList.push_front(*tmpCollider);
+	m_CollidersList.push_front(tmpCollider);
 	return tmpCollider;
+}
+
+std::list<p2Shape> p2Body::GetShape()
+{
+	std::list<p2Shape> tmp;
+
+	for each (auto collider in m_CollidersList)
+	{
+		tmp.push_back(collider->GetShape());
+	}
+
+	return tmp;
 }

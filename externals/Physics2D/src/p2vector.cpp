@@ -70,6 +70,14 @@ p2Vec2 p2Vec2::operator*(float f)
 	return p2Vec2(x * f, y * f);
 }
 
+p2Vec2 p2Vec2::operator*=(float f)
+{
+	x *= f;
+	y *= f;
+
+	return p2Vec2(x, y);
+}
+
 float p2Vec2::Dot(p2Vec2 v1, p2Vec2 v2)
 {
 	return (v1.x * v2.x) + (v1.y * v2.y);

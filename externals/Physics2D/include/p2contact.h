@@ -26,6 +26,7 @@ SOFTWARE.
 #define SFGE_P2CONTACT_H
 
 #include <p2collider.h>
+#include <p2body.h>
 
 /**
 * \brief Representation of a contact given as argument in a p2ContactListener
@@ -33,6 +34,9 @@ SOFTWARE.
 class p2Contact
 {
 public:
+	p2Contact();
+	p2Contact(p2Body *colliderA, p2Body *colliderB);
+
 	p2Collider* GetColliderA();
 	p2Collider* GetColliderB();
 };

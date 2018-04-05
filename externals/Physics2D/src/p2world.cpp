@@ -22,28 +22,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #include <p2world.h>
-
+#include <p2body.h>
 
 p2World::p2World(p2Vec2 gravity)
 {
 	m_Gravity = gravity;
 }
 
+p2World::~p2World()
+{
+	for each (p2Body* body in m_BodyList)
+	{
+		delete(body);
+	}
+}
+
 void p2World::Step(float dt)
 {
-	for each (p2Body body in m_BodyList)
+	for each (p2Body* body in m_BodyList)
 	{
-		
+		body->Step(dt);
 	}
 }
 
 p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
 {
-	p2Body* tmpBody = new p2Body(*bodyDef);
-	m_BodyList.push_front(*tmpBody);
-	return tmpBody;
+	p2Body* tmpBody = new p2Body(*bodyDef, this);
+	m_BodyList.push_front(tmpBody);
+	auto it = m_BodyList.begin();
+	return *it;
 }
 
 void p2World::SetContactListener(p2ContactListener * contactListener)
 {
+}
+
+p2Vec2 p2World::GetGravity()
+{
+	return m_Gravity;
 }

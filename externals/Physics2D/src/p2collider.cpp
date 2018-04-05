@@ -21,3 +21,8 @@ void * p2Collider::GetUserData()
 {
 	return nullptr;
 }
+
+p2Shape p2Collider::GetShape()
+{
+	return *shape;
+}

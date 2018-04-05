@@ -56,6 +56,9 @@ public:
 	* \brief Return the userData
 	*/
 	void* GetUserData();
+
+	p2Shape GetShape();
+
 private:
 	void* userData;
 	bool isSensor;

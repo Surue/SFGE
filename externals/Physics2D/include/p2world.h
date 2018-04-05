@@ -26,9 +26,10 @@ SOFTWARE.
 #define SFGE_P2WORLD_H
 
 #include <p2vector.h>
-#include <p2body.h>
 #include <p2contact.h>
 #include <list>
+
+class p2Body;
 
 /**
 * \brief Representation of the physical world in meter
@@ -37,6 +38,7 @@ class p2World
 {
 public:
 	p2World(p2Vec2 gravity);
+	~p2World();
 	/**
 	* \brief Simulate a new step of the physical world, simplify the resolution with a QuadTree, generate the new contacts
 	*/
@@ -49,8 +51,15 @@ public:
 	* \brief Set the contact listener
 	*/
 	void SetContactListener(p2ContactListener* contactListener);
+
+	p2Vec2 GetGravity();
+
+	//Raytracing()
+
+	//CircleCollider()
+
 private:
-	std::list<p2Body> m_BodyList;
+	std::list<p2Body *> m_BodyList;
 	p2Vec2 m_Gravity;
 };
 

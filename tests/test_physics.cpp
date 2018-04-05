@@ -32,7 +32,6 @@ int main()
 	auto sceneManager = engine.GetSceneManager();
 	sceneManager->SetCurrentScene(sceneManager->LoadSceneFromName("data/scenes/test_physics.scene"));
 
-
 	engine.Start();
 #if WIN32
 	system("pause");
