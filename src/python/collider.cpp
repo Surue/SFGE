@@ -134,8 +134,6 @@ void Collider::DebugDraw(Engine & engine)
 {
 	std::string jsonString = m_PhysicsCollider->GetShapeJson();
 
-	Log::GetInstance()->Msg("json = "+jsonString);
-
 	json gameObjectJson = json::parse(jsonString);
 
 	m_GameObject->AddComponent(engine, gameObjectJson);
