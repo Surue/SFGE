@@ -28,8 +28,8 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 			radius = static_cast<p2CircleShape*>(colliderDef.shape)->GetRadius();
 			static_cast<p2CircleShape*>(shape)->SetRadius(radius);
 
-			aabb.bottomLeft = GetPosition() - p2Vec2(radius*2, radius*2);
-			aabb.topRight = GetPosition() + p2Vec2(radius*2, radius*2);
+			aabb.bottomLeft = GetPosition() - p2Vec2(radius, -radius);
+			aabb.topRight = GetPosition() + p2Vec2(radius, -radius);
 			break;
 
 		case p2ColliderDef::ShapeType::RECT:
@@ -38,8 +38,8 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 			size = p2Vec2(static_cast<p2RectShape*>(colliderDef.shape)->GetSize());
 			static_cast<p2RectShape*>(shape)->SetSize(size);
 
-			aabb.bottomLeft = GetPosition() - p2Vec2(size.x, size.y);
-			aabb.topRight = GetPosition() + p2Vec2(size.x, size.y);
+			aabb.bottomLeft = GetPosition() - p2Vec2(size.x / 2.0f, -size.y / 2.0f);
+			aabb.topRight = GetPosition() + p2Vec2(size.x / 2.0f, -size.y / 2.0f);
 	}
 }
 

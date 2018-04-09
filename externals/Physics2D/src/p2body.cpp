@@ -89,6 +89,9 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
 	p2Collider* tmpCollider = new p2Collider(*colliderDef, this);
 	m_CollidersList.push_front(tmpCollider);
+
+	ComputeAABB();
+
 	return *m_CollidersList.begin();
 }
 
@@ -102,4 +105,32 @@ std::list<p2Shape *> p2Body::GetShape()
 	}
 
 	return tmp;
+}
+
+void p2Body::ComputeAABB()
+{
+	if (m_CollidersList.size() != 0) {
+		auto it = m_CollidersList.begin();
+		aabb.bottomLeft = (*it)->aabb.bottomLeft + (*it)->GetOffset();
+		aabb.topRight = (*it)->aabb.topRight + (*it)->GetOffset();
+		it++;
+
+		for (it; it != m_CollidersList.end(); it++) {
+			if (aabb.bottomLeft.x > (*it)->aabb.bottomLeft.x) {
+				aabb.bottomLeft.x = (*it)->aabb.bottomLeft.x;
+			}
+
+			if (aabb.bottomLeft.y < (*it)->aabb.bottomLeft.y) {
+				aabb.bottomLeft.y = (*it)->aabb.bottomLeft.y;
+			}
+
+			if (aabb.topRight.x < (*it)->aabb.topRight.x) {
+				aabb.topRight.x = (*it)->aabb.topRight.x;
+			}
+
+			if (aabb.topRight.y > (*it)->aabb.topRight.y) {
+				aabb.topRight.y = (*it)->aabb.topRight.y;
+			}
+		}
+	}
 }
