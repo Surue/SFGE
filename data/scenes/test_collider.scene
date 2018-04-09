@@ -1,5 +1,5 @@
 {
-  "name": "ColliderTestScene",
+  "name": "ColliderDrawScene",
   "game_objects": [
       {
           "name": "Body1",
@@ -17,11 +17,47 @@
                   "gravity_scale": 1
               },
               {
-                  "name": "Circle Collider",
+                  "name": "CircleCollider",
                   "type": 6,
                   "collider_type": 1,
                   "radius": 50.0,
                   "bouncing": 0.5,
+                  "sensor": false
+              },
+			  {
+				  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "offset": [0, 25]
+			  },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/collider_draw.py"
+			  }
+          ]
+      },
+	  {
+          "name": "Body2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [800,200],
                   "sensor": true
               },
 			  {
