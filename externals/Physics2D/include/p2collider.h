@@ -37,6 +37,7 @@ struct p2ColliderDef
 	p2Shape* shape;
 	float restitution;
 	bool isSensor;
+	p2Vec2 offset = p2Vec2(0.0f, 0.0f);
 	enum ShapeType{
 		CIRCLE,
 		RECT
@@ -68,6 +69,10 @@ public:
 
 	p2Shape* GetShape();
 
+	p2Vec2 GetOffset();
+
+	std::string GetShapeJson();
+
 	p2ColliderDef::ShapeType GetShapeType();
 
 private:
@@ -77,6 +82,7 @@ private:
 	p2Shape *shape = nullptr;
 
 	p2ColliderDef::ShapeType shapeType;
+	p2Vec2 m_Offset = p2Vec2(0.0f, 0.0f);
 };
 
 

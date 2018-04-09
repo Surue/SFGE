@@ -99,6 +99,10 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 				break; 
 			}
 		}
+		if (CheckJsonExists(componentJson, "offset"))
+		{
+			colliderDef.offset = pixel2meter(GetVectorFromJson(componentJson, "offset"));
+		}
 		if (CheckJsonNumber(componentJson, "bouncing"))
 		{
 			colliderDef.restitution = componentJson["bouncing"];
@@ -128,18 +132,9 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 
 void Collider::DebugDraw(Engine & engine)
 {
-	std::string jsonString = "";
-	switch (m_PhysicsCollider->GetShapeType()) {
-		case p2ColliderDef::ShapeType::CIRCLE:
-			jsonString = static_cast<p2CircleShape*>(m_PhysicsCollider->GetShape())->GetJson();
-			break;
+	std::string jsonString = m_PhysicsCollider->GetShapeJson();
 
-		case p2ColliderDef::ShapeType::RECT:
-			jsonString = static_cast<p2RectShape*>(m_PhysicsCollider->GetShape())->GetJson();
-			break;
-	}
-
-	Log::GetInstance()->Msg(jsonString);
+	Log::GetInstance()->Msg("json = "+jsonString);
 
 	json gameObjectJson = json::parse(jsonString);
 

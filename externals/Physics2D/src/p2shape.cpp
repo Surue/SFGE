@@ -42,7 +42,7 @@ float p2CircleShape::GetRadius()
 
 std::string p2CircleShape::GetJson()
 {
-	return "{\"name\" : \"CircleColliderShape\", \"type\" : 3, \"shape_type\" : 5, \"radius\" : "+ std::to_string(GetRadius() * 100.0f) +" }";
+	return "\"name\" : \"CircleColliderShape\", \"type\" : 3, \"shape_type\" : 5, \"radius\" : " + std::to_string(GetRadius() * 100.0f);
 }
 
 void p2RectShape::SetSize(p2Vec2 size)
@@ -57,7 +57,7 @@ p2Vec2 p2RectShape::GetSize()
 
 std::string p2RectShape::GetJson()
 {
-	return "{\"name\" : \"BoxColliderShape\", \"type\" : 3, \"shape_type\" : 6, \"size\" : [" + std::to_string(m_Size.x * 100.0f) + ","+ std::to_string(m_Size.y * 100.0f) +"] }";
+	return "\"name\" : \"BoxColliderShape\", \"type\" : 3, \"shape_type\" : 6, \"size\" : [" + std::to_string(m_Size.x * 100.0f) + "," + std::to_string(m_Size.y * 100.0f) + "]";
 }
 
 p2Vec2 p2Shape::GetSize()

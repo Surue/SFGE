@@ -64,7 +64,6 @@ void Shape::SetFillColor(sf::Color color)
 	}
 }
 
-
 Shape* Shape::LoadShape(Engine& engine, json& componentJson, GameObject* gameObject)
 {
 	Shape* shape = nullptr;
@@ -92,7 +91,7 @@ Shape* Shape::LoadShape(Engine& engine, json& componentJson, GameObject* gameObj
 		}
 	}
 	offset = GetVectorFromJson(componentJson, "offset");
-		
+	std::cout << "offset = " << offset.x << ", " << offset.y << "\n";
 	
 	if(shape != nullptr)
 	{
@@ -205,7 +204,7 @@ CircleCollider::CircleCollider(GameObject * gameObject, float radius) : Shape(ga
 	m_Radius = radius;
 	m_Shape = std::make_shared<sf::CircleShape>(radius);
 	m_Shape->setOutlineThickness(1.0f);
-	m_Shape->setOutlineColor(sf::Color::Green);
+	m_Shape->setOutlineColor(sf::Color(0, 102,0));
 	m_Shape->setFillColor(sf::Color(0,0,0, 1));
 }
 
@@ -234,7 +233,7 @@ BoxCollider::BoxCollider(GameObject * gameObject, sf::Vector2f size) : Shape(gam
 	m_Size = size;
 	m_Shape = std::make_shared<sf::RectangleShape>(size);
 	m_Shape->setOutlineThickness(1.0f);
-	m_Shape->setOutlineColor(sf::Color::Green);
+	m_Shape->setOutlineColor(sf::Color(0, 102, 0));
 	m_Shape->setFillColor(sf::Color(0, 0, 0, 1));
 }
 
