@@ -82,6 +82,12 @@ Shape* Shape::LoadShape(Engine& engine, json& componentJson, GameObject* gameObj
 		case ShapeType::RECTANGLE:
 			shape = Rectangle::LoadRectangle(componentJson, gameObject);
 			break;
+		case ShapeType::CIRCLE_COLLIDER:
+			shape = CircleCollider::LoadCircleCollider(componentJson, gameObject);
+			break;
+		case ShapeType::BOX_COLLIDER:
+			shape = BoxCollider::LoadBoxCollider(componentJson, gameObject);
+			break;
 
 		}
 	}
@@ -193,5 +199,59 @@ void ShapeManager::AddShape(Shape* shape)
 	m_Shapes.push_back(shape);
 }
 
+
+CircleCollider::CircleCollider(GameObject * gameObject, float radius) : Shape(gameObject)
+{
+	m_Radius = radius;
+	m_Shape = std::make_shared<sf::CircleShape>(radius);
+	m_Shape->setOutlineThickness(1.0f);
+	m_Shape->setOutlineColor(sf::Color::Green);
+	m_Shape->setFillColor(sf::Color(0,0,0, 1));
+}
+
+void CircleCollider::Update(float dt)
+{
+	if (m_Shape != nullptr)
+	{
+		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() - m_Radius * sf::Vector2f(1.0f, 1.0f) + m_Offset);
+	}
+}
+
+CircleCollider * CircleCollider::LoadCircleCollider(json & componentJson, GameObject * gameObject)
+{
+	float radius = 1.0f;
+
+	if (CheckJsonNumber(componentJson, "radius"))
+	{
+		radius = componentJson["radius"];
+	}
+
+	return new CircleCollider(gameObject, radius);
+}
+
+BoxCollider::BoxCollider(GameObject * gameObject, sf::Vector2f size) : Shape(gameObject)
+{
+	m_Size = size;
+	m_Shape = std::make_shared<sf::RectangleShape>(size);
+	m_Shape->setOutlineThickness(1.0f);
+	m_Shape->setOutlineColor(sf::Color::Green);
+	m_Shape->setFillColor(sf::Color(0, 0, 0, 1));
+}
+
+void BoxCollider::Update(float dt)
+{
+	if (m_Shape != nullptr)
+	{
+		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() - m_Size / 2.0f + m_Offset);
+	}
+}
+
+BoxCollider * BoxCollider::LoadBoxCollider(json & componentJson, GameObject * gameObject)
+{
+	sf::Vector2f size;
+	size = GetVectorFromJson(componentJson, "size");
+
+	return new BoxCollider(gameObject, size);
+}
 
 }

@@ -42,6 +42,8 @@ enum class ShapeType
 	RECTANGLE,
 	POLYGON,
 	CONVEX,
+	CIRCLE_COLLIDER,
+	BOX_COLLIDER
 };
 
 /**
@@ -109,6 +111,38 @@ public:
 protected:
 	sf::Vector2f m_Size;
 
+};
+
+class CircleCollider : public Shape
+{
+public:
+	CircleCollider(GameObject* gameObject, float radius);
+	/**
+	* \brief Update the position of the SFML circle shape to the position  of the GameObject Transform
+	*/
+	void Update(float dt) override;
+	/**
+	* \brief Factory method of a Circle Component
+	*/
+	static CircleCollider* LoadCircleCollider(json& componentJson, GameObject* gameObject);
+protected:
+	float m_Radius;
+};
+
+class BoxCollider : public Shape
+{
+public:
+	BoxCollider(GameObject* gameObject, sf::Vector2f size);
+	/**
+	* \brief Update the position of the SFML circle shape to the position  of the GameObject Transform
+	*/
+	void Update(float dt) override;
+	/**
+	* \brief Factory method of a Circle Component
+	*/
+	static BoxCollider* LoadBoxCollider(json& componentJson, GameObject* gameObject);
+protected:
+	sf::Vector2f m_Size;
 };
 
 /**

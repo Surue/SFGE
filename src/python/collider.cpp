@@ -26,6 +26,9 @@ SOFTWARE.
 #include <physics/collider.h>
 #include <physics/body2d.h>
 #include <physics/physics.h>
+
+#include <graphics\shape.h>
+
 namespace sfge
 {
 void Collider::Init()
@@ -83,6 +86,7 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 					circleShape->SetRadius(pixel2meter((float)componentJson["radius"]));
 				}
 				shape = circleShape;
+				colliderDef.shapeType = p2ColliderDef::ShapeType::CIRCLE;
 			}
 		break;
 		case ColliderType::RECTANGLE:
@@ -91,6 +95,7 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 				p2Vec2 boxSize = pixel2meter(GetVectorFromJson(componentJson, "size"));
 				rectShape->SetSize(boxSize);
 				shape = rectShape;
+				colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
 				break; 
 			}
 		}
@@ -119,6 +124,26 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 		Log::GetInstance()->Error("No body attached on the GameObject");
 	}
 	return nullptr;
+}
+
+void Collider::DebugDraw(Engine & engine)
+{
+	std::string jsonString = "";
+	switch (m_PhysicsCollider->GetShapeType()) {
+		case p2ColliderDef::ShapeType::CIRCLE:
+			jsonString = static_cast<p2CircleShape*>(m_PhysicsCollider->GetShape())->GetJson();
+			break;
+
+		case p2ColliderDef::ShapeType::RECT:
+			jsonString = static_cast<p2RectShape*>(m_PhysicsCollider->GetShape())->GetJson();
+			break;
+	}
+
+	Log::GetInstance()->Msg(jsonString);
+
+	json gameObjectJson = json::parse(jsonString);
+
+	m_GameObject->AddComponent(engine, gameObjectJson);
 }
 
 }

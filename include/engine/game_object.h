@@ -64,6 +64,8 @@ public:
 	* \return the heap GameObject that will need to be destroyed
 	*/
 	static GameObject* LoadGameObject(Engine& engine, json& gameObjectJson);
+
+	Component* AddComponent(Engine& engine, json& gameObjectJson);
 	/**
 	 * \brief Getter of the Transform attached to the GameObject
 	 * \return Pointer to Transform

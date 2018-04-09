@@ -21,63 +21,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#include <engine/engine.h>
+#include <engine/scene.h>
 
+#include <graphics\shape.h>
 
-#ifndef SFGE_P2COLLIDER_H
-#define SFGE_P2COLLIDER_H
+#include <iostream>
 
-#include <p2shape.h>
-#include <memory>
-/**
-* \brief Struct defining a p2Collider when creating one
-*/
-struct p2ColliderDef
+int main()
 {
-	void* userData;
-	p2Shape* shape;
-	float restitution;
-	bool isSensor;
-	enum ShapeType{
-		CIRCLE,
-		RECT
-	};
+	sfge::Engine engine;
+	engine.Init(false, true);
 
-	ShapeType shapeType;
-};
+	engine.GetSceneManager()->SetCurrentScene("data/scenes/test_collider.scene");
 
-/**
-* \brief Representation of a Collider attached to a p2Body
-*/
-
-class p2Collider
-{
-public:
-	p2Collider();
-	p2Collider(p2ColliderDef colliderDef);
-
-	~p2Collider();
-
-	/**
-	* \brief Check if the p2Collider is a sensor
-	*/
-	bool IsSensor();
-	/**
-	* \brief Return the userData
-	*/
-	void* GetUserData();
-
-	p2Shape* GetShape();
-
-	p2ColliderDef::ShapeType GetShapeType();
-
-private:
-	void* userData;
-	bool isSensor;
-	float restitution;
-	p2Shape *shape = nullptr;
-
-	p2ColliderDef::ShapeType shapeType;
-};
-
-
+	engine.Start();
+#if WIN32
+	system("pause");
 #endif
+	return EXIT_SUCCESS;
+}

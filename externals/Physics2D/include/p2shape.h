@@ -27,6 +27,8 @@ SOFTWARE.
 
 #include <p2vector.h>
 
+#include <string>
+
 /**
 * \brief Abstract representation of a shape
 */
@@ -34,6 +36,7 @@ class p2Shape
 {
 public:
 	virtual p2Vec2 GetSize();
+	std::string GetJson();
 };
 
 /**
@@ -46,7 +49,10 @@ public:
 	* \brief Setter for the radius
 	*/
 	void SetRadius(float radius);
-	virtual p2Vec2 GetSize();
+	p2Vec2 GetSize();
+	float GetRadius();
+
+	std::string GetJson();
 private:
 	float m_Radius;
 };
@@ -59,6 +65,8 @@ class p2RectShape : public p2Shape
 public:
 	void SetSize(p2Vec2 size);
 	virtual p2Vec2 GetSize();
+
+	std::string GetJson();
 private:
 	p2Vec2 m_Size;
 };

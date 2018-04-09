@@ -29,6 +29,8 @@ SOFTWARE.
 #include <engine/game_object.h>
 #include <engine/transform.h>
 
+#include <graphics\shape.h>
+
 namespace sfge
 {
 
@@ -64,8 +66,6 @@ p2Vec2 Body2d::GetVelocity()
 	}
 	return p2Vec2();
 }
-
-
 
 Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& componentJson)
 {

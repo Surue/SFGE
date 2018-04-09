@@ -108,6 +108,7 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.value("PyComponent", ComponentType::PYCOMPONENT)
 		.value("Shape", ComponentType::SHAPE)
 		.value("Body", ComponentType::BODY2D)
+		.value("Collider", ComponentType::COLLIDER)
 		.export_values();
 
 	py::class_<Transform, Component> transform(m, "Transform");
@@ -120,6 +121,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.def("set_scale", &Transform::SetScale);
 	
 	py::class_<Collider, Component> collider(m, "Collider");
+	collider 
+		.def("debug_draw", &Collider::DebugDraw, py::return_value_policy::reference);
 
 	py::class_<Body2d, Component> body(m, "Body");
 	body

@@ -89,7 +89,7 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
 	p2Collider* tmpCollider = new p2Collider(*colliderDef);
 	m_CollidersList.push_front(tmpCollider);
-	return tmpCollider;
+	return *m_CollidersList.begin();
 }
 
 std::list<p2Shape *> p2Body::GetShape()

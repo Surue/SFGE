@@ -27,7 +27,6 @@ SOFTWARE.
 #define SFGE_COLLIDER_H
 
 #include <engine/component.h>
-#include <utility/json_utility.h>
 
 #include <p2collider.h>
 
@@ -70,6 +69,9 @@ public:
 	* brief Factory method to create the Collider component with json arguments given
 	*/
 	static Collider* LoadCollider(Engine& engine, GameObject* gameObject, json& componentJson);
+
+	void DebugDraw(Engine & engine);
+
 protected:
 	p2Collider * m_PhysicsCollider = nullptr;
 };

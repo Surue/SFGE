@@ -104,6 +104,17 @@ GameObject* GameObject::LoadGameObject(Engine& engine, json& gameObjectJson)
 	return gameObject;
 }
 
+Component * GameObject::AddComponent(Engine & engine, json & gameObjectJson)
+{
+	auto newComponent = Component::LoadComponent(engine, gameObjectJson, this);
+	if (newComponent != nullptr)
+	{
+		m_Components.push_back(newComponent);
+	}
+
+	return newComponent;
+}
+
 Transform* GameObject::GetTransform()
 {
 	return m_Transform;
