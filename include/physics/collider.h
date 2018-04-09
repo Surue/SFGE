@@ -72,6 +72,8 @@ public:
 
 	void DebugDraw(Engine & engine);
 
+	void DebugDrawAABB(Engine & engine);
+
 protected:
 	p2Collider * m_PhysicsCollider = nullptr;
 };

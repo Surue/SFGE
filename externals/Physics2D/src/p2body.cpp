@@ -87,7 +87,7 @@ void p2Body::Step(float dt)
 
 p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
-	p2Collider* tmpCollider = new p2Collider(*colliderDef);
+	p2Collider* tmpCollider = new p2Collider(*colliderDef, this);
 	m_CollidersList.push_front(tmpCollider);
 	return *m_CollidersList.begin();
 }

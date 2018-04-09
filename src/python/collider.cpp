@@ -139,4 +139,27 @@ void Collider::DebugDraw(Engine & engine)
 	m_GameObject->AddComponent(engine, gameObjectJson);
 }
 
+void Collider::DebugDrawAABB(Engine & engine)
+{
+	Log::GetInstance()->Msg("DebugDrawAABB() :");
+
+	Log::GetInstance()->Msg("Center:");
+	m_PhysicsCollider->aabb.GetCenter().Show();
+
+	Log::GetInstance()->Msg("Extends:");
+	m_PhysicsCollider->aabb.GetExtends().Show();
+
+	json gameObjectJson = 
+	{
+		{ "name", "AABB debug box" },
+		{ "type", (int)sfge::ComponentType::SHAPE },
+		{ "shape_type",(int)sfge::ShapeType::AABB },
+		{ "position",{ m_PhysicsCollider->aabb.GetCenter().x * 100.0f, m_PhysicsCollider->aabb.GetCenter().y * 100.0f } },
+		{ "offset",{ m_PhysicsCollider->GetOffset().x * 100.0f, m_PhysicsCollider->GetOffset().y * 100.0f } },
+		{ "size",{ m_PhysicsCollider->aabb.GetExtends().x * 100.0f, m_PhysicsCollider->aabb.GetExtends().y * 100.0f }}
+	};
+
+	m_GameObject->AddComponent(engine, gameObjectJson);
+}
+
 }

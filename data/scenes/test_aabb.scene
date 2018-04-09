@@ -13,9 +13,10 @@
               {
                   "name": "Rigidbody",
                   "type": 5,
-                  "body_type": 0,
+                  "body_type": 1,
                   "gravity_scale": 1
               },
+			  
               {
                   "name": "Circle Collider",
                   "type": 6,
@@ -25,8 +26,52 @@
                   "sensor": true
               },
 			  {
+				  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "offset": [25, -25]
+			  },
+			  {
 				  "type": 4,
 				  "script_path": "scripts/collider_draw.py"
+			  },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/aabb_draw.py"
+			  }
+          ]
+      },
+	  {
+          "name": "Body2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [800,200],
+                  "sensor": true
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/collider_draw.py"
+			  },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/aabb_draw.py"
 			  }
           ]
       }

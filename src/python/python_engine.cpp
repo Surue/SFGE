@@ -122,7 +122,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 	
 	py::class_<Collider, Component> collider(m, "Collider");
 	collider 
-		.def("debug_draw", &Collider::DebugDraw, py::return_value_policy::reference);
+		.def("debug_draw", &Collider::DebugDraw, py::return_value_policy::reference)
+		.def("debug_draw_aabb", &Collider::DebugDrawAABB, py::return_value_policy::reference);
 
 	py::class_<Body2d, Component> body(m, "Body");
 	body

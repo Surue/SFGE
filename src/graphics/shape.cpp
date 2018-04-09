@@ -88,10 +88,13 @@ Shape* Shape::LoadShape(Engine& engine, json& componentJson, GameObject* gameObj
 			shape = BoxCollider::LoadBoxCollider(componentJson, gameObject);
 			break;
 
+		case ShapeType::AABB:
+			shape = AABB::LoadAABB(componentJson, gameObject);
+			break;
+
 		}
 	}
 	offset = GetVectorFromJson(componentJson, "offset");
-	std::cout << "offset = " << offset.x << ", " << offset.y << "\n";
 	
 	if(shape != nullptr)
 	{
@@ -251,6 +254,31 @@ BoxCollider * BoxCollider::LoadBoxCollider(json & componentJson, GameObject * ga
 	size = GetVectorFromJson(componentJson, "size");
 
 	return new BoxCollider(gameObject, size);
+}
+
+AABB::AABB(GameObject * gameObject, sf::Vector2f size) : Shape(gameObject)
+{
+	m_Size = size;
+	m_Shape = std::make_shared<sf::RectangleShape>(size);
+	m_Shape->setOutlineThickness(1.0f);
+	m_Shape->setOutlineColor(sf::Color(153, 0, 0));
+	m_Shape->setFillColor(sf::Color(0, 0, 0, 1));
+}
+
+void AABB::Update(float dt)
+{
+	if (m_Shape != nullptr)
+	{
+		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() - m_Size / 2.0f + m_Offset);
+	}
+}
+
+AABB * AABB::LoadAABB(json & componentJson, GameObject * gameObject)
+{
+	sf::Vector2f size;
+	size = GetVectorFromJson(componentJson, "size");
+
+	return new AABB(gameObject, size);
 }
 
 }

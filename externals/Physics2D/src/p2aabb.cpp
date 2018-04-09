@@ -23,13 +23,26 @@ SOFTWARE.
 */
 
 #include <p2aabb.h>
+#include <cmath>
 
 p2Vec2 p2AABB::GetCenter()
 {
-	return p2Vec2();
+	return (bottomLeft + topRight) * 0.5f;
 }
 
 p2Vec2 p2AABB::GetExtends()
 {
-	return p2Vec2();
+	return (topRight - bottomLeft) * 0.5f;
+}
+
+bool p2AABB::Contains(p2AABB other)
+{
+	bool isContaining = true;
+
+	isContaining = isContaining && bottomLeft.x <= other.bottomLeft.x;
+	isContaining = isContaining && bottomLeft.y <= other.bottomLeft.y;
+	isContaining = isContaining && other.topRight.x <= topRight.x;
+	isContaining = isContaining && other.topRight.y <= topRight.y;
+
+	return isContaining;
 }

@@ -27,7 +27,9 @@ SOFTWARE.
 #define SFGE_P2COLLIDER_H
 
 #include <p2shape.h>
-#include <memory>
+#include <p2aabb.h>
+
+class p2Body;
 /**
 * \brief Struct defining a p2Collider when creating one
 */
@@ -54,7 +56,7 @@ class p2Collider
 {
 public:
 	p2Collider();
-	p2Collider(p2ColliderDef colliderDef);
+	p2Collider(p2ColliderDef colliderDef, p2Body* body);
 
 	~p2Collider();
 
@@ -71,9 +73,13 @@ public:
 
 	p2Vec2 GetOffset();
 
+	p2Vec2 GetPosition();
+
 	std::string GetShapeJson();
 
 	p2ColliderDef::ShapeType GetShapeType();
+
+	p2AABB aabb;
 
 private:
 	void* userData;
@@ -83,6 +89,8 @@ private:
 
 	p2ColliderDef::ShapeType shapeType;
 	p2Vec2 m_Offset = p2Vec2(0.0f, 0.0f);
+
+	p2Body* m_Body = nullptr;
 };
 
 

@@ -1,4 +1,5 @@
 #include "..\include\p2collider.h"
+#include <p2body.h>
 
 #include <iostream>
 
@@ -6,7 +7,7 @@ p2Collider::p2Collider()
 {
 }
 
-p2Collider::p2Collider(p2ColliderDef colliderDef)
+p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 {
 	userData = colliderDef.userData;
 	isSensor = colliderDef.isSensor;
@@ -14,18 +15,32 @@ p2Collider::p2Collider(p2ColliderDef colliderDef)
 	shape = colliderDef.shape;
 	shapeType = colliderDef.shapeType;
 
+	m_Body = body;
+
+	m_Offset = p2Vec2(colliderDef.offset.x, colliderDef.offset.y);
+	float radius = 0;
+	p2Vec2 size;
+
 	switch (colliderDef.shapeType) {
 		case p2ColliderDef::ShapeType::CIRCLE:
 			shape = new p2CircleShape();
-			static_cast<p2CircleShape*>(shape)->SetRadius(static_cast<p2CircleShape*>(colliderDef.shape)->GetRadius());
+
+			radius = static_cast<p2CircleShape*>(colliderDef.shape)->GetRadius();
+			static_cast<p2CircleShape*>(shape)->SetRadius(radius);
+
+			aabb.bottomLeft = GetPosition() - p2Vec2(radius*2, radius*2);
+			aabb.topRight = GetPosition() + p2Vec2(radius*2, radius*2);
 			break;
 
 		case p2ColliderDef::ShapeType::RECT:
 			shape = new p2RectShape();
-			static_cast<p2RectShape*>(shape)->SetSize(static_cast<p2RectShape*>(colliderDef.shape)->GetSize());
-			break;
+
+			size = p2Vec2(static_cast<p2RectShape*>(colliderDef.shape)->GetSize());
+			static_cast<p2RectShape*>(shape)->SetSize(size);
+
+			aabb.bottomLeft = GetPosition() - p2Vec2(size.x, size.y);
+			aabb.topRight = GetPosition() + p2Vec2(size.x, size.y);
 	}
-	m_Offset = p2Vec2(colliderDef.offset.x, colliderDef.offset.y);
 }
 
 p2Collider::~p2Collider()
@@ -50,6 +65,11 @@ p2Shape* p2Collider::GetShape()
 p2Vec2 p2Collider::GetOffset()
 {
 	return m_Offset;
+}
+
+p2Vec2 p2Collider::GetPosition()
+{
+	return p2Vec2(m_Body->GetPosition() + m_Offset);
 }
 
 std::string p2Collider::GetShapeJson()
