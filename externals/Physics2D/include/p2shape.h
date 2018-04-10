@@ -38,8 +38,7 @@ class p2Shape
 public:
 	virtual p2Shape* Clone() const = 0;
 
-	virtual p2Vec2 GetSize();
-	std::string GetJson();
+	virtual std::string GetJson() const = 0;
 	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position) const = 0;
 };
 
@@ -49,17 +48,17 @@ public:
 class p2CircleShape : public p2Shape
 {
 public:
-	p2Shape * Clone() const;
+	p2Shape * Clone() const override;
 	/**
 	* \brief Setter for the radius
 	*/
 	void SetRadius(float radius);
-	p2Vec2 GetSize();
+
 	float GetRadius();
 
 	void ComputeAABB(p2AABB* aabb, p2Vec2 position) const override;
 
-	std::string GetJson();
+	std::string GetJson() const override;
 private:
 	float m_Radius;
 };
@@ -70,14 +69,14 @@ private:
 class p2RectShape : public p2Shape
 {
 public:
-	p2Shape * Clone() const;
+	p2Shape * Clone() const override;
 
 	void SetSize(p2Vec2 size);
-	virtual p2Vec2 GetSize();
+	p2Vec2 GetSize();
 
 	void ComputeAABB(p2AABB* aabb, p2Vec2 position) const override;
 
-	std::string GetJson();
+	std::string GetJson() const override;
 private:
 	p2Vec2 m_Size;
 };
