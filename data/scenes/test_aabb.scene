@@ -13,7 +13,7 @@
               {
                   "name": "Rigidbody",
                   "type": 5,
-                  "body_type": 2,
+                  "body_type": 1,
                   "gravity_scale": 1
               },
 			  {
@@ -41,14 +41,15 @@
                   "radius": 50.0,
                   "bouncing": 0.5,
                   "sensor": true
-              },
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
 			  {
 				  "type": 4,
-				  "script_path": "scripts/collider_draw.py"
-			  },
-			  {
-				  "type": 4,
-				  "script_path": "scripts/aabb_draw.py"
+				  "script_path": "scripts/debug_draw_data.py"
 			  }
           ]
       }

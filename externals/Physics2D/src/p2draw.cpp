@@ -22,60 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_P2WORLD_H
-#define SFGE_P2WORLD_H
-
-#include <p2vector.h>
-#include <p2contact.h>
 #include <p2draw.h>
 
-#include <list>
-
-class p2Body;
-
-/**
-* \brief Representation of the physical world in meter
-*/
-class p2World
+p2Draw::p2Draw()
 {
-public:
-	p2World(p2Vec2 gravity);
-	~p2World();
-	/**
-	* \brief Simulate a new step of the physical world, simplify the resolution with a QuadTree, generate the new contacts
-	*/
-	void Step(float dt);
-	/**
-	* \brief Factory method to create a new p2Body attached to the p2World
-	*/
-	p2Body* CreateBody(p2BodyDef* bodyDef);
-	/**
-	* \brief Set the contact listener
-	*/
-	void SetContactListener(p2ContactListener* contactListener);
+}
 
-	p2Vec2 GetGravity();
+void p2Draw::SetFlags(uint32_t flags)
+{
+	m_DrawFlags = flags;
+}
 
-	//Raytracing()
-
-	//CircleCollider()
-	/**
-	* \brief Register methods for debug drawing.
-	*/
-	void SetDebugDraw(p2Draw* debugDraw);
-
-	/**
-	* \brief Call for drawing all dphysical debug data (collider's shape, aabb)
-	*/
-	void DrawDebugData();
-
-	p2Draw* GetDebugDraw();
-
-private:
-	std::list<p2Body *> m_BodyList;
-	p2Vec2 m_Gravity;
-
-	p2Draw* m_DebugDraw = nullptr;
-};
-
-#endif
+uint32_t p2Draw::GetFlags()
+{
+	return m_DrawFlags;
+}

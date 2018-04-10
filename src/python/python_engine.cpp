@@ -56,6 +56,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 
 	py::class_<Engine> engine(m, "Engine");
+	engine
+		.def("set_debug_draw_data", &Engine::SetDebugDrawData);
 
 	py::class_<Module> module(m, "Module");
 

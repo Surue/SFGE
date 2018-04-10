@@ -95,6 +95,11 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 	return *m_CollidersList.begin();
 }
 
+std::list<p2Collider*> p2Body::GetColliders()
+{
+	return m_CollidersList;
+}
+
 std::list<p2Shape *> p2Body::GetShape()
 {
 	std::list<p2Shape *> tmp;

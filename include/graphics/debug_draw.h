@@ -22,60 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_P2WORLD_H
-#define SFGE_P2WORLD_H
+#ifndef DEBUGDRAW_H
+#define DEBUGDRAW_H
 
-#include <p2vector.h>
-#include <p2contact.h>
-#include <p2draw.h>
+#include <p2physics.h>
 
-#include <list>
+//Externals
+#include <SFML/Graphics.hpp>
 
-class p2Body;
+namespace sfge {
 
-/**
-* \brief Representation of the physical world in meter
-*/
-class p2World
+class DebugDraw : public p2Draw
 {
 public:
-	p2World(p2Vec2 gravity);
-	~p2World();
-	/**
-	* \brief Simulate a new step of the physical world, simplify the resolution with a QuadTree, generate the new contacts
-	*/
-	void Step(float dt);
-	/**
-	* \brief Factory method to create a new p2Body attached to the p2World
-	*/
-	p2Body* CreateBody(p2BodyDef* bodyDef);
-	/**
-	* \brief Set the contact listener
-	*/
-	void SetContactListener(p2ContactListener* contactListener);
+	DebugDraw(sf::RenderWindow *window);
+	virtual ~DebugDraw();
 
-	p2Vec2 GetGravity();
+	void DrawRect(p2Vec2 position, p2Vec2 size, p2Color color);
 
-	//Raytracing()
+	void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color color);
 
-	//CircleCollider()
-	/**
-	* \brief Register methods for debug drawing.
-	*/
-	void SetDebugDraw(p2Draw* debugDraw);
+	void DrawCircle(p2Vec2 center, float radius, p2Color color);
 
-	/**
-	* \brief Call for drawing all dphysical debug data (collider's shape, aabb)
-	*/
-	void DrawDebugData();
+	void DrawCircleFilled(p2Vec2 center, float radius, p2Color color);
 
-	p2Draw* GetDebugDraw();
+	void DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color color);
 
+	void DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color color);
+
+	void DrawTransform(p2Vec2 transform);
+
+	sf::Color p2Color2SfColor(p2Color &color);
 private:
-	std::list<p2Body *> m_BodyList;
-	p2Vec2 m_Gravity;
-
-	p2Draw* m_DebugDraw = nullptr;
+	sf::RenderWindow *m_Window;
 };
-
-#endif
+}
+#endif // !DEBUGDRAW_H

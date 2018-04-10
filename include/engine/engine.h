@@ -29,11 +29,12 @@ SOFTWARE.
 
 #include <memory>
 #include <array>
+#include <cstdint>
 
 #include <engine/config.h>
 #include <utility/singleton.h>
 
-
+#include<graphics\debug_draw.h>
 
 namespace sfge
 {
@@ -92,6 +93,14 @@ public:
 	* \brief Collect all the unused assets at the end of the loading frame
 	*/
 	void Collect();
+	/**
+	* \brief Associate the class to draw to the physical world DebugDrawData
+	*/
+	void SetDebugDrawData();
+	/**
+	* \brief Set DebugDraw
+	*/
+	void SetDebugDrawDataFlags(uint32_t flags);
 
 	~Engine();
 	/**

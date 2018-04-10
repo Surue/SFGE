@@ -155,6 +155,25 @@ void Engine::Collect()
 	m_PhysicsManager->Collect();
 }
 
+void Engine::SetDebugDrawData()
+{
+	if (m_PhysicsManager->GetWorld()->GetDebugDraw() == nullptr) {
+		m_PhysicsManager->GetWorld()->SetDebugDraw(new DebugDraw(&*m_Window));
+	}
+
+	uint32_t flags = 0x0001;
+	flags += 0x0002;
+	flags += 0x0004;
+	flags += 0x0008;
+
+	SetDebugDrawDataFlags(flags);
+}
+
+void Engine::SetDebugDrawDataFlags(uint32_t flags)
+{
+	m_PhysicsManager->GetWorld()->GetDebugDraw()->SetFlags(flags);
+}
+
 Engine::~Engine()
 {
 	delete(m_GraphicsManager);
