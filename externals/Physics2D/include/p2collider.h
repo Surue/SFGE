@@ -69,6 +69,8 @@ public:
 	*/
 	void* GetUserData();
 
+	void Step(float dt);
+
 	p2Shape* GetShape();
 
 	p2Vec2 GetOffset();

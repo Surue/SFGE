@@ -83,6 +83,11 @@ void p2Body::Step(float dt)
 		linearVelocity += world->GetGravity() * gravityScale * dt;
 	}
 
+	ComputeAABB();
+
+	for (auto collider : m_CollidersList) {
+		collider->Step(dt);
+	}
 }
 
 p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)

@@ -74,6 +74,15 @@
                   "script_path": "scripts/contact_test.py"
               }
           ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
       }
   ]
 }

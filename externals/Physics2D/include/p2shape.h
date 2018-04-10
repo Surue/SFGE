@@ -26,6 +26,7 @@ SOFTWARE.
 #define SFGE_P2SHAPE_H
 
 #include <p2vector.h>
+#include <p2aabb.h>
 
 #include <string>
 
@@ -35,8 +36,11 @@ SOFTWARE.
 class p2Shape
 {
 public:
+	virtual p2Shape* Clone() const = 0;
+
 	virtual p2Vec2 GetSize();
 	std::string GetJson();
+	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position) const = 0;
 };
 
 /**
@@ -45,12 +49,15 @@ public:
 class p2CircleShape : public p2Shape
 {
 public:
+	p2Shape * Clone() const;
 	/**
 	* \brief Setter for the radius
 	*/
 	void SetRadius(float radius);
 	p2Vec2 GetSize();
 	float GetRadius();
+
+	void ComputeAABB(p2AABB* aabb, p2Vec2 position) const override;
 
 	std::string GetJson();
 private:
@@ -63,8 +70,12 @@ private:
 class p2RectShape : public p2Shape
 {
 public:
+	p2Shape * Clone() const;
+
 	void SetSize(p2Vec2 size);
 	virtual p2Vec2 GetSize();
+
+	void ComputeAABB(p2AABB* aabb, p2Vec2 position) const override;
 
 	std::string GetJson();
 private:

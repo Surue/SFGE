@@ -8,7 +8,7 @@ class PlayerCharacterBasic(Component):
         self.body = self.game_object.get_component(Component.Body)
 
     def update(self, dt):
-        d = b2Vec2(0.0,0.0)
+        d = p2Vec2(0.0,0.0)
         if input_manager.keyboard.is_key_held(KeyboardManager.Key.Up):
             d.y -= 1
         if input_manager.keyboard.is_key_held(KeyboardManager.Key.Down):

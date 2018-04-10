@@ -45,6 +45,49 @@
           ]
       },
 	  {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [600, 300],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 1,
+                  "gravity_scale": 1
+              },
+			  {
+				  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [100, 100],
+                  "bouncing": 0.5,
+                  "sensor": true,
+				  "offset": [-100, 100]
+			  },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [100, 100],
+                  "bouncing": 0.5,
+                  "sensor": true,
+				  "offset": [50, 50]
+              },
+			  {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [100, 100],
+                  "bouncing": 0.5,
+                  "sensor": true
+              }
+          ]
+      },
+	  {
           "name": "ScriptDebugDraw",
           "components": [
 			  {

@@ -36,6 +36,12 @@ p2Vec2::p2Vec2(float x, float y):x(x), y(y)
 {
 }
 
+void p2Vec2::Set(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
+
 p2Vec2 p2Vec2::operator+(p2Vec2 v)
 {
 	return p2Vec2(x + v.x, y + v.y);

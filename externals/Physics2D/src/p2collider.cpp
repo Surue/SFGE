@@ -12,7 +12,7 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 	userData = colliderDef.userData;
 	isSensor = colliderDef.isSensor;
 	restitution = colliderDef.restitution;
-	shape = colliderDef.shape;
+	shape = colliderDef.shape->Clone();
 	shapeType = colliderDef.shapeType;
 
 	m_Body = body;
@@ -21,26 +21,7 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 	float radius = 0;
 	p2Vec2 size;
 
-	switch (colliderDef.shapeType) {
-		case p2ColliderDef::ShapeType::CIRCLE:
-			shape = new p2CircleShape();
-
-			radius = static_cast<p2CircleShape*>(colliderDef.shape)->GetRadius();
-			static_cast<p2CircleShape*>(shape)->SetRadius(radius);
-
-			aabb.bottomLeft = GetPosition() - p2Vec2(radius, -radius);
-			aabb.topRight = GetPosition() + p2Vec2(radius, -radius);
-			break;
-
-		case p2ColliderDef::ShapeType::RECT:
-			shape = new p2RectShape();
-
-			size = p2Vec2(static_cast<p2RectShape*>(colliderDef.shape)->GetSize());
-			static_cast<p2RectShape*>(shape)->SetSize(size);
-
-			aabb.bottomLeft = GetPosition() - p2Vec2(size.x / 2.0f, -size.y / 2.0f);
-			aabb.topRight = GetPosition() + p2Vec2(size.x / 2.0f, -size.y / 2.0f);
-	}
+	shape->ComputeAABB(&aabb, GetPosition());
 }
 
 p2Collider::~p2Collider()
@@ -55,6 +36,11 @@ bool p2Collider::IsSensor()
 void * p2Collider::GetUserData()
 {
 	return nullptr;
+}
+
+void p2Collider::Step(float dt)
+{
+	shape->ComputeAABB(&aabb, GetPosition());
 }
 
 p2Shape* p2Collider::GetShape()

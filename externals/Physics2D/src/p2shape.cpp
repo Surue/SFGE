@@ -25,6 +25,13 @@ SOFTWARE.
 #include <p2shape.h>
 #include <iostream>
 
+p2Shape * p2CircleShape::Clone() const
+{
+	p2CircleShape* clone = new p2CircleShape();
+	*clone = *this;
+	return clone;
+}
+
 void p2CircleShape::SetRadius(float radius)
 {
 	m_Radius = radius;
@@ -40,9 +47,22 @@ float p2CircleShape::GetRadius()
 	return m_Radius;
 }
 
+void p2CircleShape::ComputeAABB(p2AABB * aabb, p2Vec2 position) const
+{
+	aabb->bottomLeft = position - p2Vec2(m_Radius, -m_Radius);
+	aabb->topRight = position + p2Vec2(m_Radius, -m_Radius);
+}
+
 std::string p2CircleShape::GetJson()
 {
 	return "\"name\" : \"CircleColliderShape\", \"type\" : 3, \"shape_type\" : 5, \"radius\" : " + std::to_string(GetRadius() * 100.0f);
+}
+
+p2Shape * p2RectShape::Clone() const
+{
+	p2RectShape* clone = new p2RectShape();
+	*clone = *this;
+	return clone;
 }
 
 void p2RectShape::SetSize(p2Vec2 size)
@@ -53,6 +73,12 @@ void p2RectShape::SetSize(p2Vec2 size)
 p2Vec2 p2RectShape::GetSize() 
 {
 	return m_Size;
+}
+
+void p2RectShape::ComputeAABB(p2AABB* aabb, p2Vec2 position) const
+{
+	aabb->bottomLeft = position - p2Vec2(m_Size.x / 2.0f, - m_Size.y / 2.0f),
+	aabb->topRight = position + p2Vec2(m_Size.x / 2.0f, - m_Size.y / 2.0f);
 }
 
 std::string p2RectShape::GetJson()

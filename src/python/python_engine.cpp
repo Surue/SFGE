@@ -123,9 +123,6 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.def("set_scale", &Transform::SetScale);
 	
 	py::class_<Collider, Component> collider(m, "Collider");
-	collider 
-		.def("debug_draw", &Collider::DebugDraw, py::return_value_policy::reference)
-		.def("debug_draw_aabb", &Collider::DebugDrawAABB, py::return_value_policy::reference);
 
 	py::class_<Body2d, Component> body(m, "Body");
 	body
@@ -176,8 +173,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.def_readwrite("x", &sf::Vector2f::x)
 		.def_readwrite("y", &sf::Vector2f::y);
 
-	py::class_<p2Vec2> b2vec2(m, "p2Vec2");
-	b2vec2
+	py::class_<p2Vec2> p2vec2(m, "p2Vec2");
+	p2vec2
 		.def(py::init<>())
 		.def(py::init<float, float>())
 		.def_readwrite("x", &p2Vec2::x)

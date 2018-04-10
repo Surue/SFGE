@@ -130,27 +130,4 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 	return nullptr;
 }
 
-void Collider::DebugDraw(Engine & engine)
-{
-	std::string jsonString = m_PhysicsCollider->GetShapeJson();
-
-	json gameObjectJson = json::parse(jsonString);
-
-	m_GameObject->AddComponent(engine, gameObjectJson);
-}
-
-void Collider::DebugDrawAABB(Engine & engine)
-{
-	json gameObjectJson = 
-	{
-		{ "name", "AABB debug box" },
-		{ "type", (int)sfge::ComponentType::SHAPE },
-		{ "shape_type",(int)sfge::ShapeType::AABB },
-		{ "offset",{ m_PhysicsCollider->GetOffset().x * 100.0f, m_PhysicsCollider->GetOffset().y * 100.0f } },
-		{ "size",{ m_PhysicsCollider->aabb.GetExtends().x * 100.0f * 2.0f, m_PhysicsCollider->aabb.GetExtends().y * 100.0f * 2.0f }}
-	};
-
-	m_GameObject->AddComponent(engine, gameObjectJson);
-}
-
 }
