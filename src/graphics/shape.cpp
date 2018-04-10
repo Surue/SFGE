@@ -114,13 +114,14 @@ Circle::Circle(GameObject* gameObject,   float radius):
 	m_Radius = radius;
 	m_Shape = std::make_shared<sf::CircleShape>(radius);
 	m_Shape->setFillColor(sf::Color::Green);
+	m_Shape->setOrigin(sf::Vector2f(radius, radius));
 }
 
 void Circle::Update(float dt)
 {
 	if (m_Shape != nullptr)
 	{
-		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition()-m_Radius*sf::Vector2f(1.0f,1.0f) + m_Offset);
+		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() + m_Offset);
 	}
 }
 
@@ -144,13 +145,14 @@ Rectangle::Rectangle(GameObject* gameObject, sf::Vector2f size):
 	m_Size = size;
 	m_Shape = std::make_shared<sf::RectangleShape>(size);
 	m_Shape->setFillColor(sf::Color::Red);
+	m_Shape->setOrigin(size / 2.0f);
 }
 
 void Rectangle::Update(float time)
 {
 	if (m_Shape != nullptr)
 	{
-		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition()-m_Size/2.0f + m_Offset);
+		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() + m_Offset);
 	}
 }
 

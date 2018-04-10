@@ -38,21 +38,21 @@ public:
 	DebugDraw(sf::RenderWindow *window);
 	virtual ~DebugDraw();
 
-	void DrawRect(p2Vec2 position, p2Vec2 size, p2Color color);
+	void DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color);
 
-	void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color color);
+	void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color& color);
 
-	void DrawCircle(p2Vec2 center, float radius, p2Color color);
+	void DrawCircle(p2Vec2 center, float radius, p2Color& color);
 
-	void DrawCircleFilled(p2Vec2 center, float radius, p2Color color);
+	void DrawCircleFilled(p2Vec2 center, float radius, p2Color& color);
 
-	void DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color color);
+	void DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color);
 
-	void DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color color);
+	void DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color& color);
 
 	void DrawTransform(p2Vec2 transform);
 
-	sf::Color p2Color2SfColor(p2Color &color);
+	sf::Color p2Color2SfColor(const p2Color &color);
 private:
 	sf::RenderWindow *m_Window;
 };

@@ -37,9 +37,11 @@ void Sprite::Update(float dt)
 }
 void Sprite::Draw(sf::RenderWindow& window)
 {
+	sprite.setOrigin(sf::Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height) / 2.0f);
 	sprite.setPosition(m_GameObject->GetTransform()->GetPosition()+m_Offset);
 	sprite.setScale(m_GameObject->GetTransform()->GetScale());
 	sprite.setRotation(m_GameObject->GetTransform()->GetEulerAngle());
+
 	window.draw(sprite);
 }
 void Sprite::SetTexture(sf::Texture* newTexture)

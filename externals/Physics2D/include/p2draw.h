@@ -33,7 +33,7 @@ SOFTWARE.
 struct p2Color {
 	p2Color() {}
 
-	p2Color(float red, float green, float blue, float alpha = 1.0f) {
+	p2Color(uint32_t red, uint32_t green, uint32_t blue, uint32_t alpha = 1.0f) {
 		r = red;
 		g = green;
 		b = blue;
@@ -44,17 +44,17 @@ struct p2Color {
 		return p2Color(r / f, g / f, b / f, a);
 	}
 
-	void Set(float red, float green, float blue, float alpha = 1.0f) {
+	void Set(uint32_t red, uint32_t green, uint32_t blue, uint32_t alpha = 1.0f) {
 		r = red;
 		g = green;
 		b = blue;
 		a = alpha;
 	}
 
-	float r;
-	float g;
-	float b;
-	float a;
+	uint32_t r;
+	uint32_t g;
+	uint32_t b;
+	uint32_t a = 255;
 };
 
 class p2Draw
@@ -82,17 +82,17 @@ public:
 	*/
 	uint32_t GetFlags();
 
-	virtual void DrawRect(p2Vec2 position, p2Vec2 size, p2Color color) = 0;
+	virtual void DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color) = 0;
 
-	virtual void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color color) = 0;
+	virtual void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color& color) = 0;
 
-	virtual void DrawCircle(p2Vec2 center, float radius, p2Color color) = 0;
+	virtual void DrawCircle(p2Vec2 center, float radius, p2Color& color) = 0;
 
-	virtual void DrawCircleFilled(p2Vec2 center, float radius, p2Color color) = 0;
+	virtual void DrawCircleFilled(p2Vec2 center, float radius, p2Color& color) = 0;
 
-	virtual void DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color color) = 0;
+	virtual void DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color) = 0;
 
-	virtual void DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color color) = 0;
+	virtual void DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color& color) = 0;
 
 	virtual void DrawTransform(p2Vec2 transform) = 0;
 

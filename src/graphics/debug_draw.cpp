@@ -37,50 +37,59 @@ DebugDraw::~DebugDraw()
 {
 }
 
-void DebugDraw::DrawRect(p2Vec2 position, p2Vec2 size, p2Color color)
+void DebugDraw::DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color)
 {
 	sf::RectangleShape rect(meter2pixel(size));
-	rect.setOrigin(meter2pixel(position));
-	rect.setFillColor(p2Color2SfColor(p2Draw::TRANSPARENT));
+	rect.setOrigin(meter2pixel(size / 2.0f));
+	rect.setPosition(meter2pixel(position) + meter2pixel(size / 2.0f));
+
+	rect.setFillColor(sf::Color(0, 0, 0, 0));
 	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(p2Color2SfColor(color / 2));
+	rect.setOutlineColor(sf::Color(0, 50, 0, 255));
 
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color color)
+void DebugDraw::DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color& color)
 {
 	sf::RectangleShape rect(meter2pixel(size));
-	rect.setOrigin(meter2pixel(position));
-	rect.setFillColor(p2Color2SfColor(color));
+	rect.setOrigin(meter2pixel(size / 2.0f));
+	rect.setPosition(meter2pixel(position) + meter2pixel(size / 2.0f));
+
+	rect.setFillColor(sf::Color(0, 0, 100, 100));
 	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(p2Color2SfColor(color / 2));
+	rect.setOutlineColor(sf::Color(0, 50, 0, 255));
 
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawCircle(p2Vec2 center, float radius, p2Color color)
+void DebugDraw::DrawCircle(p2Vec2 center, float radius, p2Color& color)
 {
 	sf::CircleShape circle(meter2pixel(radius));
-	circle.setOrigin(meter2pixel(center));
-	circle.setFillColor(p2Color2SfColor(p2Draw::TRANSPARENT));
-	circle.setOutlineThickness(1.0f);
-	circle.setOutlineColor(p2Color2SfColor(color));
-
-	m_Window->draw(circle);
-}
-
-void DebugDraw::DrawCircleFilled(p2Vec2 center, float radius, p2Color color)
-{
-	sf::CircleShape circle(meter2pixel(radius));
+	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
 	circle.setPosition(meter2pixel(center));
-	circle.setFillColor(sf::Color(100, 250, 50));
+
+	circle.setFillColor(sf::Color(0, 0, 0, 0));
 	circle.setOutlineThickness(1.0f);
-	circle.setOutlineColor(sf::Color(50, 125, 25));
+	circle.setOutlineColor(sf::Color(0, 50, 0, 255));
+
 	m_Window->draw(circle);
 }
 
-void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color color)
+void DebugDraw::DrawCircleFilled(p2Vec2 center, float radius, p2Color& color)
+{
+	sf::CircleShape circle(meter2pixel(radius));
+	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
+	circle.setPosition(meter2pixel(center));
+
+	circle.setFillColor(sf::Color(0, 100, 0, 100));
+	circle.setOutlineThickness(1.0f);
+	circle.setOutlineColor(sf::Color(0, 50, 0, 255));
+
+	m_Window->draw(circle);
+}
+
+void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color)
 {
 	sf::ConvexShape polygon(verticesCount);
 
@@ -88,14 +97,14 @@ void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color color)
 		polygon.setPoint(i, meter2pixel(vertices[i]));
 	}
 	
-	polygon.setFillColor(p2Color2SfColor(p2Draw::TRANSPARENT));
+	polygon.setFillColor(sf::Color(0, 0, 0, 0));
 	polygon.setOutlineThickness(1.0f);
-	polygon.setOutlineColor(p2Color2SfColor(color / 2));
+	polygon.setOutlineColor(sf::Color(100, 0, 0, 255));
 
 	m_Window->draw(polygon);
 }
 
-void DebugDraw::DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color color)
+void DebugDraw::DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color& color)
 {
 	sf::ConvexShape polygon(verticesCount);
 
@@ -114,9 +123,9 @@ void DebugDraw::DrawTransform(p2Vec2 transform)
 {
 }
 
-sf::Color DebugDraw::p2Color2SfColor(p2Color & color)
+sf::Color DebugDraw::p2Color2SfColor(const p2Color & color)
 {
-	sf::Color result((sf::Uint8)color.r % 255, (sf::Uint8)color.g % 255, (sf::Uint8)color.b % 255, (sf::Uint8)color.a % 1);
+	sf::Color result((sf::Uint8)(color.r), (sf::Uint8)(color.g), (sf::Uint8)(color.b), (sf::Uint8)(color.a)); // TO DO
 	return result;
 }
 
