@@ -174,6 +174,20 @@ void Engine::SetDebugDrawDataFlags(uint32_t flags)
 	m_PhysicsManager->GetWorld()->GetDebugDraw()->SetFlags(flags);
 }
 
+void Engine::SetDebugDrawDataFlagsSwitch(uint32_t flags)
+{
+	uint32_t newFlags = m_PhysicsManager->GetWorld()->GetDebugDraw()->GetFlags();
+
+	if ((newFlags & flags) == flags) {
+		newFlags -= flags;
+	}
+	else {
+		newFlags += flags;
+	}
+
+	SetDebugDrawDataFlags(newFlags);
+}
+
 Engine::~Engine()
 {
 	delete(m_GraphicsManager);

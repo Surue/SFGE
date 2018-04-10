@@ -57,7 +57,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 	py::class_<Engine> engine(m, "Engine");
 	engine
-		.def("set_debug_draw_data", &Engine::SetDebugDrawData);
+		.def("set_debug_draw_data", &Engine::SetDebugDrawData)
+		.def("set_debug_draw_data_flag_switch", &Engine::SetDebugDrawDataFlagsSwitch);
 
 	py::class_<Module> module(m, "Module");
 
@@ -81,6 +82,10 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.value("Down", sf::Keyboard::Down)
 		.value("Left", sf::Keyboard::Left)
 		.value("Right", sf::Keyboard::Right)
+		.value("Num1", sf::Keyboard::Num1)
+		.value("Num2", sf::Keyboard::Num2)
+		.value("Num3", sf::Keyboard::Num3)
+		.value("Num4", sf::Keyboard::Num4)
 		.export_values();
 
 	py::class_<Scene> scene(m, "Scene");

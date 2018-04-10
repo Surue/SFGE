@@ -101,6 +101,10 @@ public:
 	* \brief Set DebugDraw
 	*/
 	void SetDebugDrawDataFlags(uint32_t flags);
+	/**
+	* \brief Set DebugDraw
+	*/
+	void SetDebugDrawDataFlagsSwitch(uint32_t flags);
 
 	~Engine();
 	/**
