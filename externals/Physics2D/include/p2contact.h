@@ -35,10 +35,16 @@ class p2Contact
 {
 public:
 	p2Contact();
-	p2Contact(p2Body *colliderA, p2Body *colliderB);
+	p2Contact(p2Collider *colliderA, p2Collider *colliderB);
 
 	p2Collider* GetColliderA();
 	p2Collider* GetColliderB();
+
+	bool OverlapAABB();
+
+private:
+	p2Collider * m_ColliderA;
+	p2Collider * m_ColliderB;
 };
 
 /**
@@ -49,5 +55,26 @@ class p2ContactListener
 public:
 	virtual void BeginContact(p2Contact* contact) = 0;
 	virtual void EndContact(p2Contact* contact) = 0;
+};
+
+/**
+* \brief Managing the creation and destruction of contact between colliders
+*/
+class p2ContactManager
+{
+public:
+	p2ContactManager();
+
+	void FindNewContact(std::list<p2Body*> bodies);
+
+	void Collide();
+
+	void SetContactListener(p2ContactListener* contactListener);
+
+	void CreateContact(p2Collider* colliderA, p2Collider* colliderB);
+
+private:
+	std::list<p2Contact*> m_ContactList;
+	p2ContactListener* m_ContactListener;
 };
 #endif

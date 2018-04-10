@@ -24,12 +24,95 @@ SOFTWARE.
 
 #include <p2contact.h>
 
+#include <iostream>
+
+p2Contact::p2Contact()
+{
+}
+
+p2Contact::p2Contact(p2Collider * colliderA, p2Collider * colliderB)
+{
+	m_ColliderA = colliderA;
+	m_ColliderB = colliderB;
+}
+
 p2Collider * p2Contact::GetColliderA()
 {
-	return nullptr;
+	return m_ColliderA;
 }
 
 p2Collider * p2Contact::GetColliderB()
 {
-	return nullptr;
+	return m_ColliderB;
+}
+
+bool p2Contact::OverlapAABB()
+{
+	return m_ColliderA->aabb.Overlap(m_ColliderB->aabb);
+}
+
+p2ContactManager::p2ContactManager()
+{
+	m_ContactList = std::list<p2Contact*>();
+}
+
+void p2ContactManager::FindNewContact(std::list<p2Body*> bodies)
+{
+	//QUAD TREE
+	
+	// TO CHANGE
+
+	int i = 0;
+	for (auto it = bodies.begin(); it != --bodies.end() ; it++) {
+
+		int j = 0;
+		for (auto it2 = std::next(it) ; it2 != bodies.end(); it2++) {
+
+			if ((*it)->aabb.Overlap((*it2)->aabb)) {
+				for each(p2Collider* colliderA in (*it)->GetColliders()) {
+					for each(p2Collider* colliderB in (*it2)->GetColliders()) {
+						if (colliderA->aabb.Overlap(colliderB->aabb)) {
+							CreateContact(colliderA, colliderB);
+						}
+					}
+				}
+			}
+
+			j++;
+		}
+
+		i++;
+	}
+}
+
+void p2ContactManager::Collide()
+{
+	auto it = m_ContactList.begin();
+
+	while (it != m_ContactList.end()) {
+		if ((*it)->OverlapAABB()) {
+			it++;
+		}
+		else {
+			m_ContactListener->EndContact(*it);
+			m_ContactList.erase(it++);
+		}
+	}
+}
+
+void p2ContactManager::SetContactListener(p2ContactListener * contactListener)
+{
+	m_ContactListener = contactListener;
+}
+
+void p2ContactManager::CreateContact(p2Collider * colliderA, p2Collider * colliderB)
+{
+	for (p2Contact* contact : m_ContactList) {
+		if (colliderA == contact->GetColliderA() && colliderB == contact->GetColliderB()) {
+			return;
+		}
+	}
+
+	m_ContactList.push_front(new p2Contact(colliderA, colliderB));
+	m_ContactListener->BeginContact(*m_ContactList.begin());
 }

@@ -50,6 +50,13 @@ p2World::~p2World()
 
 void p2World::Step(float dt)
 {
+	//Find new Contact
+	m_ContactManager.FindNewContact(m_BodyList);
+
+	//Check existing contact AABB
+	m_ContactManager.Collide();
+
+
 	for each (p2Body* body in m_BodyList)
 	{
 		body->Step(dt);
@@ -66,6 +73,7 @@ p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
 
 void p2World::SetContactListener(p2ContactListener * contactListener)
 {
+	m_ContactManager.SetContactListener(contactListener);
 }
 
 p2Vec2 p2World::GetGravity()

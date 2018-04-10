@@ -76,6 +76,8 @@ private:
 	p2Vec2 m_Gravity;
 
 	p2Draw* m_DebugDraw = nullptr;
+
+	p2ContactManager m_ContactManager;
 };
 
 #endif

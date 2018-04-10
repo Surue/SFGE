@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <p2aabb.h>
 #include <cmath>
+#include <iostream>
 
 p2Vec2 p2AABB::GetCenter()
 {
@@ -45,4 +46,21 @@ bool p2AABB::Contains(p2AABB other)
 	isContaining = isContaining && other.topRight.y <= topRight.y;
 
 	return isContaining;
+}
+
+bool p2AABB::Overlap(p2AABB aabb)
+{
+	p2Vec2 d1, d2;
+	d1 = aabb.bottomLeft - topRight;
+	d2 = bottomLeft - aabb.topRight;
+
+	if (d1.x > 0.0f || d1.y < 0.0f) {
+		return false;
+	}
+
+	if (d2.x > 0.0f || d2.y < 0.0f) {
+		return false;
+	}
+
+	return true;
 }

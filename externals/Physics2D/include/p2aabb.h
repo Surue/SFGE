@@ -45,5 +45,7 @@ struct p2AABB
 	p2Vec2 GetExtends();
 
 	bool Contains(p2AABB);
+
+	bool Overlap(p2AABB aabb);
 };
 #endif // !SFGE_P2AABB:H

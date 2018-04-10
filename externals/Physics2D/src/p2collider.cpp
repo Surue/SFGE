@@ -35,7 +35,7 @@ bool p2Collider::IsSensor()
 
 void * p2Collider::GetUserData()
 {
-	return nullptr;
+	return userData;
 }
 
 void p2Collider::Step(float dt)

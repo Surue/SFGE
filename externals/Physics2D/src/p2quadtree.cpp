@@ -40,7 +40,7 @@ std::list<p2Contact> p2QuadTree::Retrieve()
 
 				while (itrObjToCheck != m_Objects.end()) {
 					if ((*itrObj)->aabb.Contains((*itrObjToCheck)->aabb)) {
-						contacts.push_back(p2Contact(*itrObj, *itrObjToCheck));
+						//contacts.push_back(p2Contact(*itrObj, *itrObjToCheck)); TO DO
 					}
 					itrObjToCheck++;
 				}
@@ -59,7 +59,7 @@ std::list<p2Contact> p2QuadTree::Retrieve()
 			for (int i = 0; i < CHILD_TREE_NMB; i++) {
 				for (auto childItr = nodes[i]->m_Objects.begin(); childItr != nodes[i]->m_Objects.end(); childItr++) {
 					if ((*itr)->aabb.Contains((*childItr)->aabb)) {
-						contacts.push_back(p2Contact(*itr, *childItr));
+						// contacts.push_back(p2Contact(*itr, *childItr)); //TO DO
 					}
 				}
 			}
