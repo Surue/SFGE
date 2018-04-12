@@ -48,7 +48,48 @@
 			  {
 				  "type": 4,
 				  "script_path": "scripts/transform_rotation.py"
-			  }
+			  },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/player_character_basic.py"
+              }
+          ]
+      },
+	  {
+          "name": "Ground",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [400, 600],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rectangle Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [800, 200]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [800,200],
+                  "sensor": true
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
           ]
       },
 	  {
