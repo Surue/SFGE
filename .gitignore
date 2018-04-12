@@ -26,3 +26,5 @@
 *.app
 
 build
+
+scripts/.idea
