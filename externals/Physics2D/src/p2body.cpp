@@ -38,6 +38,7 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	type = bodyDef.type;
 	this->world = world;
 	gravityScale = bodyDef.gravityScale;
+
 	m_Mass = bodyDef.mass;
 
 	m_Angle = 0.0f;
