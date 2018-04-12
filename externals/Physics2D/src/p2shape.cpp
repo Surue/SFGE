@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 #include <p2shape.h>
+#include <p2matrix.h>
 #include <iostream>
 
 p2Shape * p2CircleShape::Clone() const
@@ -42,7 +43,7 @@ float p2CircleShape::GetRadius()
 	return m_Radius;
 }
 
-void p2CircleShape::ComputeAABB(p2AABB * aabb, p2Vec2 position) const
+void p2CircleShape::ComputeAABB(p2AABB * aabb, p2Vec2 position, float angle) const
 {
 	aabb->bottomLeft = position - p2Vec2(m_Radius, -m_Radius);
 	aabb->topRight = position + p2Vec2(m_Radius, -m_Radius);
@@ -70,10 +71,17 @@ p2Vec2 p2RectShape::GetSize()
 	return m_Size;
 }
 
-void p2RectShape::ComputeAABB(p2AABB* aabb, p2Vec2 position) const
+void p2RectShape::ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const
 {
-	aabb->bottomLeft = position - p2Vec2(m_Size.x / 2.0f, - m_Size.y / 2.0f),
-	aabb->topRight = position + p2Vec2(m_Size.x / 2.0f, - m_Size.y / 2.0f);
+	p2Vec2 topRight = (p2Mat22::RotationMatrix(angle) * p2Vec2(m_Size.x / 2.0f, m_Size.y / 2.0f));
+	p2Vec2 bottomLeft = (p2Mat22::RotationMatrix(angle) * p2Vec2(m_Size.x / 2.0f, -m_Size.y / 2.0f));
+
+
+
+	aabb->bottomLeft = p2Vec2(position.x - std::fmaxf(std::abs(topRight.x), std::abs(bottomLeft.x)),
+		                      position.y - std::fmaxf(std::abs(topRight.y), std::abs(bottomLeft.y)));
+	aabb->topRight = p2Vec2(position.x + std::fmaxf(std::abs(topRight.x), std::abs(bottomLeft.x)),
+							position.y + std::fmaxf(std::abs(topRight.y), std::abs(bottomLeft.y)));
 }
 
 std::string p2RectShape::GetJson() const

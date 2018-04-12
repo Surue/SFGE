@@ -127,8 +127,6 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 	p2Collider* tmpCollider = new p2Collider(*colliderDef, this);
 	m_CollidersList.push_front(tmpCollider);
 
-	ComputeAABB();
-
 	return *m_CollidersList.begin();
 }
 

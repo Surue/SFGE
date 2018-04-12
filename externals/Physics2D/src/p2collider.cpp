@@ -39,7 +39,7 @@ void * p2Collider::GetUserData()
 
 void p2Collider::Step(float dt)
 {
-	shape->ComputeAABB(&aabb, GetPosition());
+	shape->ComputeAABB(&aabb, GetPosition(), m_Body->GetAngle());
 }
 
 p2Shape* p2Collider::GetShape()

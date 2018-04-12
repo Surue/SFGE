@@ -69,8 +69,6 @@ void p2World::Step(float dt)
 	{
 		body->Step(dt);
 		body->SetPosition(body->GetPosition() += body->GetLinearVelocity() * dt);
-
-		std::cout << "angle = " << body->GetAngle() << "\n";
 	}
 
 	//Clear all force
