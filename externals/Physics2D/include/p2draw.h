@@ -82,9 +82,9 @@ public:
 	*/
 	uint32_t GetFlags();
 
-	virtual void DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color) = 0;
+	virtual void DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& color) = 0;
 
-	virtual void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color& color) = 0;
+	virtual void DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Color& color) = 0;
 
 	virtual void DrawCircle(p2Vec2 center, float radius, p2Color& color) = 0;
 

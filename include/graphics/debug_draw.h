@@ -38,9 +38,9 @@ public:
 	DebugDraw(sf::RenderWindow *window);
 	virtual ~DebugDraw();
 
-	void DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color);
+	void DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& color);
 
-	void DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color& color);
+	void DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Color& color);
 
 	void DrawCircle(p2Vec2 center, float radius, p2Color& color);
 

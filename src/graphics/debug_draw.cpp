@@ -26,6 +26,10 @@ SOFTWARE.
 #include <physics/physics.h>
 #include <iostream>
 
+#define _USE_MATH_DEFINES
+
+#include <math.h>
+
 namespace sfge 
 {
 DebugDraw::DebugDraw(sf::RenderWindow* window)
@@ -37,11 +41,12 @@ DebugDraw::~DebugDraw()
 {
 }
 
-void DebugDraw::DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color)
+void DebugDraw::DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& color)
 {
 	sf::RectangleShape rect(meter2pixel(size));
 	rect.setOrigin(meter2pixel(size / 2.0f));
 	rect.setPosition(meter2pixel(position) + meter2pixel(size / 2.0f));
+	rect.setRotation((angle / M_PI) * 180.0f);
 
 	rect.setFillColor(sf::Color(0, 0, 0, 0));
 	rect.setOutlineThickness(1.0f);
@@ -50,11 +55,12 @@ void DebugDraw::DrawRect(p2Vec2 position, p2Vec2 size, p2Color& color)
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawRectFilled(p2Vec2 position, p2Vec2 size, p2Color& color)
+void DebugDraw::DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Color& color)
 {
 	sf::RectangleShape rect(meter2pixel(size));
 	rect.setOrigin(meter2pixel(size / 2.0f));
 	rect.setPosition(meter2pixel(position) + meter2pixel(size / 2.0f));
+	rect.setRotation((angle / M_PI) * 180.0f);
 
 	rect.setFillColor(sf::Color(0, 0, 100, 100));
 	rect.setOutlineThickness(1.0f);

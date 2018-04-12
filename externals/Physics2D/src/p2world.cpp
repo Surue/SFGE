@@ -135,8 +135,9 @@ void p2World::DrawDebugData()
 
 					p2Vec2 size = rect->GetSize();
 					p2Vec2 position = collider->GetPosition() - (size / 2);
+					float angle = body->GetAngle();
 
-					m_DebugDraw->DrawRectFilled(position, size, p2Color(0, 0, 100));
+					m_DebugDraw->DrawRectFilled(position, angle, size, p2Color(0, 0, 100));
 				}
 
 				if (collider->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE){
