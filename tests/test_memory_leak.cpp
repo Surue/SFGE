@@ -22,26 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#define _CRTDBG_MAP_ALLOC
-#include<iostream>
+#include <iostream>
 #include <crtdbg.h>
-#ifdef _DEBUG
-#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#define new DEBUG_NEW
+
+#include <engine/engine.h>
+#include <engine/scene.h>
+
+#include <iostream>
+
+int main()
+{
+	sfge::Engine engine;
+	engine.Init(false, true);
+
+	engine.GetSceneManager()->SetCurrentScene("data/scenes/test_memory_leak.scene");
+
+	engine.Start();
+
+	_CrtDumpMemoryLeaks();
+#if WIN32
+	system("pause");
 #endif
-
-#include <p2draw.h>
-
-p2Draw::p2Draw()
-{
-}
-
-void p2Draw::SetFlags(uint32_t flags)
-{
-	m_DrawFlags = flags;
-}
-
-uint32_t p2Draw::GetFlags()
-{
-	return m_DrawFlags;
+	return EXIT_SUCCESS;
 }

@@ -22,6 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#define _CRTDBG_MAP_ALLOC
+#include<iostream>
+#include <crtdbg.h>
+#ifdef _DEBUG
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#define new DEBUG_NEW
+#endif
+
 #include <p2contact.h>
 
 #include <iostream>
@@ -34,6 +42,11 @@ p2Contact::p2Contact(p2Collider * colliderA, p2Collider * colliderB)
 {
 	m_ColliderA = colliderA;
 	m_ColliderB = colliderB;
+}
+
+p2Contact::~p2Contact()
+{
+	std::cout << "DESTROY\n";
 }
 
 p2Collider * p2Contact::GetColliderA()
@@ -56,6 +69,10 @@ p2ContactManager::p2ContactManager()
 	m_ContactList = std::list<p2Contact*>();
 }
 
+p2ContactManager::~p2ContactManager()
+{
+}
+
 void p2ContactManager::FindNewContact(std::list<p2Body*> bodies)
 {
 	//QUAD TREE
@@ -69,8 +86,8 @@ void p2ContactManager::FindNewContact(std::list<p2Body*> bodies)
 		for (auto it2 = std::next(it) ; it2 != bodies.end(); it2++) {
 
 			if ((*it)->aabb.Overlap((*it2)->aabb)) {
-				for each(p2Collider* colliderA in (*it)->GetColliders()) {
-					for each(p2Collider* colliderB in (*it2)->GetColliders()) {
+				for (p2Collider* colliderA : (*it)->GetColliders()) {
+					for (p2Collider* colliderB : (*it2)->GetColliders()) {
 						if (colliderA->aabb.Overlap(colliderB->aabb)) {
 							CreateContact(colliderA, colliderB);
 						}
@@ -90,12 +107,12 @@ void p2ContactManager::Collide()
 	auto it = m_ContactList.begin();
 
 	while (it != m_ContactList.end()) {
-		if ((*it)->OverlapAABB()) {
-			it++;
+		if (!(*it)->OverlapAABB()) {
+			Destroy(*it);
+			it = m_ContactList.erase(it);
 		}
 		else {
-			m_ContactListener->EndContact(*it);
-			m_ContactList.erase(it++);
+			it++;
 		}
 	}
 }
@@ -115,4 +132,21 @@ void p2ContactManager::CreateContact(p2Collider * colliderA, p2Collider * collid
 
 	m_ContactList.push_front(new p2Contact(colliderA, colliderB));
 	m_ContactListener->BeginContact(*m_ContactList.begin());
+}
+
+void p2ContactManager::Destroy()
+{
+	auto it = m_ContactList.begin();
+
+	while (it != m_ContactList.end()) {
+		delete(*it);
+
+		it = m_ContactList.erase(it);
+	}
+}
+
+void p2ContactManager::Destroy(p2Contact *contact)
+{
+	m_ContactListener->EndContact(contact);
+	delete(contact);
 }

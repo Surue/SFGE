@@ -37,6 +37,8 @@ public:
 	p2Contact();
 	p2Contact(p2Collider *colliderA, p2Collider *colliderB);
 
+	~p2Contact();
+
 	p2Collider* GetColliderA();
 	p2Collider* GetColliderB();
 
@@ -64,6 +66,7 @@ class p2ContactManager
 {
 public:
 	p2ContactManager();
+	~p2ContactManager();
 
 	void FindNewContact(std::list<p2Body*> bodies);
 
@@ -72,6 +75,9 @@ public:
 	void SetContactListener(p2ContactListener* contactListener);
 
 	void CreateContact(p2Collider* colliderA, p2Collider* colliderB);
+
+	void Destroy();
+	void Destroy(p2Contact *contact);
 
 private:
 	std::list<p2Contact*> m_ContactList;
