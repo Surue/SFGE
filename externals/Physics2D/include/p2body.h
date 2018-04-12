@@ -49,6 +49,7 @@ struct p2BodyDef
 	p2Vec2 position;
 	p2Vec2 linearVelocity;
 	float gravityScale = 1;
+	float mass = 1;
 };
 
 /**
@@ -69,10 +70,16 @@ public:
 	float GetAngularVelocity();
 	
 	p2Vec2 GetPosition();
+	void SetPosition(p2Vec2 position);
 
 	void AddForce(p2Vec2 f);
+	void ClearForce();
 
-	void Step(float dt);
+	p2BodyType GetType();
+	float GetGravityScale();
+	float GetMass();
+
+	void Step(float dt); //TO REMOVE
 	/**
 	* \brief Factory method creating a p2Collider
 	* \param colliderDef p2ColliderDef definition of the collider
@@ -91,9 +98,12 @@ public:
 private:
 	p2Vec2 position;
 	p2Vec2 linearVelocity;
+	p2Vec2 m_Force;
+
 	float angularVelocity;
 	p2BodyType type;
 	float gravityScale;
+	float m_Mass;
 
 	p2World *world;
 

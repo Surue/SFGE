@@ -34,22 +34,30 @@ p2World::p2World(p2Vec2 gravity)
 
 p2World::~p2World()
 {
-	for each (p2Body* body in m_BodyList)
-	{
-		for each(p2Collider* collider in body->GetColliders())
-		{
-			//delete(collider);
-		}
-		delete(body);
-	}
+	auto it = m_BodyList.begin();
 
-	if (m_DebugDraw != nullptr) {
-		//delete(m_DebugDraw);
+	while (it != m_BodyList.end()) {
+		delete(*it);
+		it = m_BodyList.erase(it);
 	}
 }
 
 void p2World::Step(float dt)
 {
+	for (auto body : m_BodyList) {
+		//Calcule des forces
+		//Gravitation
+		p2Vec2 forces;
+
+		if (body->GetType() == p2BodyType::DYNAMIC) {
+			forces += m_Gravity * body->GetGravityScale() * body->GetMass();
+		}
+
+		//Calcule des accélérations
+		p2Vec2 acc = forces / body->GetMass();
+		body->SetLinearVelocity(acc * dt + body->GetLinearVelocity());
+	}
+
 	//Find new Contact
 	m_ContactManager.FindNewContact(m_BodyList);
 
@@ -60,6 +68,13 @@ void p2World::Step(float dt)
 	for each (p2Body* body in m_BodyList)
 	{
 		body->Step(dt);
+		body->SetPosition(body->GetPosition() += body->GetLinearVelocity() * dt);
+	}
+
+	//Clear all force
+	for each (p2Body* body in m_BodyList)
+	{
+		body->ClearForce();
 	}
 }
 
@@ -67,8 +82,8 @@ p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
 {
 	p2Body* tmpBody = new p2Body(*bodyDef, this);
 	m_BodyList.push_front(tmpBody);
-	auto it = m_BodyList.begin();
-	return *it;
+
+	return *m_BodyList.begin();
 }
 
 void p2World::SetContactListener(p2ContactListener * contactListener)

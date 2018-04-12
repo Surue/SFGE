@@ -38,13 +38,16 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	type = bodyDef.type;
 	this->world = world;
 	gravityScale = bodyDef.gravityScale;
+	m_Mass = bodyDef.mass;
 }
 
 p2Body::~p2Body()
 {
-	for each (p2Collider* collider in m_CollidersList)
-	{
-		delete(collider);
+	auto it = m_CollidersList.begin();
+
+	while (it != m_CollidersList.end()) {
+		delete(*it);
+		it = m_CollidersList.erase(it);
 	}
 }
 
@@ -68,21 +71,38 @@ p2Vec2 p2Body::GetPosition()
 	return position;
 }
 
+void p2Body::SetPosition(p2Vec2 position)
+{
+	this->position = position;
+}
+
 void p2Body::AddForce(p2Vec2 f)
 {
-	linearVelocity += f;
+	m_Force += f;
+}
+
+void p2Body::ClearForce()
+{
+	m_Force = p2Vec2(0, 0);
+}
+
+p2BodyType p2Body::GetType()
+{
+	return type;
+}
+
+float p2Body::GetGravityScale()
+{
+	return gravityScale;
+}
+
+float p2Body::GetMass()
+{
+	return m_Mass;
 }
 
 void p2Body::Step(float dt)
 {
-	//Move the object regarding the current linear velocity
-	position += linearVelocity * dt;
-
-	//If dynamic => appli the gravity
-	if (type == p2BodyType::DYNAMIC) {
-		linearVelocity += world->GetGravity() * gravityScale * dt;
-	}
-
 	ComputeAABB();
 
 	for (auto collider : m_CollidersList) {

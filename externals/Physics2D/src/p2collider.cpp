@@ -20,12 +20,11 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 	m_Offset = p2Vec2(colliderDef.offset.x, colliderDef.offset.y);
 	float radius = 0;
 	p2Vec2 size;
-
-	shape->ComputeAABB(&aabb, GetPosition());
 }
 
 p2Collider::~p2Collider()
 {
+	delete(shape);
 }
 
 bool p2Collider::IsSensor()

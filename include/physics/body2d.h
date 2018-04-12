@@ -68,7 +68,6 @@ public:
 	*/
 	static Body2d* LoadBody2d(Engine& engine, GameObject* gameObject, json& componentJson);
 
-	void DebugDrawAABB(Engine & engine);
 protected:
 	p2Body * m_Body = nullptr;
 	std::list<Collider*> m_Colliders;

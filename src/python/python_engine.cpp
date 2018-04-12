@@ -131,8 +131,7 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 	py::class_<Body2d, Component> body(m, "Body");
 	body
-		.def_property("velocity", &Body2d::GetVelocity, &Body2d::SetVelocity)
-		.def("debug_draw_aabb", &Body2d::DebugDrawAABB, py::return_value_policy::reference);
+		.def_property("velocity", &Body2d::GetVelocity, &Body2d::SetVelocity);
 
 	py::class_<Sound, Component> sound(m, "Sound");
 	sound

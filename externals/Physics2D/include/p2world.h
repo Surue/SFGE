@@ -56,9 +56,10 @@ public:
 
 	p2Vec2 GetGravity();
 
-	//Raytracing()
+	//Raytracing() // TO DO
 
-	//CircleCollider()
+	//CircleCast() = Unity.CircleOverlap() // TO DO
+
 	/**
 	* \brief Register methods for debug drawing.
 	*/
@@ -70,6 +71,7 @@ public:
 	void DrawDebugData();
 
 	p2Draw* GetDebugDraw();
+
 
 private:
 	std::list<p2Body *> m_BodyList;

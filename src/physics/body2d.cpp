@@ -95,26 +95,16 @@ Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& comp
 	{
 		bodyDef.gravityScale = componentJson["gravity_scale"];
 	}
+	if (CheckJsonNumber(componentJson, "mass"))
+	{
+		bodyDef.mass = componentJson["mass"];
+	}
 
 	p2Body* body = world->CreateBody(&bodyDef);
 	Body2d* bodyComponent = new Body2d(gameObject);
 	bodyComponent->m_Body = body;
 	physicsManager->m_Bodies.push_back(bodyComponent);
 	return bodyComponent;
-}
-
-void Body2d::DebugDrawAABB(Engine & engine)
-{
-	json gameObjectJson =
-	{
-		{ "name", "AABB debug box" },
-		{ "type", (int)sfge::ComponentType::SHAPE },
-		{ "shape_type",(int)sfge::ShapeType::AABB },
-		{ "offset",{ (m_Body->aabb.GetCenter().x - m_Body->GetPosition().x) * 100.0f, (m_Body->aabb.GetCenter().y - m_Body->GetPosition().y) * 100.0f } },
-		{ "size",{ m_Body->aabb.GetExtends().x * 100.0f * 2.0f, m_Body->aabb.GetExtends().y * 100.0f * 2.0f} }
-	};
-
-	m_GameObject->AddComponent(engine, gameObjectJson);
 }
 
 }

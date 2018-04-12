@@ -21,58 +21,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#include <engine/engine.h>
+#include <engine/scene.h>
 
+#include <iostream>
 
-#ifndef SFGE_COLLIDER_H
-#define SFGE_COLLIDER_H
-
-#include <engine/component.h>
-
-#include <p2collider.h>
-
-
-namespace sfge
+int main()
 {
+	sfge::Engine engine;
+	engine.Init(false, true);
 
-enum class ColliderType
-{
-	NONE,
-	CIRCLE,
-	RECTANGLE,
-	LINE
-};
-/**
-* \brief Collider Component
-*/
-class Collider : public Component
-{
-public:
-	using Component::Component;
-	/**
-	* \brief Initialize the component
-	*/
-	void Init() override;
-	/**
-	* \brief Update the component
-	*/
-	void Update(float dt) override;
-	/**
-	* \brief Called by the contact listener of the physical world, filter contact to trigger enter or collision enter
-	*/
-	void OnColliderEnter(Collider* collider);
-	/**
-	* \brief Called by the contact listener of the physical world, filter contact to trigger exit or collision exit
-	*/
-	void OnColliderExit(Collider* collider);
+	engine.GetSceneManager()->SetCurrentScene("data/scenes/test_planet.scene");
 
-	/**
-	* brief Factory method to create the Collider component with json arguments given
-	*/
-	static Collider* LoadCollider(Engine& engine, GameObject* gameObject, json& componentJson);
-
-protected:
-	p2Collider * m_PhysicsCollider = nullptr;
-};
-}
-
+	engine.Start();
+#if WIN32
+	system("pause");
 #endif
+	return EXIT_SUCCESS;
+}
