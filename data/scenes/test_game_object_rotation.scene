@@ -38,6 +38,14 @@
                   "sensor": true
 			  },
 			  {
+				  "name": "CircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+				  "offset": [-100, 50],
+                  "sensor": true
+			  },
+			  {
 				  "type": 4,
 				  "script_path": "scripts/transform_rotation.py"
 			  }

@@ -151,26 +151,18 @@ void p2Body::ComputeAABB()
 {
 	if (m_CollidersList.size() != 0) {
 		auto it = m_CollidersList.begin();
-		aabb.bottomLeft = (*it)->aabb.bottomLeft + (*it)->GetOffset();
-		aabb.topRight = (*it)->aabb.topRight + (*it)->GetOffset();
+
+		aabb.bottomLeft = (*it)->aabb.bottomLeft;
+		aabb.topRight = (*it)->aabb.topRight;
+
 		it++;
 
 		for (it; it != m_CollidersList.end(); it++) {
-			if (aabb.bottomLeft.x > (*it)->aabb.bottomLeft.x) {
-				aabb.bottomLeft.x = (*it)->aabb.bottomLeft.x;
-			}
-
-			if (aabb.bottomLeft.y < (*it)->aabb.bottomLeft.y) {
-				aabb.bottomLeft.y = (*it)->aabb.bottomLeft.y;
-			}
-
-			if (aabb.topRight.x < (*it)->aabb.topRight.x) {
-				aabb.topRight.x = (*it)->aabb.topRight.x;
-			}
-
-			if (aabb.topRight.y > (*it)->aabb.topRight.y) {
-				aabb.topRight.y = (*it)->aabb.topRight.y;
-			}
+			aabb.bottomLeft.x = fmin(aabb.bottomLeft.x, (*it)->aabb.bottomLeft.x);
+			aabb.bottomLeft.y = fmax(aabb.bottomLeft.y, (*it)->aabb.bottomLeft.y);
+			
+			aabb.topRight.x = fmax(aabb.topRight.x, (*it)->aabb.topRight.x);
+			aabb.topRight.y = fmin(aabb.topRight.y, (*it)->aabb.topRight.y);
 		}
 	}
 }

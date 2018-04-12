@@ -75,7 +75,7 @@ void p2RectShape::ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const
 {
 	p2Vec2 topRight = (p2Mat22::RotationMatrix(angle) * p2Vec2(m_Size.x / 2.0f, m_Size.y / 2.0f));
 	p2Vec2 bottomLeft = (p2Mat22::RotationMatrix(angle) * p2Vec2(m_Size.x / 2.0f, -m_Size.y / 2.0f));
-
+	
 	aabb->bottomLeft = p2Vec2(position.x - std::fmaxf(std::abs(topRight.x), std::abs(bottomLeft.x)),
 		                      position.y + std::fmaxf(std::abs(topRight.y), std::abs(bottomLeft.y)));
 	aabb->topRight = p2Vec2(position.x + std::fmaxf(std::abs(topRight.x), std::abs(bottomLeft.x)),
