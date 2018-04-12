@@ -44,6 +44,7 @@ void Shape::Update(float time)
 {
 	if (m_Shape != nullptr)
 	{
+		m_Shape->setRotation(m_GameObject->GetTransform()->GetEulerAngle());
 		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() + m_Offset);
 	}
 }
@@ -142,6 +143,7 @@ void Rectangle::Update(float time)
 {
 	if (m_Shape != nullptr)
 	{
+		m_Shape->setRotation(m_GameObject->GetTransform()->GetEulerAngle());
 		m_Shape->setPosition(m_GameObject->GetTransform()->GetPosition() + m_Offset);
 	}
 }

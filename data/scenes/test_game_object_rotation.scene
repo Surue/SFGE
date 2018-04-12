@@ -1,0 +1,48 @@
+{
+  "name": "ColliderTestScene",
+  "game_objects": [
+      {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 300],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 1,
+                  "gravity_scale": 1
+              },
+			  {
+                  "name": "BoxShape",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50, 50]
+              },
+			  {
+				  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50, 50],
+                  "sensor": true
+			  },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/transform_rotation.py"
+			  }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
+      }
+  ]
+}
