@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include <p2matrix.h>
+
 p2Collider::p2Collider()
 {
 }
@@ -54,7 +56,10 @@ p2Vec2 p2Collider::GetOffset()
 
 p2Vec2 p2Collider::GetPosition()
 {
-	return p2Vec2(m_Body->GetPosition() + m_Offset);
+	p2Vec2 originPos = m_Body->GetPosition() + m_Offset;
+	originPos -= m_Body->GetPosition();
+	originPos = p2Mat22::RotationMatrix(m_Body->GetAngle()) * originPos;
+	return originPos += m_Body->GetPosition();
 }
 
 std::string p2Collider::GetShapeJson()
