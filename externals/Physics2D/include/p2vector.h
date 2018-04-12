@@ -75,7 +75,7 @@ struct p2Vec2
 	/**
 	* \brief display vector on consol
 	*/
-	void Show();
+	void Show() const;
 
 	//Variables
 	float x = 0.0f;

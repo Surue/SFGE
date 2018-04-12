@@ -46,7 +46,6 @@ p2Contact::p2Contact(p2Collider * colliderA, p2Collider * colliderB)
 
 p2Contact::~p2Contact()
 {
-	std::cout << "DESTROY\n";
 }
 
 p2Collider * p2Contact::GetColliderA()

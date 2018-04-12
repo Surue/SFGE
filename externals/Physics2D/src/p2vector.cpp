@@ -119,7 +119,7 @@ p2Vec3 p2Vec2::to3()
 	return p2Vec3(x, y, 0);
 }
 
-void p2Vec2::Show()
+void p2Vec2::Show() const
 {
 	std::cout << "(" << x << ", " << y << ")" << "\n";
 }
