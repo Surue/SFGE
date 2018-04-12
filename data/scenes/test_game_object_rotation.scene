@@ -30,6 +30,14 @@
                   "sensor": true
 			  },
 			  {
+				  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50, 50],
+				  "offset": [100, 100],
+                  "sensor": true
+			  },
+			  {
 				  "type": 4,
 				  "script_path": "scripts/transform_rotation.py"
 			  }
