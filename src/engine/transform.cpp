@@ -10,6 +10,7 @@
 #include <utility/file_utility.h>
 #include <utility/json_utility.h>
 #include <engine/log.h>
+#include <physics\body2d.h>
 //STL
 #include <memory>
 //Externals
@@ -96,6 +97,10 @@ const float Transform::GetEulerAngle()
 void Transform::SetEulerAngle(float eulerAngle)
 {
 	this->m_EulerAngle = eulerAngle;
+	Body2d* body = m_GameObject->GetComponent<Body2d>();
+	if (body != nullptr) {
+		body->SetEulerAngle(eulerAngle);
+	}
 }
 
 const sf::Vector2f Transform::GetPosition()

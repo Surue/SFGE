@@ -31,6 +31,10 @@ SOFTWARE.
 
 #include <graphics\shape.h>
 
+#define _USE_MATH_DEFINES
+
+#include <math.h>
+
 namespace sfge
 {
 
@@ -40,6 +44,7 @@ void Body2d::Init()
 
 void Body2d::Update(float dt)
 {
+	m_GameObject->GetTransform()->SetEulerAngle((m_Body->GetAngle() / M_PI) * 180.0f);
 	m_GameObject->GetTransform()->SetPosition(meter2pixel(m_Body->GetPosition()));
 }
 
@@ -48,6 +53,10 @@ p2Body * Body2d::GetBody()
 	return m_Body;
 }
 
+void Body2d::SetEulerAngle(float eulerAngle)
+{
+	m_Body->SetAngle((eulerAngle / 180.0f) * M_PI);
+}
 
 void Body2d::SetVelocity(p2Vec2 v)
 {

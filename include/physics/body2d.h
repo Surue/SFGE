@@ -56,8 +56,7 @@ public:
 	*/
 	p2Body* GetBody();
 
-	
-
+	void SetEulerAngle(float eulerAngle);
 
 	void SetVelocity(p2Vec2 v);
 	p2Vec2 GetVelocity();

@@ -39,6 +39,8 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	this->world = world;
 	gravityScale = bodyDef.gravityScale;
 	m_Mass = bodyDef.mass;
+
+	m_Angle = 0.0f;
 }
 
 p2Body::~p2Body()
@@ -74,6 +76,16 @@ p2Vec2 p2Body::GetPosition()
 void p2Body::SetPosition(p2Vec2 position)
 {
 	this->position = position;
+}
+
+float p2Body::GetAngle()
+{
+	return m_Angle;
+}
+
+void p2Body::SetAngle(float angle)
+{
+	m_Angle = angle;
 }
 
 void p2Body::AddForce(p2Vec2 f)

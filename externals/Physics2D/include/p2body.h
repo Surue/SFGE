@@ -72,6 +72,15 @@ public:
 	p2Vec2 GetPosition();
 	void SetPosition(p2Vec2 position);
 
+	/**
+	* \brief return angle in radians
+	*/
+	float GetAngle();
+	/**
+	* \brief the angle must be in radians
+	*/
+	void SetAngle(float angle);
+
 	void AddForce(p2Vec2 f);
 	void ClearForce();
 
@@ -104,6 +113,8 @@ private:
 	p2BodyType type;
 	float gravityScale;
 	float m_Mass;
+
+	float m_Angle;
 
 	p2World *world;
 
