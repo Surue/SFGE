@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include <p2collider.h>
 #include <p2body.h>
+#include <p2quadtree.h>
 
 /**
 * \brief Representation of a contact given as argument in a p2ContactListener
@@ -79,8 +80,12 @@ public:
 	void Destroy();
 	void Destroy(p2Contact *contact);
 
+	p2QuadTree* GetQuadTree();
+
 private:
 	std::list<p2Contact*> m_ContactList;
 	p2ContactListener* m_ContactListener;
+
+	p2QuadTree m_QuadTree;
 };
 #endif

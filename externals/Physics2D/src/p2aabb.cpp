@@ -49,9 +49,9 @@ bool p2AABB::Contains(p2AABB other)
 	bool isContaining = true;
 
 	isContaining = isContaining && bottomLeft.x <= other.bottomLeft.x;
-	isContaining = isContaining && bottomLeft.y <= other.bottomLeft.y;
-	isContaining = isContaining && other.topRight.x <= topRight.x;
-	isContaining = isContaining && other.topRight.y <= topRight.y;
+	isContaining = isContaining && bottomLeft.y >= other.bottomLeft.y;
+	isContaining = isContaining && topRight.x >= other.topRight.x;
+	isContaining = isContaining && topRight.y <= other.topRight.y;
 
 	return isContaining;
 }
@@ -71,4 +71,23 @@ bool p2AABB::Overlap(p2AABB aabb)
 	}
 
 	return true;
+}
+
+void p2AABB::GetSubAABBQuad(p2AABB p2aabb[])
+{
+	//Top Left
+	p2aabb[0].bottomLeft = p2Vec2(bottomLeft.x, bottomLeft.y + GetExtends().y);
+	p2aabb[0].topRight = p2Vec2(topRight.x - GetExtends().x, topRight.y);
+
+	//Top Right
+	p2aabb[1].bottomLeft = p2aabb[0].bottomLeft + p2Vec2(GetExtends().x, 0);
+	p2aabb[1].topRight = topRight;
+
+	//Bottom Left
+	p2aabb[2].bottomLeft = bottomLeft;
+	p2aabb[2].topRight = p2aabb[0].topRight + p2Vec2(0, -GetExtends().y);
+
+	//Bottom Right
+	p2aabb[3].bottomLeft = p2aabb[0].bottomLeft + p2Vec2(GetExtends().x, -GetExtends().y);
+	p2aabb[3].topRight = p2aabb[0].topRight + p2Vec2(GetExtends().x, -GetExtends().y);
 }

@@ -47,5 +47,7 @@ struct p2AABB
 	bool Contains(p2AABB);
 
 	bool Overlap(p2AABB aabb);
+
+	void GetSubAABBQuad(p2AABB p2AABB[]);
 };
 #endif // !SFGE_P2AABB:H

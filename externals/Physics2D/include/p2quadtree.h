@@ -30,7 +30,9 @@ SOFTWARE.
 #include <p2vector.h>
 #include <p2aabb.h>
 #include <p2body.h>
-#include <p2contact.h>
+#include <p2draw.h>
+
+class p2Contact;
 
 /**
 * \brief Representation of a tree with 4 branches containing p2Body defined by their p2AABB
@@ -38,7 +40,8 @@ SOFTWARE.
 class p2QuadTree
 {
 public:
-	p2QuadTree(int nodeLevel, p2AABB bounds);
+	p2QuadTree();
+	p2QuadTree(int nodeLevel, p2AABB aabb);
 	~p2QuadTree();
 
 	/**
@@ -53,7 +56,7 @@ public:
 	/**
 	* Get the index of the child trees of the p2Body
 	*/
-	int GetIndex(p2Body* rect);
+	int GetIndex(p2Body* obj);
 	/**
 	* Insert a new p2Body in the tree
 	*/
@@ -62,13 +65,16 @@ public:
 	* Return a list of all the p2Body that might collide
 	*/
 	std::list<p2Contact> Retrieve();
+
+	void SetAABB(p2AABB aabb);
+
+	void Draw(p2Draw* debugDraw);
 	
 private:
-
-
-	static const int MAX_OBJECTS = 10;
+	static const int MAX_OBJECTS = 4;
 	static const int MAX_LEVELS = 5;
 	static const int CHILD_TREE_NMB = 4;
+
 	int m_NodeLevel = 0;
 	p2QuadTree* nodes[CHILD_TREE_NMB] = { nullptr };
 	std::list<p2Body*> m_Objects;

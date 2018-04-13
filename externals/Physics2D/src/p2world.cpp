@@ -79,13 +79,7 @@ void p2World::Step(float dt)
 
 	for each (p2Body* body in m_BodyList)
 	{
-		body->Step(dt);
 		body->SetPosition(body->GetPosition() += body->GetLinearVelocity() * dt);
-	}
-
-	//Clear all force
-	for each (p2Body* body in m_BodyList)
-	{
 		body->ClearForce();
 	}
 }
@@ -120,6 +114,10 @@ void p2World::DrawDebugData()
 	}
 	
 	uint32_t flags = m_DebugDraw->GetFlags();
+
+	//Debug draw quad tree
+	m_ContactManager.GetQuadTree()->Draw(m_DebugDraw);
+
 
 	for (p2Body* body : m_BodyList) {
 		//Draw aabb of body

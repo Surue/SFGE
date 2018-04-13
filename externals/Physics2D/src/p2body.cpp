@@ -85,6 +85,7 @@ p2Vec2 p2Body::GetPosition()
 
 void p2Body::SetPosition(p2Vec2 position)
 {
+	ComputeAABB();
 	this->position = position;
 }
 
@@ -95,6 +96,7 @@ float p2Body::GetAngle()
 
 void p2Body::SetAngle(float angle)
 {
+	ComputeAABB();
 	m_Angle = angle;
 }
 
@@ -123,19 +125,12 @@ float p2Body::GetMass()
 	return m_Mass;
 }
 
-void p2Body::Step(float dt)
-{
-	ComputeAABB();
-
-	for (auto collider : m_CollidersList) {
-		collider->Step(dt);
-	}
-}
-
 p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
 	p2Collider* tmpCollider = new p2Collider(*colliderDef, this);
 	m_CollidersList.push_front(tmpCollider);
+
+	ComputeAABB();
 
 	return *m_CollidersList.begin();
 }
@@ -160,7 +155,10 @@ std::list<p2Shape *> p2Body::GetShape()
 void p2Body::ComputeAABB()
 {
 	if (m_CollidersList.size() != 0) {
+
 		auto it = m_CollidersList.begin();
+
+		(*it)->GetShape()->ComputeAABB(&(*it)->aabb, (*it)->GetPosition(), m_Angle);
 
 		aabb.bottomLeft = (*it)->aabb.bottomLeft;
 		aabb.topRight = (*it)->aabb.topRight;
@@ -168,6 +166,10 @@ void p2Body::ComputeAABB()
 		it++;
 
 		for (it; it != m_CollidersList.end(); it++) {
+			//Update aabb of all collider
+			(*it)->GetShape()->ComputeAABB(&(*it)->aabb, (*it)->GetPosition(), m_Angle);
+
+			//Check for the biggest aabb
 			aabb.bottomLeft.x = fmin(aabb.bottomLeft.x, (*it)->aabb.bottomLeft.x);
 			aabb.bottomLeft.y = fmax(aabb.bottomLeft.y, (*it)->aabb.bottomLeft.y);
 			

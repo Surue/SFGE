@@ -87,8 +87,6 @@ public:
 	p2BodyType GetType();
 	float GetGravityScale();
 	float GetMass();
-
-	void Step(float dt); //TO REMOVE
 	/**
 	* \brief Factory method creating a p2Collider
 	* \param colliderDef p2ColliderDef definition of the collider

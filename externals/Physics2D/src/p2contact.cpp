@@ -66,6 +66,7 @@ bool p2Contact::OverlapAABB()
 p2ContactManager::p2ContactManager()
 {
 	m_ContactList = std::list<p2Contact*>();
+	m_QuadTree = p2QuadTree();
 }
 
 p2ContactManager::~p2ContactManager()
@@ -74,30 +75,38 @@ p2ContactManager::~p2ContactManager()
 
 void p2ContactManager::FindNewContact(std::list<p2Body*> bodies)
 {
+
 	//QUAD TREE
+	m_QuadTree.Clear();
+
+	p2AABB fullAABB;
+	auto it = bodies.begin();
+	fullAABB = (*it)->aabb;
+	it++;
+
+	while (it != bodies.end())
+	{
+		//Check the biggest aabb
+		fullAABB.bottomLeft.x = fmin(fullAABB.bottomLeft.x, (*it)->aabb.bottomLeft.x);
+		fullAABB.bottomLeft.y = fmax(fullAABB.bottomLeft.y, (*it)->aabb.bottomLeft.y);
+
+		fullAABB.topRight.x = fmax(fullAABB.topRight.x, (*it)->aabb.topRight.x);
+		fullAABB.topRight.y = fmin(fullAABB.topRight.y, (*it)->aabb.topRight.y);
+
+		it++;
+	}
+
+	fullAABB.bottomLeft += p2Vec2(-0.1, 0.1);
+	fullAABB.topRight += p2Vec2(0.1, -0.1);
+
+	m_QuadTree.SetAABB(fullAABB);
+
+	for (p2Body* body : bodies) {
+		m_QuadTree.Insert(body);
+	}
 	
-	// TO CHANGE
-
-	int i = 0;
-	for (auto it = bodies.begin(); it != --bodies.end() ; it++) {
-
-		int j = 0;
-		for (auto it2 = std::next(it) ; it2 != bodies.end(); it2++) {
-
-			if ((*it)->aabb.Overlap((*it2)->aabb)) {
-				for (p2Collider* colliderA : (*it)->GetColliders()) {
-					for (p2Collider* colliderB : (*it2)->GetColliders()) {
-						if (colliderA->aabb.Overlap(colliderB->aabb)) {
-							CreateContact(colliderA, colliderB);
-						}
-					}
-				}
-			}
-
-			j++;
-		}
-
-		i++;
+	for (p2Contact allContact : m_QuadTree.Retrieve()) {
+		CreateContact(allContact.GetColliderA(), allContact.GetColliderB());
 	}
 }
 
@@ -148,4 +157,9 @@ void p2ContactManager::Destroy(p2Contact *contact)
 {
 	m_ContactListener->EndContact(contact);
 	delete(contact);
+}
+
+p2QuadTree * p2ContactManager::GetQuadTree()
+{
+	return &m_QuadTree;
 }
