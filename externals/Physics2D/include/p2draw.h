@@ -33,7 +33,7 @@ SOFTWARE.
 struct p2Color {
 	p2Color() {}
 
-	p2Color(uint32_t red, uint32_t green, uint32_t blue, uint32_t alpha = 1.0f) {
+	p2Color(uint32_t red, uint32_t green, uint32_t blue, uint32_t alpha = 255) {
 		r = red;
 		g = green;
 		b = blue;
@@ -44,17 +44,19 @@ struct p2Color {
 		return p2Color(r / f, g / f, b / f, a);
 	}
 
-	void Set(uint32_t red, uint32_t green, uint32_t blue, uint32_t alpha = 1.0f) {
+	p2Color Set(uint32_t red, uint32_t green, uint32_t blue, uint32_t alpha = 255) {
 		r = red;
 		g = green;
 		b = blue;
 		a = alpha;
+
+		return *this;
 	}
 
 	uint32_t r;
 	uint32_t g;
 	uint32_t b;
-	uint32_t a = 255;
+	uint32_t a;
 };
 
 class p2Draw

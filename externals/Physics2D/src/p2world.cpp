@@ -127,7 +127,7 @@ void p2World::DrawDebugData()
 			vertices[1] = p2Vec2(body->aabb.topRight.x, body->aabb.bottomLeft.y);
 			vertices[2] = body->aabb.topRight;
 			vertices[3] = p2Vec2(body->aabb.bottomLeft.x, body->aabb.topRight.y);
-			m_DebugDraw->DrawPolygon(vertices, 4, p2Color(0, 100, 0));
+			m_DebugDraw->DrawPolygon(vertices, 4, p2Color(255, 0, 0));
 		}
 
 		//Draw center of mass
@@ -147,7 +147,7 @@ void p2World::DrawDebugData()
 					p2Vec2 position = collider->GetPosition() - (size / 2);
 					float angle = body->GetAngle();
 
-					m_DebugDraw->DrawRectFilled(position, angle, size, p2Color(0, 0, 100));
+					m_DebugDraw->DrawRectFilled(position, angle, size, p2Color(0, 0, 255));
 				}
 
 				if (collider->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE){
@@ -156,7 +156,7 @@ void p2World::DrawDebugData()
 					p2Vec2 center = collider->GetPosition();
 					float radius = circle->GetRadius();
 
-					m_DebugDraw->DrawCircleFilled(center, radius, p2Color(0, 0, 100));
+					m_DebugDraw->DrawCircleFilled(center, radius, p2Color(0, 0, 255));
 					
 				}
 			}
@@ -168,7 +168,7 @@ void p2World::DrawDebugData()
 				vertices[1] = p2Vec2(collider->aabb.topRight.x, collider->aabb.bottomLeft.y);
 				vertices[2] = collider->aabb.topRight;
 				vertices[3] = p2Vec2(collider->aabb.bottomLeft.x, collider->aabb.topRight.y);
-				m_DebugDraw->DrawPolygon(vertices, 4, p2Color(0, 100, 0));
+				m_DebugDraw->DrawPolygon(vertices, 4, p2Color(255, 0, 0));
 			}
 		}
 	}

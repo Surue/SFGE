@@ -50,7 +50,7 @@ void DebugDraw::DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& col
 
 	rect.setFillColor(sf::Color(0, 0, 0, 0));
 	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(sf::Color(0, 50, 0, 255));
+	rect.setOutlineColor(p2Color2SfColor(color / 2));
 
 	m_Window->draw(rect);
 }
@@ -62,9 +62,9 @@ void DebugDraw::DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Colo
 	rect.setPosition(meter2pixel(position) + meter2pixel(size / 2.0f));
 	rect.setRotation((angle / M_PI) * 180.0f);
 
-	rect.setFillColor(sf::Color(0, 0, 100, 100));
+	rect.setFillColor(p2Color2SfColor(color.Set(color.r, color.g, color.b, 100)));
 	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(sf::Color(0, 50, 0, 255));
+	rect.setOutlineColor(p2Color2SfColor(color / 2));
 
 	m_Window->draw(rect);
 }
@@ -77,7 +77,7 @@ void DebugDraw::DrawCircle(p2Vec2 center, float radius, p2Color& color)
 
 	circle.setFillColor(sf::Color(0, 0, 0, 0));
 	circle.setOutlineThickness(1.0f);
-	circle.setOutlineColor(sf::Color(0, 50, 0, 255));
+	circle.setOutlineColor(p2Color2SfColor(color / 2));
 
 	m_Window->draw(circle);
 }
@@ -88,9 +88,9 @@ void DebugDraw::DrawCircleFilled(p2Vec2 center, float radius, p2Color& color)
 	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
 	circle.setPosition(meter2pixel(center));
 
-	circle.setFillColor(sf::Color(0, 100, 0, 100));
+	circle.setFillColor(p2Color2SfColor(color.Set(color.r, color.g, color.b, 100)));
 	circle.setOutlineThickness(1.0f);
-	circle.setOutlineColor(sf::Color(0, 50, 0, 255));
+	circle.setOutlineColor(p2Color2SfColor(color / 2));
 
 	m_Window->draw(circle);
 }
@@ -105,7 +105,7 @@ void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color
 	
 	polygon.setFillColor(sf::Color(0, 0, 0, 0));
 	polygon.setOutlineThickness(1.0f);
-	polygon.setOutlineColor(sf::Color(100, 0, 0, 255));
+	polygon.setOutlineColor(p2Color2SfColor(color / 2));
 
 	m_Window->draw(polygon);
 }
@@ -118,7 +118,7 @@ void DebugDraw::DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color&
 		polygon.setPoint(i, meter2pixel(vertices[i]));
 	}
 
-	polygon.setFillColor(p2Color2SfColor(color));
+	polygon.setFillColor(p2Color2SfColor(color.Set(color.r, color.g, color.b, 100)));
 	polygon.setOutlineThickness(1.0f);
 	polygon.setOutlineColor(p2Color2SfColor(color / 2));
 

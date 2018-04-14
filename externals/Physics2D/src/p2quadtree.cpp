@@ -182,7 +182,7 @@ void p2QuadTree::Draw(p2Draw* debugDraw)
 	vertices[1] = p2Vec2(m_Bounds.topRight.x, m_Bounds.bottomLeft.y);
 	vertices[2] = m_Bounds.topRight;
 	vertices[3] = p2Vec2(m_Bounds.bottomLeft.x, m_Bounds.topRight.y);
-	debugDraw->DrawPolygon(vertices, 4, p2Color(0, 100, 0));
+	debugDraw->DrawPolygon(vertices, 4, p2Color(255, 255, 255));
 
 	if (nodes[0] != nullptr) {
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
