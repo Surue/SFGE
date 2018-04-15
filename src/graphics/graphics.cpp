@@ -80,6 +80,15 @@ void GraphicsManager::Update(sf::Time dt)
 		m_ShapeManager->Draw(*m_Window);
 
 		m_Engine.GetPhysicsManager()->GetWorld()->DrawDebugData();
+
+		ImGui::Begin("Stats");
+		{
+			std::ostringstream oss;
+			oss << "FPS: " << 1.0 / dt.asSeconds() << "\n";
+
+			ImGui::Text(oss.str().c_str());
+		}
+		ImGui::End();
 	}
 }
 
