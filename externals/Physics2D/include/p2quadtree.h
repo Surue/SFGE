@@ -64,7 +64,7 @@ public:
 	/**
 	* Return a list of all the p2Body that might collide
 	*/
-	std::list<p2Contact> Retrieve() const;
+	void Retrieve(std::list<p2Contact>& contacts) const;
 
 	void SetAABB(const p2AABB aabb);
 

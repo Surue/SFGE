@@ -104,9 +104,8 @@ void p2QuadTree::Insert(p2Body* obj)
 	}
 }
 
-std::list<p2Contact> p2QuadTree::Retrieve() const
+void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 {
-	std::list<p2Contact> contacts;
 	if (nodes[0] == nullptr) {
 		if (m_Objects.size() > 1) {
 			auto itrObj = m_Objects.begin();
@@ -139,10 +138,7 @@ std::list<p2Contact> p2QuadTree::Retrieve() const
 	else {
 		//Add children to contacts
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
-			auto childContacts = nodes[i]->Retrieve();
-			for (p2Contact contact : childContacts) {
-				contacts.push_back(contact);
-			}
+			nodes[i]->Retrieve(contacts);
 		}
 
 		//Retrive all parents objects
@@ -167,7 +163,7 @@ std::list<p2Contact> p2QuadTree::Retrieve() const
 		}
 	}
 
-	return contacts;
+	return;
 }
 
 void p2QuadTree::SetAABB(const p2AABB aabb)

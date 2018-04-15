@@ -69,7 +69,7 @@ public:
 	p2ContactManager();
 	~p2ContactManager();
 
-	void FindNewContact(std::list<p2Body*> bodies);
+	void FindNewContact(std::list<p2Body*>& bodies);
 
 	void Collide();
 

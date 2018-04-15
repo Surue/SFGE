@@ -52,17 +52,14 @@ p2Shape* p2Collider::GetShape() const
 	return shape;
 }
 
-p2Vec2 p2Collider::GetOffset() const
+p2Vec2& p2Collider::GetOffset()
 {
 	return m_Offset;
 }
 
 p2Vec2 p2Collider::GetPosition() const
 {
-	p2Vec2 originPos = m_Body->GetPosition() + m_Offset;
-	originPos -= m_Body->GetPosition();
-	originPos = p2Mat22::RotationMatrix(m_Body->GetAngle()) * originPos;
-	return originPos += m_Body->GetPosition();
+	return (p2Mat22::RotationMatrix(m_Body->GetAngle()) * m_Offset) + m_Body->GetPosition();
 }
 
 p2ColliderDef::ShapeType p2Collider::GetShapeType() const

@@ -73,9 +73,8 @@ p2ContactManager::~p2ContactManager()
 {
 }
 
-void p2ContactManager::FindNewContact(std::list<p2Body*> bodies)
+void p2ContactManager::FindNewContact(std::list<p2Body*>& bodies)
 {
-
 	//QUAD TREE
 	m_QuadTree.Clear();
 
@@ -105,9 +104,12 @@ void p2ContactManager::FindNewContact(std::list<p2Body*> bodies)
 	for (p2Body* body : bodies) {
 		m_QuadTree.Insert(body);
 	}
+
+	std::list<p2Contact> allContact = std::list<p2Contact>();
+	m_QuadTree.Retrieve(allContact);
 	
-	for (p2Contact allContact : m_QuadTree.Retrieve()) {
-		CreateContact(allContact.GetColliderA(), allContact.GetColliderB());
+	for(p2Contact contact : allContact) {
+		CreateContact(contact.GetColliderA(), contact.GetColliderB());
 	}
 }
 

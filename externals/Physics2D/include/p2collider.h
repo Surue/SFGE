@@ -71,7 +71,7 @@ public:
 
 	p2Shape* GetShape() const;
 
-	p2Vec2 GetOffset() const;
+	p2Vec2& GetOffset();
 
 	p2Vec2 GetPosition() const;
 
