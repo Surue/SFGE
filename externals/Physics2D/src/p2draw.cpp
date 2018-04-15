@@ -41,7 +41,7 @@ void p2Draw::SetFlags(uint32_t flags)
 	m_DrawFlags = flags;
 }
 
-uint32_t p2Draw::GetFlags()
+uint32_t p2Draw::GetFlags() const
 {
 	return m_DrawFlags;
 }

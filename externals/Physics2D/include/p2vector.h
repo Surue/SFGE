@@ -39,31 +39,31 @@ struct p2Vec2
 	void Set(float x, float y);
 
 	//Operators
-	p2Vec2 operator+(p2Vec2 v);
-	p2Vec2 operator+=(p2Vec2 v);
-	p2Vec2 operator-(p2Vec2 v);
-	p2Vec2 operator-=(p2Vec2 v);
-	p2Vec2 operator /(float f);
-	p2Vec2 operator *(float f);
+	p2Vec2 operator+(const p2Vec2 v) const;
+	p2Vec2 operator+=(const p2Vec2 v);
+	p2Vec2 operator-(const p2Vec2 v) const;
+	p2Vec2 operator-=(const p2Vec2 v);
+	p2Vec2 operator /(float f) const;
+	p2Vec2 operator *(float f) const;
 	p2Vec2 operator*=(float f);
 
 	//Functions
 	/**
 	* \brief Dot product of two vectors
 	*/
-	static float Dot(p2Vec2 v1, p2Vec2 v2);
+	static float Dot(const p2Vec2 const v1, const p2Vec2 const v2);
 	/**
 	* \brief Cross product of two vectors
 	*/
-	static p2Vec3 Cross(p2Vec2 v1, p2Vec2 v2);
+	static p2Vec3 Cross(const p2Vec2 const v1, const p2Vec2 const v2);
 	/**
 	* \brief Calculate the magnitude of the p2Vec2
 	*/
-	float GetMagnitude();
+	float GetMagnitude() const;
 	/**
 	* \brief Calculate a normalized version of the p2Vec2
 	*/
-	p2Vec2 Normalized();
+	p2Vec2 Normalized() const;
 	/**
 	* \brief Normalize the p2Vec2
 	*/
@@ -71,7 +71,7 @@ struct p2Vec2
 	/**
 	* \brief 
 	*/
-	p2Vec3 to3();
+	p2Vec3 to3() const;
 	/**
 	* \brief display vector on consol
 	*/
@@ -92,46 +92,46 @@ struct p2Vec3
 	p2Vec3(float x, float y, float z);
 
 	//Operator
-	p2Vec3 operator+(p2Vec3 v);
-	p2Vec3 operator+=(p2Vec3 v);
-	p2Vec3 operator-(p2Vec3 v);
-	p2Vec3 operator-=(p2Vec3 v);
-	p2Vec3 operator /(float f);
-	p2Vec3 operator *(float f);
+	p2Vec3 operator+(const p2Vec3 v) const;
+	p2Vec3 operator+=(const p2Vec3 v);
+	p2Vec3 operator-(const p2Vec3 v) const;
+	p2Vec3 operator-=(const p2Vec3 v);
+	p2Vec3 operator /(float f) const;
+	p2Vec3 operator *(float f) const;
 
 	//Function
 	/**
 	* \brief Dot product of two vectors
 	*/
-	static float Dot(p2Vec3 v1, p2Vec3 v2);
+	static float Dot(const p2Vec3 v1, const p2Vec3 v2);
 	/**
 	* \brief Cross product of two vectors
 	*/
-	static p2Vec3 Cross(p2Vec3 v1, p2Vec3 v2);
+	static p2Vec3 Cross(const p2Vec3 v1, const p2Vec3 v2);
 	/**
 	* \brief Lerp between two points
 	*/
-	static p2Vec3 Lerp(p2Vec3 v1, p2Vec3 v2, float ratio);
+	static p2Vec3 Lerp(const p2Vec3 v1, const p2Vec3 v2, float ratio);
 	/**
 	* \brief Project v1 on v2
 	*/
-	static p2Vec3 Proj(p2Vec3 v1, p2Vec3 v2);
+	static p2Vec3 Proj(const p2Vec3 v1, const p2Vec3 v2);
 	/**
 	* \brief Reflection of inDir by the normal
 	*/
-	static p2Vec3 Refl(p2Vec3 inDir, p2Vec3 normal);
+	static p2Vec3 Refl(const p2Vec3 inDir, const p2Vec3 normal);
 	/**
 	* \brief Compute angle between two vector
 	*/
-	static float AnglesBetween(p2Vec3 v1, p2Vec3 v2);
+	static float AnglesBetween(const p2Vec3 v1, const p2Vec3 v2);
 	/**
 	* \brief Calculate the magnitude of the p2Vec3
 	*/
-	float GetMagnitude();
+	float GetMagnitude() const;
 	/**
 	* \brief Calculate a normalized version of the p2Vec2
 	*/
-	p2Vec3 Normalized();
+	p2Vec3 Normalized() const;
 	/**
 	* \brief Normalize the p2Vec2
 	*/
@@ -139,7 +139,7 @@ struct p2Vec3
 	/**
 	* \brief display vector on consol
 	*/
-	void Show();
+	void Show() const;
 
 	//Variables
 	float x = 0.0f;

@@ -50,32 +50,32 @@ void p2Vec2::Set(float x, float y)
 	this->y = y;
 }
 
-p2Vec2 p2Vec2::operator+(p2Vec2 v)
+p2Vec2 p2Vec2::operator+(const p2Vec2 v) const
 {
 	return p2Vec2(x + v.x, y + v.y);
 }
 
-p2Vec2 p2Vec2::operator+=(p2Vec2 v)
+p2Vec2 p2Vec2::operator+=(const p2Vec2 v)
 {
 	return *this = *this + v;
 }
 
-p2Vec2 p2Vec2::operator-(p2Vec2 v)
+p2Vec2 p2Vec2::operator-(const p2Vec2 v) const
 {
 	return p2Vec2(x - v.x, y - v.y);
 }
 
-p2Vec2 p2Vec2::operator-=(p2Vec2 v)
+p2Vec2 p2Vec2::operator-=(const p2Vec2 v)
 {
 	return *this = *this - v;
 }
 
-p2Vec2 p2Vec2::operator/(float f)
+p2Vec2 p2Vec2::operator/(float f) const
 {
 	return p2Vec2(x / f, y / f);
 }
 
-p2Vec2 p2Vec2::operator*(float f)
+p2Vec2 p2Vec2::operator*(float f) const
 {
 	return p2Vec2(x * f, y * f);
 }
@@ -85,24 +85,24 @@ p2Vec2 p2Vec2::operator*=(float f)
 	return *this = *this * f;
 }
 
-float p2Vec2::Dot(p2Vec2 v1, p2Vec2 v2)
+float p2Vec2::Dot(const p2Vec2 v1, const p2Vec2 v2)
 {
 	return (v1.x * v2.x) + (v1.y * v2.y);
 }
 
-p2Vec3 p2Vec2::Cross(p2Vec2 v1, p2Vec2 v2)
+p2Vec3 p2Vec2::Cross(const p2Vec2 v1, const p2Vec2 v2)
 {
 	return p2Vec3(0,
 				  0,
 				  (v1.x * v2.y) - (v1.y * v2.x));
 }
 
-float p2Vec2::GetMagnitude()
+float p2Vec2::GetMagnitude() const
 {
 	return sqrt((x*x) + (y*y));
 }
 
-p2Vec2 p2Vec2::Normalized()
+p2Vec2 p2Vec2::Normalized() const
 {
 	return p2Vec2(x/GetMagnitude(), y/GetMagnitude());
 }
@@ -114,7 +114,7 @@ void p2Vec2::Normalize()
 	y /= magnitude;
 }
 
-p2Vec3 p2Vec2::to3()
+p2Vec3 p2Vec2::to3() const
 {
 	return p2Vec3(x, y, 0);
 }
@@ -132,49 +132,49 @@ p2Vec3::p2Vec3(float x, float y, float z) : x(x), y(y), z(z)
 {
 }
 
-p2Vec3 p2Vec3::operator+(p2Vec3 v)
+p2Vec3 p2Vec3::operator+(const p2Vec3 v) const
 {
 	return p2Vec3(x + v.x, y + v.y, z + v.z);
 }
 
-p2Vec3 p2Vec3::operator+=(p2Vec3 v)
+p2Vec3 p2Vec3::operator+=(const p2Vec3 v)
 {
 	return *this = *this + v;
 }
 
-p2Vec3 p2Vec3::operator-(p2Vec3 v)
+p2Vec3 p2Vec3::operator-(const p2Vec3 v) const
 {
 	return p2Vec3(x - v.x, y - v.y, z - v.z);
 }
 
-p2Vec3 p2Vec3::operator-=(p2Vec3 v)
+p2Vec3 p2Vec3::operator-=(const p2Vec3 v)
 {
 	return *this = *this - v;
 }
 
-p2Vec3 p2Vec3::operator /(float f)
+p2Vec3 p2Vec3::operator /(float f) const
 {
 	return p2Vec3(x / f, y / f, z / f);
 }
 
-p2Vec3 p2Vec3::operator *(float f)
+p2Vec3 p2Vec3::operator *(float f) const
 {
 	return p2Vec3(x * f, y * f, z * f);
 }
 
-float p2Vec3::Dot(p2Vec3 v1, p2Vec3 v2)
+float p2Vec3::Dot(const p2Vec3 v1, const p2Vec3 v2)
 {
 	return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
 }
 
-p2Vec3 p2Vec3::Cross(p2Vec3 v1, p2Vec3 v2)
+p2Vec3 p2Vec3::Cross(const p2Vec3 v1, const p2Vec3 v2)
 {
 	return p2Vec3((v1.y * v2.z) - (v1.z * v2.y),
 				  (v1.z * v2.x) - (v1.x * v2.z),
 				  (v1.x * v2.y) - (v1.y * v2.x));
 }
 
-p2Vec3 p2Vec3::Lerp(p2Vec3 v1, p2Vec3 v2, float ratio)
+p2Vec3 p2Vec3::Lerp(const p2Vec3 v1, const p2Vec3 v2, float ratio)
 {
 	p2Vec3 vec12 = v2 - v1;
 	return p2Vec3(v1.x + vec12.x * ratio, 
@@ -182,28 +182,28 @@ p2Vec3 p2Vec3::Lerp(p2Vec3 v1, p2Vec3 v2, float ratio)
 		          v1.z + vec12.z * ratio);
 }
 
-p2Vec3 p2Vec3::Proj(p2Vec3 v1, p2Vec3 v2)
+p2Vec3 p2Vec3::Proj(const p2Vec3 v1, const p2Vec3 v2)
 {
 	float f = Dot(v1, v2) / (v2.GetMagnitude() * v2.GetMagnitude());
 	return p2Vec3(v2 * f);
 }
 
-p2Vec3 p2Vec3::Refl(p2Vec3 inDir, p2Vec3 normal)
+p2Vec3 p2Vec3::Refl(const p2Vec3 inDir, const p2Vec3 normal)
 {
 	return inDir - normal.Normalized() * 2 * Dot(inDir, normal.Normalized());
 }
 
-float p2Vec3::AnglesBetween(p2Vec3 v1, p2Vec3 v2)
+float p2Vec3::AnglesBetween(const p2Vec3 v1, const p2Vec3 v2)
 {
 	return acos(Dot(v1, v2) / (v1.GetMagnitude() * v2.GetMagnitude()))* M_PI/ 180;
 }
 
-float p2Vec3::GetMagnitude()
+float p2Vec3::GetMagnitude() const
 {
 	return sqrt((x*x) + (y*y) + (z*z));
 }
 
-p2Vec3 p2Vec3::Normalized()
+p2Vec3 p2Vec3::Normalized() const
 {
 	return p2Vec3(x / GetMagnitude(), y / GetMagnitude(), z / GetMagnitude());
 }
@@ -216,7 +216,7 @@ void p2Vec3::Normalize()
 	z /= magnitude;
 }
 
-void p2Vec3::Show()
+void p2Vec3::Show() const
 {
 	std::cout << "(" << x << ", " << y << ", " << z << ")" << "\n";
 }

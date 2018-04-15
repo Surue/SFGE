@@ -34,33 +34,33 @@ SOFTWARE.
 #include <cmath>
 #include <iostream>
 
-p2Vec2 p2AABB::GetCenter()
+const p2Vec2 p2AABB::GetCenter() const
 {
 	return (bottomLeft + topRight) * 0.5f;
 }
 
-p2Vec2 p2AABB::GetExtends()
+const p2Vec2 p2AABB::GetExtends() const
 {
 	return (topRight - bottomLeft) * 0.5f;
 }
 
-bool p2AABB::Contains(p2AABB other)
+bool p2AABB::Contains(const p2AABB* other) const
 {
 	bool isContaining = true;
 
-	isContaining = isContaining && bottomLeft.x <= other.bottomLeft.x;
-	isContaining = isContaining && bottomLeft.y >= other.bottomLeft.y;
-	isContaining = isContaining && topRight.x >= other.topRight.x;
-	isContaining = isContaining && topRight.y <= other.topRight.y;
+	isContaining = isContaining && bottomLeft.x <= other->bottomLeft.x;
+	isContaining = isContaining && bottomLeft.y >= other->bottomLeft.y;
+	isContaining = isContaining && topRight.x >= other->topRight.x;
+	isContaining = isContaining && topRight.y <= other->topRight.y;
 
 	return isContaining;
 }
 
-bool p2AABB::Overlap(p2AABB aabb)
+bool p2AABB::Overlap(const p2AABB* aabb) const
 {
 	p2Vec2 d1, d2;
-	d1 = aabb.bottomLeft - topRight;
-	d2 = bottomLeft - aabb.topRight;
+	d1 = aabb->bottomLeft - topRight;
+	d2 = aabb->topRight * (-1) + bottomLeft;
 
 	if (d1.x > 0.0f || d1.y < 0.0f) {
 		return false;
@@ -73,7 +73,7 @@ bool p2AABB::Overlap(p2AABB aabb)
 	return true;
 }
 
-void p2AABB::GetSubAABBQuad(p2AABB p2aabb[])
+void p2AABB::GetSubAABBQuad(p2AABB p2aabb[]) const
 {
 	//Top Left
 	p2aabb[0].bottomLeft = p2Vec2(bottomLeft.x, bottomLeft.y + GetExtends().y);

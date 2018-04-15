@@ -44,33 +44,33 @@ p2Mat22::p2Mat22(p2Vec2 v1, p2Vec2 v2): v1(v1), v2(v2)
 {
 }
 
-p2Mat22 p2Mat22::operator+(p2Mat22 m)
+p2Mat22 p2Mat22::operator+(const p2Mat22 m) const
 {
 	return p2Mat22(v1 + m.v1, v2 + m.v2);
 }
 
-p2Mat22 p2Mat22::operator+=(p2Mat22 m)
+p2Mat22 p2Mat22::operator+=(const p2Mat22 m)
 {
 	return *this = *this + m;
 }
 
-p2Mat22 p2Mat22::operator-(p2Mat22 m)
+p2Mat22 p2Mat22::operator-(const p2Mat22 m) const
 {
 	return p2Mat22(v1 - m.v1, v2 - m.v2);
 }
 
-p2Mat22 p2Mat22::operator-=(p2Mat22 m)
+p2Mat22 p2Mat22::operator-=(const p2Mat22 m)
 {
 	return *this = *this - m;
 }
 
-p2Vec2 p2Mat22::operator*(p2Vec2 v)
+p2Vec2 p2Mat22::operator*(const p2Vec2 v) const
 {
 	return p2Vec2(v1.x * v.x + v2.x * v.y,
 				  v1.y * v.x + v2.y * v.y);
 }
 
-p2Mat22 p2Mat22::operator*(p2Mat22 m)
+p2Mat22 p2Mat22::operator*(const p2Mat22 m) const
 {
 	return p2Mat22(p2Vec2((v1.x * m.v1.x) + (v2.x * m.v1.y),
 		  					 (v1.y * m.v1.x) + (v2.y * m.v1.y)), 
@@ -102,7 +102,7 @@ p2Mat22 p2Mat22::Invert()
 				   p2Vec2(-v2.x * det, v1.x * det));
 }
 
-void p2Mat22::Show()
+void p2Mat22::Show() const
 {
 	std::cout << "| " << v1.x << " " << v2.x << " | \n| " 
 					  << v1.y << " " << v2.y << " |" << "\n \n";
@@ -121,34 +121,34 @@ p2Mat33::p2Mat33(p2Vec3 v1, p2Vec3 v2, p2Vec3 v3): v1(v1), v2(v2), v3(v3)
 {
 }
 
-p2Mat33 p2Mat33::operator+(p2Mat33 m)
+p2Mat33 p2Mat33::operator+(const p2Mat33 m) const
 {
 	return p2Mat33(v1 + m.v1, v2 + m.v2, v3 + m.v3);
 }
 
-p2Mat33 p2Mat33::operator+=(p2Mat33 m)
+p2Mat33 p2Mat33::operator+=(const p2Mat33 m)
 {
 	return *this = *this + m;
 }
 
-p2Mat33 p2Mat33::operator-(p2Mat33 m)
+p2Mat33 p2Mat33::operator-(const p2Mat33 m) const
 {
 	return p2Mat33(v1 - m.v1, v2 - m.v2, v3 - m.v3);
 }
 
-p2Mat33 p2Mat33::operator-=(p2Mat33 m)
+p2Mat33 p2Mat33::operator-=(const p2Mat33 m)
 {
 	return *this = *this - m;
 }
 
-p2Vec3 p2Mat33::operator*(p2Vec3 v)
+p2Vec3 p2Mat33::operator*(const p2Vec3 v) const
 {
 	return p2Vec3((v1.x * v.x) + (v2.x * v.y) + (v3.x * v.z),
 				  (v1.y * v.x) + (v2.y * v.y) + (v3.y * v.z),
 			      (v1.z * v.x) + (v2.z * v.y) + (v3.z * v.z));
 }
 
-p2Mat33 p2Mat33::operator*(p2Mat33 m)
+p2Mat33 p2Mat33::operator*(const p2Mat33 m) const
 {
 	return p2Mat33(p2Vec3(v1.x * m.v1.x + v2.x * m.v1.y + v3.x * m.v1.z,
 						  v1.y * m.v1.x + v2.y * m.v1.y + v3.y * m.v1.z,
@@ -162,12 +162,12 @@ p2Mat33 p2Mat33::operator*(p2Mat33 m)
 	);
 }
 
-p2Mat33 p2Mat33::operator*=(p2Mat33 m)
+p2Mat33 p2Mat33::operator*=(const p2Mat33 m)
 {
 	return *this = *this * m;
 }
 
-p2Mat33 p2Mat33::operator*(float f)
+p2Mat33 p2Mat33::operator*(float f) const
 {
 	return p2Mat33(v1 * f, v2 * f, v3 * f);
 }
@@ -177,7 +177,7 @@ p2Mat33 p2Mat33::operator*=(float f)
 	return *this = *this * f;
 }
 
-p2Mat33 p2Mat33::RotationMatrix(float angle, p2Vec3 axis)
+p2Mat33 p2Mat33::RotationMatrix(float angle, const p2Vec3 axis)
 {
 	p2Vec3 v = axis.Normalized();
 	p2Mat33 rota(p2Vec3((cos(angle) + (v.x*v.x)*(1.0f - cos(angle))),
@@ -229,7 +229,7 @@ p2Mat33 p2Mat33::Transposed()
 				   p2Vec3(v1.z, v2.z, v3.z));
 }
 
-void p2Mat33::Show()
+void p2Mat33::Show() const
 {
 	std::cout << "| " << v1.x << " " << v2.x << " " << v3.x << " | \n| " 
 					  << v1.y << " " << v2.y << " " << v3.y << " | \n| " 

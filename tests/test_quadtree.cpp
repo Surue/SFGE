@@ -44,7 +44,7 @@ int main()
 	file.clear();
 	file.exceptions(std::ios::goodbit);
 
-	int nbObject = 100;
+	int nbObject = 300;
 
 	srand(time(NULL));
 

@@ -40,14 +40,14 @@ public:
 
 	~p2Contact();
 
-	p2Collider* GetColliderA();
-	p2Collider* GetColliderB();
+	p2Collider* GetColliderA() const;
+	p2Collider* GetColliderB() const;
 
-	bool OverlapAABB();
+	bool OverlapAABB() const;
 
 private:
-	p2Collider * m_ColliderA;
-	p2Collider * m_ColliderB;
+	p2Collider* m_ColliderA;
+	p2Collider* m_ColliderB;
 };
 
 /**

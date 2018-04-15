@@ -56,13 +56,13 @@ void p2QuadTree::Split()
 	}
 }
 
-int p2QuadTree::GetIndex(p2Body * obj)
+int p2QuadTree::GetIndex(const p2Body* obj) const
 {
 	p2AABB subAABB[CHILD_TREE_NMB];
 	m_Bounds.GetSubAABBQuad(subAABB);
 	for (int i = 0; i < CHILD_TREE_NMB; i++) {
 
-		if (subAABB[i].Contains(obj->aabb)) {
+		if (subAABB[i].Contains(obj->GetAABB())) {
 			return i;
 		}
 	}
@@ -71,7 +71,7 @@ int p2QuadTree::GetIndex(p2Body * obj)
 	return -1;
 }
 
-void p2QuadTree::Insert(p2Body * obj)
+void p2QuadTree::Insert(p2Body* obj)
 {
 	//If the node is already split
 	if (nodes[0] != nullptr) {
@@ -104,7 +104,7 @@ void p2QuadTree::Insert(p2Body * obj)
 	}
 }
 
-std::list<p2Contact> p2QuadTree::Retrieve()
+std::list<p2Contact> p2QuadTree::Retrieve() const
 {
 	std::list<p2Contact> contacts;
 	if (nodes[0] == nullptr) {
@@ -118,13 +118,13 @@ std::list<p2Contact> p2QuadTree::Retrieve()
 				itrObjToCheck++;
 
 				while (itrObjToCheck != m_Objects.end()) {
-					if ((*itrObj)->aabb.Overlap((*itrObjToCheck)->aabb)) {
+					if ((*itrObj)->GetAABB()->Overlap((*itrObjToCheck)->GetAABB())) {
 						
 						//Test if two collider collide
 						for (auto colliderA : (*itrObj)->GetColliders()) {
 
 							for (auto colliderB : (*itrObjToCheck)->GetColliders()) {
-								if (colliderA->aabb.Overlap(colliderB->aabb)) {
+								if (colliderA->aabb.Overlap(&colliderB->aabb)) {
 									contacts.push_back(p2Contact(colliderA, colliderB));
 								}
 							}
@@ -150,13 +150,13 @@ std::list<p2Contact> p2QuadTree::Retrieve()
 			for (int i = 0; i < CHILD_TREE_NMB; i++) {
 
 				for (auto itrObjToCheck = nodes[i]->m_Objects.begin(); itrObjToCheck != nodes[i]->m_Objects.end(); itrObjToCheck++) {
-					if ((*itrObj)->aabb.Overlap((*itrObjToCheck)->aabb)) {
+					if ((*itrObj)->GetAABB()->Overlap((*itrObjToCheck)->GetAABB())) {
 			
 						//Test if two collider collide
 						for (auto colliderA : (*itrObj)->GetColliders()) {
 
 							for (auto colliderB : (*itrObjToCheck)->GetColliders()) {
-								if (colliderA->aabb.Overlap(colliderB->aabb)) {
+								if (colliderA->aabb.Overlap(&colliderB->aabb)) {
 									contacts.push_back(p2Contact(colliderA, colliderB));
 								}
 							}
@@ -170,12 +170,12 @@ std::list<p2Contact> p2QuadTree::Retrieve()
 	return contacts;
 }
 
-void p2QuadTree::SetAABB(p2AABB aabb)
+void p2QuadTree::SetAABB(const p2AABB aabb)
 {
 	m_Bounds = aabb;
 }
 
-void p2QuadTree::Draw(p2Draw* debugDraw)
+void p2QuadTree::Draw(const p2Draw* debugDraw) const
 {
 	p2Vec2 vertices[4];
 	vertices[0] = m_Bounds.bottomLeft;

@@ -57,11 +57,6 @@ void p2CircleShape::ComputeAABB(p2AABB * aabb, p2Vec2 position, float angle) con
 	aabb->topRight = position + p2Vec2(m_Radius, -m_Radius);
 }
 
-std::string p2CircleShape::GetJson() const
-{
-	return "\"name\" : \"CircleColliderShape\", \"type\" : 3, \"shape_type\" : 5, \"radius\" : " + std::to_string(m_Radius * 100.0f);
-}
-
 p2Shape * p2RectShape::Clone() const
 {
 	p2RectShape* clone = new p2RectShape();
@@ -88,9 +83,4 @@ void p2RectShape::ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const
 		                      position.y + std::fmaxf(std::abs(topRight.y), std::abs(bottomLeft.y)));
 	aabb->topRight = p2Vec2(position.x + std::fmaxf(std::abs(topRight.x), std::abs(bottomLeft.x)),
 							position.y - std::fmaxf(std::abs(topRight.y), std::abs(bottomLeft.y)));
-}
-
-std::string p2RectShape::GetJson() const
-{
-	return "\"name\" : \"BoxColliderShape\", \"type\" : 3, \"shape_type\" : 6, \"size\" : [" + std::to_string(m_Size.x * 100.0f) + "," + std::to_string(m_Size.y * 100.0f) + "]";
 }

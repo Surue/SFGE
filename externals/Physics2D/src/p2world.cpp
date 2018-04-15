@@ -97,7 +97,7 @@ void p2World::SetContactListener(p2ContactListener * contactListener)
 	m_ContactManager.SetContactListener(contactListener);
 }
 
-p2Vec2 p2World::GetGravity()
+p2Vec2 p2World::GetGravity() const
 {
 	return m_Gravity;
 }
@@ -123,10 +123,10 @@ void p2World::DrawDebugData()
 		//Draw aabb of body
 		if (flags & p2Draw::aabbBit) {
 			p2Vec2 vertices[4];
-			vertices[0] = body->aabb.bottomLeft;
-			vertices[1] = p2Vec2(body->aabb.topRight.x, body->aabb.bottomLeft.y);
-			vertices[2] = body->aabb.topRight;
-			vertices[3] = p2Vec2(body->aabb.bottomLeft.x, body->aabb.topRight.y);
+			vertices[0] = body->GetAABB()->bottomLeft;
+			vertices[1] = p2Vec2(body->GetAABB()->topRight.x, body->GetAABB()->bottomLeft.y);
+			vertices[2] = body->GetAABB()->topRight;
+			vertices[3] = p2Vec2(body->GetAABB()->bottomLeft.x, body->GetAABB()->topRight.y);
 			m_DebugDraw->DrawPolygon(vertices, 4, p2Color(255, 0, 0));
 		}
 
@@ -141,7 +141,7 @@ void p2World::DrawDebugData()
 			//Draw collider
 			if (flags & p2Draw::colliderBit) {
 				if (collider->GetShapeType() == p2ColliderDef::ShapeType::RECT){
-					p2RectShape * rect = static_cast<p2RectShape*>(collider->GetShape());
+					p2RectShape* rect = static_cast<p2RectShape*>(collider->GetShape());
 
 					p2Vec2 size = rect->GetSize();
 					p2Vec2 position = collider->GetPosition() - (size / 2);
@@ -174,7 +174,7 @@ void p2World::DrawDebugData()
 	}
 }
 
-p2Draw * p2World::GetDebugDraw()
+p2Draw * p2World::GetDebugDraw() const
 {
 	return m_DebugDraw;
 }

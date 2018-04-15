@@ -56,7 +56,7 @@ public:
 	/**
 	* Get the index of the child trees of the p2Body
 	*/
-	int GetIndex(p2Body* obj);
+	int GetIndex(const p2Body* obj) const;
 	/**
 	* Insert a new p2Body in the tree
 	*/
@@ -64,11 +64,11 @@ public:
 	/**
 	* Return a list of all the p2Body that might collide
 	*/
-	std::list<p2Contact> Retrieve();
+	std::list<p2Contact> Retrieve() const;
 
-	void SetAABB(p2AABB aabb);
+	void SetAABB(const p2AABB aabb);
 
-	void Draw(p2Draw* debugDraw);
+	void Draw(const p2Draw* debugDraw) const;
 	
 private:
 	static const int MAX_OBJECTS = 4;
@@ -76,7 +76,7 @@ private:
 	static const int CHILD_TREE_NMB = 4;
 
 	int m_NodeLevel = 0;
-	p2QuadTree* nodes[CHILD_TREE_NMB] = { nullptr };
+	p2QuadTree* nodes[CHILD_TREE_NMB];
 	std::list<p2Body*> m_Objects;
 	p2AABB m_Bounds;
 };

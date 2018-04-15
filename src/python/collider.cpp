@@ -98,6 +98,10 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 				colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
 				break; 
 			}
+		case ColliderType::POLYGON:
+			{
+				// TO DO
+			}
 		}
 		if (CheckJsonExists(componentJson, "offset"))
 		{

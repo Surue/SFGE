@@ -63,7 +63,7 @@ p2Body::~p2Body()
 	}
 }
 
-p2Vec2 p2Body::GetLinearVelocity()
+p2Vec2 p2Body::GetLinearVelocity() const
 {
 	return linearVelocity;
 }
@@ -73,12 +73,12 @@ void p2Body::SetLinearVelocity(p2Vec2 velocity)
 	linearVelocity = velocity;
 }
 
-float p2Body::GetAngularVelocity()
+float p2Body::GetAngularVelocity() const
 {
 	return angularVelocity;
 }
 
-p2Vec2 p2Body::GetPosition()
+p2Vec2 p2Body::GetPosition() const
 {
 	return position;
 }
@@ -89,7 +89,7 @@ void p2Body::SetPosition(p2Vec2 position)
 	this->position = position;
 }
 
-float p2Body::GetAngle()
+float p2Body::GetAngle() const
 {
 	return m_Angle;
 }
@@ -110,17 +110,17 @@ void p2Body::ClearForce()
 	m_Force = p2Vec2(0, 0);
 }
 
-p2BodyType p2Body::GetType()
+p2BodyType p2Body::GetType() const
 {
 	return type;
 }
 
-float p2Body::GetGravityScale()
+float p2Body::GetGravityScale() const
 {
 	return gravityScale;
 }
 
-float p2Body::GetMass()
+float p2Body::GetMass() const
 {
 	return m_Mass;
 }
@@ -135,7 +135,7 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 	return *m_CollidersList.begin();
 }
 
-std::list<p2Collider*> p2Body::GetColliders()
+std::list<p2Collider*> p2Body::GetColliders() const
 {
 	return m_CollidersList;
 }
@@ -177,4 +177,9 @@ void p2Body::ComputeAABB()
 			aabb.topRight.y = fmin(aabb.topRight.y, (*it)->aabb.topRight.y);
 		}
 	}
+}
+
+const p2AABB * p2Body::GetAABB() const
+{
+	return &aabb;
 }

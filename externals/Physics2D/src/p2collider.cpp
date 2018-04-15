@@ -37,32 +37,27 @@ p2Collider::~p2Collider()
 	delete(shape);
 }
 
-bool p2Collider::IsSensor()
+bool p2Collider::IsSensor() const
 {
 	return isSensor;
 }
 
-void * p2Collider::GetUserData()
+void * p2Collider::GetUserData() const
 {
 	return userData;
 }
 
-void p2Collider::Step(float dt)
-{
-	shape->ComputeAABB(&aabb, GetPosition(), m_Body->GetAngle());
-}
-
-p2Shape* p2Collider::GetShape()
+p2Shape* p2Collider::GetShape() const
 {	
 	return shape;
 }
 
-p2Vec2 p2Collider::GetOffset()
+p2Vec2 p2Collider::GetOffset() const
 {
 	return m_Offset;
 }
 
-p2Vec2 p2Collider::GetPosition()
+p2Vec2 p2Collider::GetPosition() const
 {
 	p2Vec2 originPos = m_Body->GetPosition() + m_Offset;
 	originPos -= m_Body->GetPosition();
@@ -70,28 +65,7 @@ p2Vec2 p2Collider::GetPosition()
 	return originPos += m_Body->GetPosition();
 }
 
-std::string p2Collider::GetShapeJson()
-{
-	std::string jsonString = "{";
-
-	switch (GetShapeType()) {
-		case p2ColliderDef::ShapeType::CIRCLE:
-			jsonString += static_cast<p2CircleShape*>(GetShape())->GetJson();
-			break;
-
-		case p2ColliderDef::ShapeType::RECT:
-			jsonString += static_cast<p2RectShape*>(GetShape())->GetJson();
-			break;
-	}
-
-	jsonString += ", \"offset\" : [" + std::to_string(m_Offset.x * 100) + "," + std::to_string(m_Offset.y * 100) + "]";
-
-	jsonString += "}";
-
-	return jsonString;
-}
-
-p2ColliderDef::ShapeType p2Collider::GetShapeType()
+p2ColliderDef::ShapeType p2Collider::GetShapeType() const
 {
 	return shapeType;
 }

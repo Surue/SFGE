@@ -63,23 +63,19 @@ public:
 	/**
 	* \brief Check if the p2Collider is a sensor
 	*/
-	bool IsSensor();
+	bool IsSensor() const;
 	/**
 	* \brief Return the userData
 	*/
-	void* GetUserData();
+	void* GetUserData() const;
 
-	void Step(float dt);
+	p2Shape* GetShape() const;
 
-	p2Shape* GetShape();
+	p2Vec2 GetOffset() const;
 
-	p2Vec2 GetOffset();
+	p2Vec2 GetPosition() const;
 
-	p2Vec2 GetPosition();
-
-	std::string GetShapeJson();
-
-	p2ColliderDef::ShapeType GetShapeType();
+	p2ColliderDef::ShapeType GetShapeType() const;
 
 	p2AABB aabb;
 

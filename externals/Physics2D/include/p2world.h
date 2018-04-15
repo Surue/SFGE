@@ -54,7 +54,7 @@ public:
 	*/
 	void SetContactListener(p2ContactListener* contactListener);
 
-	p2Vec2 GetGravity();
+	p2Vec2 GetGravity() const;
 
 	//Raytracing() // TO DO
 
@@ -70,7 +70,7 @@ public:
 	*/
 	void DrawDebugData();
 
-	p2Draw* GetDebugDraw();
+	p2Draw* GetDebugDraw() const;
 
 
 private:

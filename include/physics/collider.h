@@ -39,7 +39,8 @@ enum class ColliderType
 	NONE,
 	CIRCLE,
 	RECTANGLE,
-	LINE
+	LINE,
+	POLYGON
 };
 /**
 * \brief Collider Component

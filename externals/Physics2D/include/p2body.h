@@ -63,19 +63,19 @@ public:
 
 	~p2Body();
 
-	p2Vec2 GetLinearVelocity();
+	p2Vec2 GetLinearVelocity() const;
 	
 	void SetLinearVelocity(p2Vec2 velocity);
 
-	float GetAngularVelocity();
+	float GetAngularVelocity() const;
 	
-	p2Vec2 GetPosition();
+	p2Vec2 GetPosition() const;
 	void SetPosition(p2Vec2 position);
 
 	/**
 	* \brief return angle in radians
 	*/
-	float GetAngle();
+	float GetAngle() const;
 	/**
 	* \brief the angle must be in radians
 	*/
@@ -84,9 +84,9 @@ public:
 	void AddForce(p2Vec2 f);
 	void ClearForce();
 
-	p2BodyType GetType();
-	float GetGravityScale();
-	float GetMass();
+	p2BodyType GetType() const;
+	float GetGravityScale() const;
+	float GetMass() const;
 	/**
 	* \brief Factory method creating a p2Collider
 	* \param colliderDef p2ColliderDef definition of the collider
@@ -94,18 +94,20 @@ public:
 	*/
 	p2Collider* CreateCollider(p2ColliderDef* colliderDef);
 
-	std::list<p2Collider*> GetColliders();
+	std::list<p2Collider*> GetColliders() const;
 
 	std::list<p2Shape *> GetShape();
 	
 	void ComputeAABB();
 
-	p2AABB aabb;
+	const p2AABB* GetAABB() const;
 
 private:
 	p2Vec2 position;
 	p2Vec2 linearVelocity;
 	p2Vec2 m_Force;
+
+	p2AABB aabb;
 
 	float angularVelocity;
 	p2BodyType type;

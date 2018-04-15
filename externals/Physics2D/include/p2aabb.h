@@ -38,16 +38,16 @@ struct p2AABB
 	/**
 	* \brief Calculate the center and return it
 	*/
-	p2Vec2 GetCenter();
+	const p2Vec2 GetCenter() const;
 	/**
 	* \brief Calculate the extends and return it
 	*/
-	p2Vec2 GetExtends();
+	const p2Vec2 GetExtends() const;
 
-	bool Contains(p2AABB);
+	bool Contains(const p2AABB* aabb) const;
 
-	bool Overlap(p2AABB aabb);
+	bool Overlap(const p2AABB* aabb) const;
 
-	void GetSubAABBQuad(p2AABB p2AABB[]);
+	void GetSubAABBQuad(p2AABB p2AABB[]) const;
 };
 #endif // !SFGE_P2AABB:H

@@ -41,7 +41,7 @@ DebugDraw::~DebugDraw()
 {
 }
 
-void DebugDraw::DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& color)
+void DebugDraw::DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& color) const
 {
 	sf::RectangleShape rect(meter2pixel(size));
 	rect.setOrigin(meter2pixel(size / 2.0f));
@@ -55,7 +55,7 @@ void DebugDraw::DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& col
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Color& color)
+void DebugDraw::DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Color& color) const
 {
 	sf::RectangleShape rect(meter2pixel(size));
 	rect.setOrigin(meter2pixel(size / 2.0f));
@@ -69,7 +69,7 @@ void DebugDraw::DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Colo
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawCircle(p2Vec2 center, float radius, p2Color& color)
+void DebugDraw::DrawCircle(p2Vec2 center, float radius, p2Color& color) const
 {
 	sf::CircleShape circle(meter2pixel(radius));
 	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
@@ -82,7 +82,7 @@ void DebugDraw::DrawCircle(p2Vec2 center, float radius, p2Color& color)
 	m_Window->draw(circle);
 }
 
-void DebugDraw::DrawCircleFilled(p2Vec2 center, float radius, p2Color& color)
+void DebugDraw::DrawCircleFilled(p2Vec2 center, float radius, p2Color& color) const
 {
 	sf::CircleShape circle(meter2pixel(radius));
 	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
@@ -95,7 +95,7 @@ void DebugDraw::DrawCircleFilled(p2Vec2 center, float radius, p2Color& color)
 	m_Window->draw(circle);
 }
 
-void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color)
+void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color) const
 {
 	sf::ConvexShape polygon(verticesCount);
 
@@ -110,7 +110,7 @@ void DebugDraw::DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color
 	m_Window->draw(polygon);
 }
 
-void DebugDraw::DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color& color)
+void DebugDraw::DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color& color) const
 {
 	sf::ConvexShape polygon(verticesCount);
 
@@ -125,11 +125,11 @@ void DebugDraw::DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color&
 	m_Window->draw(polygon);
 }
 
-void DebugDraw::DrawTransform(p2Vec2 transform)
+void DebugDraw::DrawTransform(p2Vec2 transform) const
 {
 }
 
-sf::Color DebugDraw::p2Color2SfColor(const p2Color & color)
+sf::Color DebugDraw::p2Color2SfColor(const p2Color & color) const
 {
 	sf::Color result((sf::Uint8)(color.r), (sf::Uint8)(color.g), (sf::Uint8)(color.b), (sf::Uint8)(color.a)); // TO DO
 	return result;
