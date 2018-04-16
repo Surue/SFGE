@@ -38,19 +38,19 @@ public:
 	DebugDraw(sf::RenderWindow *window);
 	virtual ~DebugDraw();
 
-	void DrawRect(p2Vec2 position, float angle, p2Vec2 size, p2Color& color) const;
+	void DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const;
 
-	void DrawRectFilled(p2Vec2 position, float angle, p2Vec2 size, p2Color& color) const;
+	void DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const;
 
-	void DrawCircle(p2Vec2 center, float radius, p2Color& color) const;
+	void DrawCircle(const p2Vec2 center, float radius, p2Color& color) const;
 
-	void DrawCircleFilled(p2Vec2 center, float radius, p2Color& color) const;
+	void DrawCircleFilled(const p2Vec2 center, float radius, p2Color& color) const;
 
-	void DrawPolygon(p2Vec2 vertices[], int verticesCount, p2Color& color) const;
+	void DrawPolygon(const p2Vec2 vertices[], int verticesCount, p2Color& color) const;
 
-	void DrawPolygonFilled(p2Vec2 vertices[], int verticesCount, p2Color& color) const;
+	void DrawPolygonFilled(const p2Vec2 vertices[], int verticesCount, p2Color& color) const;
 
-	void DrawTransform(p2Vec2 transform) const;
+	void DrawTransform(const p2Vec2 transform) const;
 
 	sf::Color p2Color2SfColor(const p2Color &color) const;
 private:

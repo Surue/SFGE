@@ -173,16 +173,14 @@ void p2QuadTree::SetAABB(const p2AABB aabb)
 
 void p2QuadTree::Draw(const p2Draw* debugDraw) const
 {
-	p2Vec2 vertices[4];
-	vertices[0] = m_Bounds.bottomLeft;
-	vertices[1] = p2Vec2(m_Bounds.topRight.x, m_Bounds.bottomLeft.y);
-	vertices[2] = m_Bounds.topRight;
-	vertices[3] = p2Vec2(m_Bounds.bottomLeft.x, m_Bounds.topRight.y);
-	debugDraw->DrawPolygon(vertices, 4, p2Color(255, 255, 255));
+	
 
 	if (nodes[0] != nullptr) {
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
 			nodes[i]->Draw(debugDraw);
 		}
+	}
+	else {
+		debugDraw->DrawRect(m_Bounds.bottomLeft, 0, m_Bounds.GetExtends() * 2, p2Color(255, 255, 255));
 	}
 }
