@@ -38,7 +38,7 @@ struct p2AABB
 	/**
 	* \brief Calculate the center and return it
 	*/
-	const p2Vec2 GetCenter() const;
+	p2Vec2 GetCenter() const;
 	/**
 	* \brief Calculate the extends and return it
 	*/
