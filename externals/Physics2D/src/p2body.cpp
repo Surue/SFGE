@@ -96,7 +96,6 @@ float p2Body::GetAngle() const
 
 void p2Body::SetAngle(float angle)
 {
-	ComputeAABB();
 	m_Angle = angle;
 }
 

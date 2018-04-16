@@ -173,8 +173,6 @@ void p2QuadTree::SetAABB(const p2AABB aabb)
 
 void p2QuadTree::Draw(const p2Draw* debugDraw) const
 {
-	
-
 	if (nodes[0] != nullptr) {
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
 			nodes[i]->Draw(debugDraw);

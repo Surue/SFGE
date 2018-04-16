@@ -36,8 +36,7 @@ SOFTWARE.
 
 p2Vec2 p2AABB::GetCenter() const
 {
-	p2Vec2 center = p2Vec2((bottomLeft.x + topRight.x) * 0.5f, (topRight.y + bottomLeft.y) * 0.5f);
-	return p2Vec2((bottomLeft.x + topRight.x) * 0.5f, (topRight.y + bottomLeft.y) * 0.5f);
+	return p2Vec2((bottomLeft.x + topRight.x), (topRight.y + bottomLeft.y)) * 0.5f;
 }
 
 const p2Vec2 p2AABB::GetExtends() const
@@ -67,19 +66,21 @@ bool p2AABB::Overlap(const p2AABB* aabb) const
 
 void p2AABB::GetSubAABBQuad(p2AABB p2aabb[]) const
 {
+	p2Vec2 extends = GetExtends();
+
 	//Top Left
-	p2aabb[0].bottomLeft = p2Vec2(bottomLeft.x, bottomLeft.y + GetExtends().y);
-	p2aabb[0].topRight = p2Vec2(topRight.x - GetExtends().x, topRight.y);
+	p2aabb[0].bottomLeft = p2Vec2(bottomLeft.x, bottomLeft.y + extends.y);
+	p2aabb[0].topRight = p2Vec2(topRight.x - extends.x, topRight.y);
 
 	//Top Right
-	p2aabb[1].bottomLeft = p2Vec2(bottomLeft.x + GetExtends().x, bottomLeft.y + GetExtends().y);
+	p2aabb[1].bottomLeft = p2Vec2(bottomLeft.x + extends.x, bottomLeft.y + extends.y);
 	p2aabb[1].topRight = topRight;
 
 	//Bottom Left
 	p2aabb[2].bottomLeft = bottomLeft;
-	p2aabb[2].topRight = p2Vec2(topRight.x - GetExtends().x, topRight.y - GetExtends().y);
+	p2aabb[2].topRight = p2Vec2(topRight.x - extends.x, topRight.y - extends.y);
 
 	//Bottom Right
-	p2aabb[3].bottomLeft = p2Vec2(bottomLeft.x + GetExtends().x, bottomLeft.y);
-	p2aabb[3].topRight = p2Vec2(topRight.x, topRight.y - GetExtends().y);
+	p2aabb[3].bottomLeft = p2Vec2(bottomLeft.x + extends.x, bottomLeft.y);
+	p2aabb[3].topRight = p2Vec2(topRight.x, topRight.y - extends.y);
 }
