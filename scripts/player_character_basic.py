@@ -9,13 +9,13 @@ class PlayerCharacterBasic(Component):
 
     def update(self, dt):
         d = p2Vec2(0.0,0.0)
-        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Up):
+        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Up) or input_manager.keyboard.is_key_held(KeyboardManager.Key.W):
             d.y -= 1
-        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Down):
+        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Down) or input_manager.keyboard.is_key_held(KeyboardManager.Key.S):
             d.y += 1
-        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Left):
+        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Left) or input_manager.keyboard.is_key_held(KeyboardManager.Key.A):
             d.x -= 1
-        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Right):
+        if input_manager.keyboard.is_key_held(KeyboardManager.Key.Right) or input_manager.keyboard.is_key_held(KeyboardManager.Key.D):
             d.x += 1
         #d *= self.speed
         if self.body:

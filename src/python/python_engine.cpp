@@ -86,6 +86,12 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.value("Num2", sf::Keyboard::Num2)
 		.value("Num3", sf::Keyboard::Num3)
 		.value("Num4", sf::Keyboard::Num4)
+		.value("W", sf::Keyboard::W)
+		.value("A", sf::Keyboard::A)
+		.value("S", sf::Keyboard::S)
+		.value("D", sf::Keyboard::D)
+		.value("Q", sf::Keyboard::Q)
+		.value("E", sf::Keyboard::E)
 		.export_values();
 
 	py::class_<Scene> scene(m, "Scene");
