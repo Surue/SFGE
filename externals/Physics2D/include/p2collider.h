@@ -42,7 +42,8 @@ struct p2ColliderDef
 	p2Vec2 offset = p2Vec2(0.0f, 0.0f);
 	enum ShapeType{
 		CIRCLE,
-		RECT
+		RECT,
+		POLYGON
 	};
 
 	ShapeType shapeType;

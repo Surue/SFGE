@@ -31,6 +31,27 @@ SOFTWARE.
 
 
 class p2ContactListener;
+
+class SAT{
+public:
+	static bool CheckCollisionSAT(p2Contact* contact);
+
+	static bool CheckCollisionRects(p2Contact* contact);
+
+	static bool CheckCollisionCircles(p2Contact* contact);
+
+	static bool CheckCollisionCircleRect(p2Contact* contact);
+
+	static bool CheckCollisionPolygons(p2Contact* contact);
+
+	static bool CheckCollisionPolygonRect(p2Contact* contact);
+
+	static bool CheckCollisionPolygonCircle(p2Contact* contact);
+private:
+	SAT();
+
+	static p2Vec2 GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis);
+};
 /**
 * \brief Representation of a contact given as argument in a p2ContactListener
 */

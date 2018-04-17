@@ -51,128 +51,7 @@ p2Contact::~p2Contact()
 void p2Contact::Update(p2ContactListener& contactListener)
 {
 	bool wasTouching = isTouching;
-	//Check if is touching via SAT algorithm
-
-	//	Get vectors & normals of collider
-	p2Vec2 vectorsA[4];
-	p2Vec2 normalsA[4];
-
-	switch (m_ColliderA->GetShapeType()) {
-	case p2ColliderDef::ShapeType::CIRCLE:
-		std::cout << "C'est un cercle, la fonction n'est pas encore en place\n";
-		break;
-
-	case p2ColliderDef::ShapeType::RECT:
-		static_cast<p2RectShape*>(m_ColliderA->GetShape())->GetVectorsCenter(vectorsA, m_ColliderA->GetPosition(), m_ColliderA->GetBody()->GetAngle());
-
-		p2Vec2 vectorsVerticesA[4];
-		static_cast<p2RectShape*>(m_ColliderA->GetShape())->GetVectorsVertices(vectorsVerticesA, m_ColliderA->GetPosition(), m_ColliderA->GetBody()->GetAngle());
-		
-		m_ColliderA->GetShape()->GetNormals(normalsA, vectorsVerticesA, 4);
-		break;
-	}
-
-	p2Vec2 vectorsB[4];
-	p2Vec2 normalsB[4];
-
-	switch (m_ColliderB->GetShapeType()) {
-	case p2ColliderDef::ShapeType::CIRCLE:
-		std::cout << "C'est un cercle, la fonction n'est pas encore en place\n";
-		break;
-
-	case p2ColliderDef::ShapeType::RECT:
-		static_cast<p2RectShape*>(m_ColliderB->GetShape())->GetVectorsCenter(vectorsB, m_ColliderB->GetPosition(), m_ColliderB->GetBody()->GetAngle());
-
-		p2Vec2 vectorsVerticesB[4];
-		static_cast<p2RectShape*>(m_ColliderB->GetShape())->GetVectorsVertices(vectorsVerticesB, m_ColliderB->GetPosition(), m_ColliderB->GetBody()->GetAngle());
-
-		m_ColliderB->GetShape()->GetNormals(normalsB, vectorsVerticesB, 4);
-		break;
-	}
-
-	//  Get MinMax projection on each normal
-	bool isSeparated = false;
-
-	for (int i = 0; i < 2; i++) {
-		//For A
-		float minProjA = p2Vec2::Dot(vectorsA[0], normalsA[i]);
-		float maxProjA = p2Vec2::Dot(vectorsA[0], normalsA[i]);
-
-		for (int j = 1; j < 4; j++) {
-			float curProj = p2Vec2::Dot(vectorsA[j], normalsA[i]);
-			if (minProjA > curProj) {
-				minProjA = curProj;
-			}
-			if (maxProjA < curProj) {
-				maxProjA = curProj;
-			}
-		}
-
-		//For B
-		float minProjB = p2Vec2::Dot(vectorsB[0], normalsA[i]);
-		float maxProjB = p2Vec2::Dot(vectorsB[0], normalsA[i]);
-
-		for (int j = 1; j < 4; j++) {
-			float curProj = p2Vec2::Dot(vectorsB[j], normalsA[i]);
-			if (minProjB > curProj) {
-				minProjB = curProj;
-			}
-			if (maxProjB < curProj) {
-				maxProjB = curProj;
-			}
-		}
-
-		isSeparated = maxProjA < minProjB || maxProjB < minProjA;
-		if (isSeparated) {
-			break;
-		}
-	}
-
-	if (!isSeparated) {
-		for (int i = 0; i < 2; i++) {
-			//For A
-			float minProjA = p2Vec2::Dot(vectorsA[0], normalsB[i]);
-			float maxProjA = p2Vec2::Dot(vectorsA[0], normalsB[i]);
-
-			for (int j = 1; j < 4; j++) {
-				float curProj = p2Vec2::Dot(vectorsA[j], normalsB[i]);
-				if (minProjA > curProj) {
-					minProjA = curProj;
-				}
-				if (maxProjA < curProj) {
-					maxProjA = curProj;
-				}
-			}
-
-			//For B
-			float minProjB = p2Vec2::Dot(vectorsB[0], normalsB[i]);
-			float maxProjB = p2Vec2::Dot(vectorsB[0], normalsB[i]);
-
-			for (int j = 1; j < 4; j++) {
-				float curProj = p2Vec2::Dot(vectorsB[j], normalsB[i]);
-				if (minProjB > curProj) {
-					minProjB = curProj;
-				}
-				if (maxProjB < curProj) {
-					maxProjB = curProj;
-				}
-			}
-
-			isSeparated = maxProjA < minProjB || maxProjB < minProjA;
-			if (isSeparated) {
-				break;
-			}
-		}
-	}
-
-	if (!isSeparated) {
-		isTouching = true;
-	}
-	else {
-		isTouching = false;
-	}
-
-	//	Check if is separated
+	isTouching = SAT::CheckCollisionSAT(this);
 
 	//Tell contactListener if is entering ou exiting an collision
 	if (isTouching && !wasTouching) {
@@ -327,4 +206,168 @@ void p2ContactManager::Draw(p2Draw* debugDraw)
 	}*/
 
 	//Vector from center to corner
+}
+
+bool SAT::CheckCollisionSAT(p2Contact * contact)
+{
+	switch (contact->GetColliderA()->GetShapeType()) {
+	case p2ColliderDef::ShapeType::CIRCLE:
+		switch (contact->GetColliderB()->GetShapeType()) {
+		case p2ColliderDef::ShapeType::CIRCLE:
+			return CheckCollisionCircles(contact);
+			break;
+
+		case p2ColliderDef::ShapeType::RECT:
+			return CheckCollisionCircleRect(contact);
+			break;
+
+		case p2ColliderDef::ShapeType::POLYGON:
+			return CheckCollisionPolygonCircle(contact);
+			break;
+		}
+		break;
+
+	case p2ColliderDef::ShapeType::RECT:
+		switch (contact->GetColliderB()->GetShapeType()) {
+		case p2ColliderDef::ShapeType::CIRCLE:
+			return CheckCollisionCircleRect(contact);
+			break;
+
+		case p2ColliderDef::ShapeType::RECT:
+			return CheckCollisionRects(contact);
+			break;
+
+		case p2ColliderDef::ShapeType::POLYGON:
+			return CheckCollisionPolygonRect(contact);
+			break;
+		}
+		break;
+
+	case p2ColliderDef::ShapeType::POLYGON:
+		switch (contact->GetColliderB()->GetShapeType()) {
+		case p2ColliderDef::ShapeType::CIRCLE:
+			return CheckCollisionPolygonCircle(contact);
+			break;
+
+		case p2ColliderDef::ShapeType::RECT:
+			return CheckCollisionPolygonRect(contact);
+			break;
+
+		case p2ColliderDef::ShapeType::POLYGON:
+			return CheckCollisionPolygons(contact);
+			break;
+		}
+		break;
+	}
+	return false;
+}
+
+bool SAT::CheckCollisionRects(p2Contact * contact)
+{
+	//Get all vectors and normal from rectA
+	p2Vec2 vectorsA[4];
+	p2Vec2 normalsA[4];
+
+	p2Collider* colliderA = contact->GetColliderA();
+	p2RectShape* shapeA = static_cast<p2RectShape*>(colliderA->GetShape());
+	p2Vec2 positionA = colliderA->GetPosition();
+	float angleA = colliderA->GetBody()->GetAngle();
+
+	shapeA->GetVectorsCenter(vectorsA, positionA, angleA);
+
+	p2Vec2 vectorsVerticesA[4];
+	shapeA->GetVectorsVertices(vectorsVerticesA, positionA, angleA);
+
+	shapeA->GetNormals(normalsA, vectorsVerticesA, 4);
+
+	//Get all vectors and normal from rectB
+	p2Vec2 vectorsB[4];
+	p2Vec2 normalsB[4];
+
+	p2Collider* colliderB = contact->GetColliderB();
+	p2RectShape* shapeB = static_cast<p2RectShape*>(colliderB->GetShape());
+	p2Vec2 positionB = colliderB->GetPosition();
+	float angleB = colliderB->GetBody()->GetAngle();
+
+	shapeB->GetVectorsCenter(vectorsB, positionB, angleB);
+
+	p2Vec2 vectorsVerticesB[4];
+	shapeB->GetVectorsVertices(vectorsVerticesB, positionB, angleB);
+
+	shapeB->GetNormals(normalsB, vectorsVerticesB, 4);
+
+	//Get MinMax projection on each normal
+	bool isSeparated = false;
+
+	for (int i = 0; i < 2; i++) {
+		p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsA[i]);
+		p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsA[i]);
+
+		float minA = minMaxA.x; float maxA = minMaxA.y;
+		float minB = minMaxB.x; float maxB = minMaxB.y;
+
+		isSeparated = maxA < minB || maxB < minA;
+		if (isSeparated) {
+			break;
+		}
+	}
+	if (!isSeparated) {
+		for (int i = 0; i < 2; i++) {
+			p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsB[i]);
+			p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsB[i]);
+
+			float minA = minMaxA.x; float maxA = minMaxA.y;
+			float minB = minMaxB.x; float maxB = minMaxB.y;
+
+			isSeparated = maxA < minB || maxB < minA;
+			if (isSeparated) {
+				break;
+			}
+		}
+	}
+
+	return !isSeparated;
+}
+
+bool SAT::CheckCollisionCircles(p2Contact * contact)
+{
+	return false;
+}
+
+bool SAT::CheckCollisionCircleRect(p2Contact * contact)
+{
+	return false;
+}
+
+bool SAT::CheckCollisionPolygons(p2Contact * contact)
+{
+	return false;
+}
+
+bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
+{
+	return false;
+}
+
+bool SAT::CheckCollisionPolygonCircle(p2Contact * contact)
+{
+	return false;
+}
+
+p2Vec2 SAT::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)
+{
+	float minProj = p2Vec2::Dot(proj[0], axis);
+	float maxProj = p2Vec2::Dot(proj[0], axis);
+
+	for (int i = 1; i < sizeArray; i++) {
+		float curProj = p2Vec2::Dot(proj[i], axis);
+		if (minProj > curProj) {
+			minProj = curProj;
+		}
+		if (maxProj < curProj) {
+			maxProj = curProj;
+		}
+	}
+
+	return p2Vec2(minProj, maxProj);
 }
