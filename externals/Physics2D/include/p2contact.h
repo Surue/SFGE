@@ -70,6 +70,8 @@ public:
 
 	bool OverlapAABB() const;
 
+	bool isOnContact();
+
 private:
 	p2Collider* m_ColliderA;
 	p2Collider* m_ColliderB;

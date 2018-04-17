@@ -78,6 +78,11 @@ bool p2Contact::OverlapAABB() const
 	return m_ColliderA->aabb.Overlap(&m_ColliderB->aabb);
 }
 
+bool p2Contact::isOnContact()
+{
+	return isTouching;
+}
+
 p2ContactManager::p2ContactManager()
 {
 	m_ContactList = std::list<p2Contact*>();
@@ -178,6 +183,9 @@ void p2ContactManager::Destroy()
 
 void p2ContactManager::Destroy(p2Contact *contact)
 {
+	if (contact->isOnContact()) {
+		m_ContactListener->EndContact(contact);
+	}
 	delete(contact);
 }
 
@@ -331,26 +339,69 @@ bool SAT::CheckCollisionRects(p2Contact * contact)
 
 bool SAT::CheckCollisionCircles(p2Contact * contact)
 {
+	std::cout << "COLLISION ENTRE CERCLES PAS FAITE\n";
 	return false;
 }
 
 bool SAT::CheckCollisionCircleRect(p2Contact * contact)
 {
-	return false;
+	p2Collider* colliderA = contact->GetColliderA();
+	p2Collider* colliderB = contact->GetColliderB();
+
+	p2RectShape* rect;
+	p2Vec2 rectPosition;
+	float rectAngle;
+	p2CircleShape* circle;
+	p2Vec2 circlePosition;
+
+
+	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
+		rect = static_cast<p2RectShape*>(colliderA->GetShape());
+		rectPosition = colliderA->GetPosition();
+		rectAngle = colliderA->GetBody()->GetAngle();
+
+		circle = static_cast<p2CircleShape*>(colliderB->GetShape());
+		circlePosition = colliderB->GetPosition();
+	}
+	else {
+		rect = static_cast<p2RectShape*>(colliderB->GetShape());
+		rectPosition = colliderB->GetPosition();
+		rectAngle = colliderB->GetBody()->GetAngle();
+
+		circle = static_cast<p2CircleShape*>(colliderA->GetShape());
+		circlePosition = colliderA->GetPosition();
+	}
+
+	p2Vec2 vectorsRect[4];
+	rect->GetVectorsCenter(vectorsRect, rectPosition, rectAngle);
+
+	p2Vec2 rect2circle = circlePosition - rectPosition;
+
+	float max = p2Vec2::Dot((p2Vec2(vectorsRect[0]) - circlePosition), rect2circle.Normal().Normalized());
+	for (int i = 1; i < 4; i++) {
+		float curProj = p2Vec2::Dot((p2Vec2(vectorsRect[i]) - circlePosition), rect2circle.Normal().Normalized());
+
+		if (max < curProj) max = curProj;
+	}
+
+	return rect2circle.GetMagnitude() - max - circle->GetRadius() < 0;
 }
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact)
 {
+	std::cout << "COLLISION ENTRE POLYGONES PAS FAITE\n";
 	return false;
 }
 
 bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
 {
+	std::cout << "COLLISION ENTRE POLYGONE ET RECTANGLE PAS FAITE\n";
 	return false;
 }
 
 bool SAT::CheckCollisionPolygonCircle(p2Contact * contact)
 {
+	std::cout << "COLLISION ENTRE POLYGONE ET CERCLE PAS FAITE\n";
 	return false;
 }
 
