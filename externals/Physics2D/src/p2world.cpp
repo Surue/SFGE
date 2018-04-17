@@ -54,6 +54,8 @@ p2World::~p2World()
 	}
 }
 
+
+
 void p2World::Step(float dt)
 {
 	for (auto body : m_BodyList) {
@@ -73,9 +75,11 @@ void p2World::Step(float dt)
 	//Find new Contact
 	m_ContactManager.FindNewContact(m_BodyList);
 
+	//Solve collision
+	m_ContactManager.Solve();
+
 	//Check existing contact AABB
 	m_ContactManager.Collide();
-
 
 	for each (p2Body* body in m_BodyList)
 	{
@@ -118,6 +122,8 @@ void p2World::DrawDebugData()
 	//Debug draw quad tree
 	m_ContactManager.GetQuadTree()->Draw(m_DebugDraw);
 
+	//Draw vector for sat
+	m_ContactManager.Draw(m_DebugDraw);
 
 	for (p2Body* body : m_BodyList) {
 		//Draw aabb of body

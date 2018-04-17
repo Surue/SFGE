@@ -84,3 +84,39 @@ void p2RectShape::ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const
 	aabb->topRight = p2Vec2(position.x + std::fmaxf(std::abs(topRight.x), std::abs(bottomLeft.x)),
 							position.y - std::fmaxf(std::abs(topRight.y), std::abs(bottomLeft.y)));
 }
+
+void p2RectShape::GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle)
+{
+	p2Vec2 corners[4];
+	GetCorners(corners, position, angle);
+	
+	for (int i = 0; i < 4; i ++) {
+		vectors[i] = corners[i];
+	}
+}
+
+void p2RectShape::GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle)
+{
+	p2Vec2 corners[4];
+	GetCorners(corners, position, angle);
+
+	vectors[0] = corners[1] - corners[0];
+	vectors[1] = corners[2] - corners[1];
+	vectors[2] = corners[3] - corners[2];
+	vectors[3] = corners[0] - corners[3];
+}
+
+void p2RectShape::GetCorners(p2Vec2 corners[], p2Vec2 position, float angle)
+{
+	corners[0] = (p2Mat22::RotationMatrix(angle) * p2Vec2((-m_Size.x / 2.0f), (m_Size.y / 2.0f))) + position; //Bas gauche
+	corners[1] = (p2Mat22::RotationMatrix(angle) * p2Vec2((-m_Size.x / 2.0f), (-m_Size.y / 2.0f))) + position; //Haut gauche
+	corners[2] = (p2Mat22::RotationMatrix(angle) * p2Vec2((m_Size.x / 2.0f), (-m_Size.y / 2.0f))) + position; //Haut droite
+	corners[3] = (p2Mat22::RotationMatrix(angle) * p2Vec2((m_Size.x / 2.0f),(m_Size.y / 2.0f))) + position; //Bas droite
+}
+
+void p2Shape::GetNormals(p2Vec2 normals[], p2Vec2 vectors[], int numOfVectors) const
+{
+	for (int i = 0; i < numOfVectors; i++) {
+		normals[i] = vectors[i].Normal().Normalized();
+	}
+}

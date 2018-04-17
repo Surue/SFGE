@@ -29,6 +29,8 @@ SOFTWARE.
 #include <p2body.h>
 #include <p2quadtree.h>
 
+
+class p2ContactListener;
 /**
 * \brief Representation of a contact given as argument in a p2ContactListener
 */
@@ -40,6 +42,8 @@ public:
 
 	~p2Contact();
 
+	void Update(p2ContactListener& contactListener);
+
 	p2Collider* GetColliderA() const;
 	p2Collider* GetColliderB() const;
 
@@ -48,6 +52,8 @@ public:
 private:
 	p2Collider* m_ColliderA;
 	p2Collider* m_ColliderB;
+
+	bool isTouching = false;
 };
 
 /**
@@ -71,6 +77,8 @@ public:
 
 	void FindNewContact(std::list<p2Body*>& bodies);
 
+	void Solve();
+
 	void Collide();
 
 	void SetContactListener(p2ContactListener* contactListener);
@@ -81,6 +89,8 @@ public:
 	void Destroy(p2Contact *contact);
 
 	p2QuadTree* GetQuadTree();
+
+	void Draw(p2Draw* debugDraw);
 
 private:
 	std::list<p2Contact*> m_ContactList;

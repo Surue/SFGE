@@ -104,7 +104,8 @@ float p2Vec2::GetMagnitude() const
 
 p2Vec2 p2Vec2::Normalized() const
 {
-	return p2Vec2(x/GetMagnitude(), y/GetMagnitude());
+	float magnitude = GetMagnitude();
+	return p2Vec2(x/magnitude, y/magnitude);
 }
 
 void p2Vec2::Normalize()
@@ -112,6 +113,11 @@ void p2Vec2::Normalize()
 	float magnitude = GetMagnitude();
 	x /= magnitude;
 	y /= magnitude;
+}
+
+p2Vec2 p2Vec2::Normal()
+{
+	return p2Vec2(-y, x);
 }
 
 p2Vec3 p2Vec2::to3() const

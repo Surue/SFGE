@@ -57,7 +57,7 @@ p2Vec2& p2Collider::GetOffset()
 	return m_Offset;
 }
 
-p2Vec2 p2Collider::GetPosition() const
+p2Vec2 p2Collider::GetPosition()
 {
 	return (p2Mat22::RotationMatrix(m_Body->GetAngle()) * m_Offset) + m_Body->GetPosition();
 }
@@ -65,4 +65,9 @@ p2Vec2 p2Collider::GetPosition() const
 p2ColliderDef::ShapeType p2Collider::GetShapeType() const
 {
 	return shapeType;
+}
+
+p2Body * p2Collider::GetBody() const
+{
+	return m_Body;
 }

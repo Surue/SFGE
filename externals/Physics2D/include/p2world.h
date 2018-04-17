@@ -41,6 +41,7 @@ class p2World
 public:
 	p2World(p2Vec2 gravity);
 	~p2World();
+
 	/**
 	* \brief Simulate a new step of the physical world, simplify the resolution with a QuadTree, generate the new contacts
 	*/

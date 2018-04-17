@@ -39,6 +39,8 @@ public:
 	virtual p2Shape* Clone() const = 0;
 
 	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const = 0;
+
+	virtual void GetNormals(p2Vec2 normals[], p2Vec2 vectors[], int numOfVectors) const;
 };
 
 /**
@@ -72,6 +74,10 @@ public:
 	p2Vec2 GetSize();
 
 	void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
+
+	void GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle);
+	void GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle);
+	void GetCorners(p2Vec2 corners[], p2Vec2 position, float angle);
 private:
 	p2Vec2 m_Size;
 };

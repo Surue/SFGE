@@ -69,6 +69,10 @@ struct p2Vec2
 	*/
 	void Normalize();
 	/**
+	* \brief return a normal to the vector
+	*/
+	p2Vec2 Normal();
+	/**
 	* \brief 
 	*/
 	p2Vec3 to3() const;

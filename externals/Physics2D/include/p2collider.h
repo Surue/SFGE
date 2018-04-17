@@ -73,9 +73,11 @@ public:
 
 	p2Vec2& GetOffset();
 
-	p2Vec2 GetPosition() const;
+	p2Vec2 GetPosition();
 
 	p2ColliderDef::ShapeType GetShapeType() const;
+
+	p2Body* GetBody() const;
 
 	p2AABB aabb;
 
