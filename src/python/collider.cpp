@@ -98,9 +98,18 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 				colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
 				break; 
 			}
-		case ColliderType::POLYGON:
+		case ColliderType::POLYGON: //TO DO AJOUTER VERIFICATION CONVEXE, SINON TRANSFORMER EN CONVEXE
 			{
-				// TO DO
+				p2PolygonShape* polygonShape = new p2PolygonShape();
+				int verticesCount = (int)componentJson["point_count"];
+				polygonShape->SetVerticesCount(verticesCount);
+				for (int i = 0; i < verticesCount; i++)
+				{
+					polygonShape->SetVertice(pixel2meter(GetVectorFromJson(componentJson, "point" + std::to_string(i))), i );
+				}
+
+				shape = polygonShape;
+				colliderDef.shapeType = p2ColliderDef::ShapeType::POLYGON;
 			}
 		}
 		if (CheckJsonExists(componentJson, "offset"))
@@ -119,12 +128,14 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 		{
 			colliderDef.isSensor = componentJson["sensor"];
 		}
-		
+
 		collider->m_PhysicsCollider = body2d->GetBody()->CreateCollider(&colliderDef);
+		
 		if (shape != nullptr)
 		{
 			delete(shape);
 		}
+
 		return collider;
 	}
 	else

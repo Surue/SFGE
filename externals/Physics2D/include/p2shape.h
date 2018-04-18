@@ -29,6 +29,7 @@ SOFTWARE.
 #include <p2aabb.h>
 
 #include <string>
+#include <vector>
 
 /**
 * \brief Abstract representation of a shape
@@ -80,6 +81,27 @@ public:
 	void GetCorners(p2Vec2 corners[], p2Vec2 position, float angle);
 private:
 	p2Vec2 m_Size;
+};
+
+class p2PolygonShape : public p2Shape
+{
+public:
+	p2Shape * Clone() const override;
+
+	void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
+
+	void SetVerticesCount(int verticesCount);
+	int GetVerticesCount();
+
+	void SetVertice(p2Vec2 vertice, int index);
+	const p2Vec2 GetVertice(int index) const;
+	const std::vector<p2Vec2> GetVertices() const;
+	const std::vector<p2Vec2> GetVerticesWorld(p2Vec2 position, float angle) const;
+
+	void GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle);
+
+private:
+	std::vector<p2Vec2> m_Vertices;
 };
 
 #endif

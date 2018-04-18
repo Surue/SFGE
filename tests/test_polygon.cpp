@@ -22,39 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef DEBUGDRAW_H
-#define DEBUGDRAW_H
+#include <engine/engine.h>
+#include <engine/scene.h>
 
-#include <p2physics.h>
-
-//Externals
-#include <SFML/Graphics.hpp>
-
-namespace sfge {
-
-class DebugDraw : public p2Draw
+int main()
 {
-public:
-	DebugDraw(sf::RenderWindow *window);
-	virtual ~DebugDraw();
+	sfge::Engine engine;
+	engine.Init(false, true);
 
-	void DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const;
+	engine.GetSceneManager()->SetCurrentScene("data/scenes/test_polygon.scene");
 
-	void DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const;
+	engine.Start();
 
-	void DrawCircle(const p2Vec2 center, float radius, p2Color& color) const;
-
-	void DrawCircleFilled(const p2Vec2 center, float radius, p2Color& color) const;
-
-	void DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) const;
-
-	void DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color& color) const;
-
-	void DrawTransform(const p2Vec2 transform) const;
-
-	sf::Color p2Color2SfColor(const p2Color &color) const;
-private:
-	sf::RenderWindow *m_Window;
-};
+#if WIN32
+	system("pause");
+#endif
+	return EXIT_SUCCESS;
 }
-#endif // !DEBUGDRAW_H

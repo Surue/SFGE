@@ -160,6 +160,12 @@ void p2World::DrawDebugData()
 					m_DebugDraw->DrawCircleFilled(center, radius, p2Color(0, 0, 153));
 					
 				}
+
+				if (collider->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
+					p2PolygonShape *polygon = static_cast<p2PolygonShape*>(collider->GetShape());
+
+					m_DebugDraw->DrawPolygonFilled(polygon->GetVerticesWorld(collider->GetPosition(), body->GetAngle()), p2Color(0, 0, 153));
+				}
 			}
 
 			//Draw aabb of collider

@@ -120,3 +120,76 @@ void p2Shape::GetNormals(p2Vec2 normals[], p2Vec2 vectors[], int numOfVectors) c
 		normals[i] = vectors[i].Normal().Normalized();
 	}
 }
+
+
+p2Shape * p2PolygonShape::Clone() const
+{
+	p2PolygonShape* clone = new p2PolygonShape();
+	*clone = *this;
+	return clone;
+}
+
+void p2PolygonShape::ComputeAABB(p2AABB * aabb, p2Vec2 position, float angle) const
+{
+	float minX, maxX, minY, maxY;
+	minX = ((p2Mat22::RotationMatrix(angle) * m_Vertices[0]) + position).x;
+	maxX = minX;
+
+	minY = ((p2Mat22::RotationMatrix(angle) * m_Vertices[0]) + position).y;
+	maxY = minY;
+
+	for (int i = 1; i < m_Vertices.size(); i++) {
+		p2Vec2 pos = (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+		if (pos.x > maxX) maxX = pos.x;
+		if (pos.x < minX) minX = pos.x;
+		if (pos.y > maxY) maxY = pos.y;
+		if (pos.y < minY) minY = pos.y;
+	}
+
+	aabb->bottomLeft = p2Vec2(minX, maxY);
+	aabb->topRight = p2Vec2(maxX, minY);
+}
+
+void p2PolygonShape::SetVerticesCount(int verticesCount)
+{
+	m_Vertices.resize(verticesCount);
+}
+
+int p2PolygonShape::GetVerticesCount()
+{
+	return m_Vertices.size();
+}
+
+void p2PolygonShape::SetVertice(p2Vec2 vertice, int index)
+{
+	m_Vertices[index] = vertice;
+}
+
+const p2Vec2 p2PolygonShape::GetVertice(int index) const
+{
+	return m_Vertices[index];
+}
+
+const std::vector<p2Vec2> p2PolygonShape::GetVertices() const
+{
+	return m_Vertices;
+}
+
+const std::vector<p2Vec2> p2PolygonShape::GetVerticesWorld(p2Vec2 position, float angle) const
+{
+	std::vector<p2Vec2> worldCoords;
+	worldCoords.resize(m_Vertices.size());
+
+	for (int i = 0; i < m_Vertices.size(); i++) {
+		worldCoords[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+	}
+
+	return worldCoords;
+}
+
+void p2PolygonShape::GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle)
+{
+	for (int i = 0; i < m_Vertices.size(); i++) {
+		vectors[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[(i + 1) % m_Vertices.size()]) - (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+	}
+}

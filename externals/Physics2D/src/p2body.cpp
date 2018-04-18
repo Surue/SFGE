@@ -55,11 +55,13 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 
 p2Body::~p2Body()
 {
-	auto it = m_CollidersList.begin();
+	if (m_CollidersList.size() > 0) {
+		auto it = m_CollidersList.begin();
 
-	while (it != m_CollidersList.end()) {
-		delete(*it);
-		it = m_CollidersList.erase(it);
+		while (it != m_CollidersList.end()) {
+			delete(*it);
+			it = m_CollidersList.erase(it);
+		}
 	}
 }
 

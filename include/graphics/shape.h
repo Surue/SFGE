@@ -112,6 +112,28 @@ protected:
 };
 
 /**
+* \brief Graphic representation of a polygon as Component
+*/
+class Polygon : public Shape
+{
+public:
+	Polygon(GameObject* gameObject, int pointCount, std::vector<sf::Vector2f> points);
+	/**
+	* \brief Update the position of the SFML rectangle shape to the position  of the GameObject Transform
+	*/
+	void Update(float time) override;
+	/**
+	* \brief Factory method of a Circle Component
+	*/
+	static Polygon* LoadPolygon(json& componentJson, GameObject* gameObject);
+protected:
+	int m_PointCount;
+
+	std::vector<sf::Vector2f> m_Points;
+
+};
+
+/**
 * \brief Graphic Manager part loading and managing the Shapes components
 */
 class ShapeManager

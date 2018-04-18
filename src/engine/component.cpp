@@ -120,6 +120,7 @@ Component* Component::LoadComponent(Engine& engine, json& componentJson, GameObj
 	{
 		Log::GetInstance()->Error("No type defined for component");
 	}
+	
 	return component;
 }
 

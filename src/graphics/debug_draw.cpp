@@ -95,11 +95,11 @@ void DebugDraw::DrawCircleFilled(const p2Vec2 center, float radius, p2Color& col
 	m_Window->draw(circle);
 }
 
-void DebugDraw::DrawPolygon(const p2Vec2 vertices[], int verticesCount, p2Color& color) const
+void DebugDraw::DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) const
 {
-	sf::ConvexShape polygon(verticesCount);
+	sf::ConvexShape polygon(vertices.size());
 
-	for (int i = 0; i < verticesCount; i++) {
+	for (int i = 0; i < vertices.size(); i++) {
 		polygon.setPoint(i, meter2pixel(vertices[i]));
 	}
 	
@@ -110,11 +110,11 @@ void DebugDraw::DrawPolygon(const p2Vec2 vertices[], int verticesCount, p2Color&
 	m_Window->draw(polygon);
 }
 
-void DebugDraw::DrawPolygonFilled(const p2Vec2 vertices[], int verticesCount, p2Color& color) const
+void DebugDraw::DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color& color) const
 {
-	sf::ConvexShape polygon(verticesCount);
+	sf::ConvexShape polygon(vertices.size());
 
-	for (int i = 0; i < verticesCount; i++) {
+	for (int i = 0; i < vertices.size(); i++) {
 		polygon.setPoint(i, meter2pixel(vertices[i]));
 	}
 

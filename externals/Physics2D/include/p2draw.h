@@ -29,6 +29,7 @@ SOFTWARE.
 #include <p2aabb.h>
 
 #include <cstdint>
+#include <vector>
 
 struct p2Color {
 	p2Color() {}
@@ -92,9 +93,9 @@ public:
 
 	virtual void DrawCircleFilled(const p2Vec2 center, float radius, p2Color& color) const = 0;
 
-	virtual void DrawPolygon(const p2Vec2 vertices[], int verticesCount, p2Color& color) const = 0;
+	virtual void DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) const = 0;
 
-	virtual void DrawPolygonFilled(const p2Vec2 vertices[], int verticesCount, p2Color& color) const = 0;
+	virtual void DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color& color) const = 0;
 
 	virtual void DrawTransform(const p2Vec2 transform) const = 0;
 
