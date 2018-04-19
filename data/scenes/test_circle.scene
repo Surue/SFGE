@@ -1,0 +1,96 @@
+
+{
+  "name": "ContactTestScene",
+  "game_objects": [
+      {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [100, 100],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 75
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 1,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": true
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+              ,
+              {
+                  "type": 4,
+                  "script_path": "scripts/player_character_basic.py"
+              },
+			  {
+                  "type": 4,
+                  "script_path": "scripts/transform_rotation.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 75
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 1,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 75,
+                  "sensor": true
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
+      }
+  ]
+}

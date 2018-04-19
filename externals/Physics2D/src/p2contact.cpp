@@ -364,10 +364,8 @@ bool SAT::CheckCollisionRects(p2Contact * contact)
 
 bool SAT::CheckCollisionCircles(p2Contact * contact)
 {
-	std::cout << "COLLISION ENTRE 2 CERCLE A VERIFIER\n";
-
 	return (contact->GetColliderA()->GetPosition() - contact->GetColliderB()->GetPosition()).GetMagnitude() < 
-		static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius() + static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius();
+		static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius() + static_cast<p2CircleShape*>(contact->GetColliderB()->GetShape())->GetRadius();
 }
 
 bool SAT::CheckCollisionCircleRect(p2Contact * contact)
