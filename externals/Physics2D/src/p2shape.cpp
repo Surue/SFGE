@@ -197,10 +197,10 @@ const std::vector<p2Vec2> p2PolygonShape::GetVerticesWorld(p2Vec2 position, floa
 void p2PolygonShape::GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle)
 {
 	for (int i = 0; i < m_Vertices.size() - 1; i++) {
-		vectors[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[(i + 1)]) - (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+		vectors[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[(i + 1)]) + position - ((p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position);
 	}
 
-	vectors[m_Vertices.size()-1] = (p2Mat22::RotationMatrix(angle) * m_Vertices[0]) - (p2Mat22::RotationMatrix(angle) * m_Vertices[m_Vertices.size() - 1]) + position;
+	vectors[m_Vertices.size()-1] = (p2Mat22::RotationMatrix(angle) * m_Vertices[0]) + position - ((p2Mat22::RotationMatrix(angle) * m_Vertices[m_Vertices.size() - 1]) + position);
 }
 
 void p2PolygonShape::GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle)

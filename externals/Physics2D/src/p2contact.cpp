@@ -209,7 +209,7 @@ void p2ContactManager::Draw(p2Draw* debugDraw)
 			break;
 
 		case p2ColliderDef::POLYGON:
-			std::vector<p2Vec2> tmp = static_cast<p2PolygonShape*>(contact->GetColliderB()->GetShape())->GetVerticesWorld(contact->GetColliderB()->GetPosition(), contact->GetColliderB()->GetBody()->GetAngle());
+			std::vector<p2Vec2> tmp = static_cast<p2PolygonShape*>(contact->GetColliderA()->GetShape())->GetVerticesWorld(contact->GetColliderA()->GetPosition(), contact->GetColliderA()->GetBody()->GetAngle());
 
 			for (int i = 0; i < tmp.size(); i++) {
 				debugDraw->DrawCircleFilled(tmp[i], 0.05, p2Color(255, 0, 0));
@@ -417,8 +417,86 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact)
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact)
 {
-	std::cout << "COLLISION ENTRE POLYGONES PAS FAITE\n";
-	return false;
+	p2Collider* colliderA = contact->GetColliderA();
+	p2Collider* colliderB = contact->GetColliderB();
+
+	p2PolygonShape* polygonA;
+	p2Vec2 polygonAPosition;
+	float polygonAAngle;
+
+	//Get all vectors and normal from rectB
+
+	p2PolygonShape* polygonB;
+	p2Vec2 polygonBPosition;
+	float polygonBAngle;
+
+	polygonA = static_cast<p2PolygonShape*>(colliderA->GetShape());
+	polygonAPosition = colliderA->GetPosition();
+	polygonAAngle = colliderA->GetBody()->GetAngle();
+
+	polygonB = static_cast<p2PolygonShape*>(colliderB->GetShape());
+	polygonBPosition = colliderB->GetPosition();
+	polygonBAngle = colliderB->GetBody()->GetAngle();
+
+	//Get all vectors and normal from rect
+	std::vector<p2Vec2> polygonAVectors;
+	std::vector<p2Vec2> polygonANormals;
+
+	polygonAVectors.resize(polygonA->GetVerticesCount());
+	polygonANormals.resize(polygonA->GetVerticesCount());
+	polygonAVectors = polygonA->GetVerticesWorld(polygonAPosition, polygonAAngle);
+
+	std::vector<p2Vec2> polygonAVectorsVertices;
+	polygonAVectorsVertices.resize(polygonA->GetVerticesCount());
+	polygonA->GetVectorsVertices(polygonAVectorsVertices, polygonAPosition, polygonAAngle);
+
+	polygonA->GetNormals(polygonANormals, polygonAVectorsVertices);
+
+	//Get all vectors and normal from polygon
+	std::vector<p2Vec2> polygonBVectors;
+	std::vector<p2Vec2> polygonBNormals;
+
+	polygonBVectors.resize(polygonB->GetVerticesCount());
+	polygonBNormals.resize(polygonB->GetVerticesCount());
+	polygonBVectors = polygonB->GetVerticesWorld(polygonBPosition, polygonBAngle);
+
+	std::vector<p2Vec2> polygonBVectorsVertices;
+	polygonBVectorsVertices.resize(polygonB->GetVerticesCount());
+	polygonB->GetVectorsVertices(polygonBVectorsVertices, polygonBPosition, polygonBAngle);
+
+	polygonB->GetNormals(polygonBNormals, polygonBVectorsVertices);
+
+	//Get MinMax projection on each normal
+	bool isSeparated = false;
+
+	for (int i = 0; i < polygonA->GetVerticesCount(); i++) {
+		p2Vec2 minMaxA = GetMinMaxProj(polygonAVectors, polygonANormals[i]);
+		p2Vec2 minMaxB = GetMinMaxProj(polygonBVectors, polygonANormals[i]);
+
+		float minA = minMaxA.x; float maxA = minMaxA.y;
+		float minB = minMaxB.x; float maxB = minMaxB.y;
+
+		isSeparated = maxA < minB || maxB < minA;
+		if (isSeparated) {
+			break;
+		}
+	}
+	if (!isSeparated) {
+		for (int i = 0; i < polygonB->GetVerticesCount(); i++) {
+			p2Vec2 minMaxA = GetMinMaxProj(polygonAVectors, polygonBNormals[i]);
+			p2Vec2 minMaxB = GetMinMaxProj(polygonBVectors, polygonBNormals[i]);
+
+			float minA = minMaxA.x; float maxA = minMaxA.y;
+			float minB = minMaxB.x; float maxB = minMaxB.y;
+
+			isSeparated = maxA < minB || maxB < minA;
+			if (isSeparated) {
+				break;
+			}
+		}
+	}
+
+	return !isSeparated;
 }
 
 bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
@@ -472,6 +550,7 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
 
 	polygonVectors.resize(polygon->GetVerticesCount());
 	polygonNormals.resize(polygon->GetVerticesCount());
+
 	polygonVectors = polygon->GetVerticesWorld(polygonPosition, polygonAngle);
 
 	std::vector<p2Vec2> polygonVectorsVertices;
@@ -511,12 +590,10 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
 	}
 
 	return !isSeparated;
-	return false;
 }
 
 bool SAT::CheckCollisionPolygonCircle(p2Contact * contact)
 {
-	std::cout << "BUG NON CONNU\n";
 	//TO DO cela ne fonctionne pas
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -545,20 +622,56 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact)
 		circlePosition = colliderA->GetPosition();
 	}
 
+	//Get closet point of polygon to the circle
 	std::vector<p2Vec2> vectorsPolygon;
 	vectorsPolygon.resize(polygon->GetVerticesCount());
 	vectorsPolygon = polygon->GetVerticesWorld(polygonPosition, polygonAngle);
-
-	p2Vec2 polygon2circle = circlePosition - polygonPosition;
-
-	float max = p2Vec2::Dot((p2Vec2(vectorsPolygon[0]) - circlePosition), polygon2circle.Normal().Normalized());
+	
+	int indexClosestVertice = 0;
+	float minDistance = (circlePosition - vectorsPolygon[0]).GetMagnitude();
 	for (int i = 1; i < vectorsPolygon.size(); i++) {
-		float curProj = p2Vec2::Dot((p2Vec2(vectorsPolygon[i]) - circlePosition), polygon2circle.Normal().Normalized());
+		float curDistance = (circlePosition - vectorsPolygon[i]).GetMagnitude();
 
-		if (max < curProj) max = curProj;
+		if (curDistance < minDistance) {
+			minDistance = curDistance;
+			indexClosestVertice = i;
+		}
 	}
 
-	return polygon2circle.GetMagnitude() - max - circle->GetRadius() < 0;
+	//Get normals from polygon
+	std::vector<p2Vec2> polygonNormals;
+
+	polygonNormals.resize(polygon->GetVerticesCount() + 1);
+
+	std::vector<p2Vec2> polygonVectorsVertices;
+	polygonVectorsVertices.resize(polygon->GetVerticesCount());
+	polygon->GetVectorsVertices(polygonVectorsVertices, polygonPosition, polygonAngle);
+
+	polygon->GetNormals(polygonNormals, polygonVectorsVertices);
+
+	//Make axis from closet point to center of circle and add this to normals to check
+	p2Vec2 polygon2circle = circlePosition - vectorsPolygon[indexClosestVertice];
+	p2Vec2 normal = polygon2circle.Normalized();
+
+	polygonNormals.push_back(normal);
+
+	//Proj
+	bool isSeparated = false;
+	for (int i = 0; i < polygonNormals.size(); i++) {
+		p2Vec2 minMaxA = GetMinMaxProj(vectorsPolygon, polygonNormals[i]);
+		float minA = minMaxA.x; float maxA = minMaxA.y;
+
+
+		float minB = p2Vec2::Dot(circlePosition, polygonNormals[i]) - circle->GetRadius(); 
+		float maxB = p2Vec2::Dot(circlePosition, polygonNormals[i]) + circle->GetRadius();
+
+		isSeparated = maxA < minB || maxB < minA;
+		if (isSeparated) {
+			break;
+		}
+	}
+
+	return !isSeparated;
 }
 
 p2Vec2 SAT::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)
@@ -580,7 +693,7 @@ p2Vec2 SAT::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)
 	return p2Vec2(minProj, maxProj);
 }
 
-p2Vec2 SAT::GetMinMaxProj(std::vector<p2Vec2> proj, p2Vec2 axis)
+p2Vec2 SAT::GetMinMaxProj(std::vector<p2Vec2>& proj, p2Vec2 axis)
 {
 	float minProj = p2Vec2::Dot(proj[0], axis);
 	float maxProj = p2Vec2::Dot(proj[0], axis);

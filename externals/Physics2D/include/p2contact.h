@@ -52,7 +52,7 @@ private:
 
 	static p2Vec2 GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis);
 
-	static p2Vec2 GetMinMaxProj(std::vector<p2Vec2> proj, p2Vec2 axis);
+	static p2Vec2 GetMinMaxProj(std::vector<p2Vec2>& proj, p2Vec2 axis);
 };
 /**
 * \brief Representation of a contact given as argument in a p2ContactListener
