@@ -15,7 +15,7 @@
                   "name": "Rectangle Shape Component",
                   "type": 3,
                   "shape_type": 2,
-                  "size": [100, 100]
+                  "size": [200, 200]
               },
               {
                   "name": "Rigidbody",
@@ -27,7 +27,7 @@
                   "name": "BoxCollider",
                   "type": 6,
                   "collider_type": 2,
-                  "size": [100, 100],
+                  "size": [200, 200],
                   "sensor": true
               },
               {

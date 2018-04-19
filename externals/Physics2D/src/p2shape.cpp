@@ -121,6 +121,13 @@ void p2Shape::GetNormals(p2Vec2 normals[], p2Vec2 vectors[], int numOfVectors) c
 	}
 }
 
+void p2Shape::GetNormals(std::vector<p2Vec2>& normals, std::vector<p2Vec2> vectors) const
+{
+	for (int i = 0; i < vectors.size(); i++) {
+		normals[i] = vectors[i].Normal().Normalized();
+	}
+}
+
 
 p2Shape * p2PolygonShape::Clone() const
 {
@@ -187,9 +194,15 @@ const std::vector<p2Vec2> p2PolygonShape::GetVerticesWorld(p2Vec2 position, floa
 	return worldCoords;
 }
 
-void p2PolygonShape::GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle)
+void p2PolygonShape::GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle)
 {
-	for (int i = 0; i < m_Vertices.size(); i++) {
-		vectors[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[(i + 1) % m_Vertices.size()]) - (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+	for (int i = 0; i < m_Vertices.size() - 1; i++) {
+		vectors[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[(i + 1)]) - (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
 	}
+
+	vectors[m_Vertices.size()-1] = (p2Mat22::RotationMatrix(angle) * m_Vertices[0]) - (p2Mat22::RotationMatrix(angle) * m_Vertices[m_Vertices.size() - 1]) + position;
+}
+
+void p2PolygonShape::GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle)
+{
 }

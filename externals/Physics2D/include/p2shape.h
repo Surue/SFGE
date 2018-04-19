@@ -42,6 +42,7 @@ public:
 	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const = 0;
 
 	virtual void GetNormals(p2Vec2 normals[], p2Vec2 vectors[], int numOfVectors) const;
+	virtual void GetNormals(std::vector<p2Vec2>& normals, std::vector<p2Vec2> vectors) const;
 };
 
 /**
@@ -98,8 +99,8 @@ public:
 	const std::vector<p2Vec2> GetVertices() const;
 	const std::vector<p2Vec2> GetVerticesWorld(p2Vec2 position, float angle) const;
 
-	void GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle);
-
+	void GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle);
+	void GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle);
 private:
 	std::vector<p2Vec2> m_Vertices;
 };
