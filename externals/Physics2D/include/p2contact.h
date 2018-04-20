@@ -32,21 +32,30 @@ SOFTWARE.
 
 class p2ContactListener;
 
+struct p2Manifold {
+	p2Body *bodyA;
+	p2Body *bodyB;
+	float penetration;
+	p2Vec2 normal;
+
+	bool contact = false;
+};
+
 class SAT{
 public:
-	static bool CheckCollisionSAT(p2Contact* contact);
+	static bool CheckCollisionSAT(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionRects(p2Contact* contact);
+	static bool CheckCollisionRects(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionCircles(p2Contact* contact);
+	static bool CheckCollisionCircles(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionCircleRect(p2Contact* contact);
+	static bool CheckCollisionCircleRect(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionPolygons(p2Contact* contact);
+	static bool CheckCollisionPolygons(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionPolygonRect(p2Contact* contact);
+	static bool CheckCollisionPolygonRect(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionPolygonCircle(p2Contact* contact);
+	static bool CheckCollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
 private:
 	SAT();
 
@@ -65,7 +74,7 @@ public:
 
 	~p2Contact();
 
-	void Update(p2ContactListener& contactListener);
+	void Update(p2ContactListener& contactListener, p2Manifold& manifold);
 
 	p2Collider* GetColliderA() const;
 	p2Collider* GetColliderB() const;

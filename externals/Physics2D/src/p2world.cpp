@@ -62,14 +62,13 @@ void p2World::Step(float dt)
 		//Calcule des forces
 		//Gravitation
 		p2Vec2 forces;
-
+		dt = 1 / 60.0f;
 		if (body->GetType() == p2BodyType::DYNAMIC) {
-			forces += m_Gravity * body->GetGravityScale() * body->GetMass();
+			body->AddForce(m_Gravity * body->GetGravityScale());
 		}
 
 		//Calcule des accélérations
-		p2Vec2 acc = forces / body->GetMass();
-		body->SetLinearVelocity(acc * dt + body->GetLinearVelocity());
+		body->SetLinearVelocity((body->GetForce() * dt) + body->GetLinearVelocity());
 	}
 
 	//Find new Contact
@@ -81,9 +80,9 @@ void p2World::Step(float dt)
 	//Check existing contact AABB
 	m_ContactManager.Collide();
 
-	for each (p2Body* body in m_BodyList)
+	for (p2Body* body : m_BodyList)
 	{
-		body->SetPosition(body->GetPosition() += body->GetLinearVelocity() * dt);
+		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
 		body->ClearForce();
 	}
 }

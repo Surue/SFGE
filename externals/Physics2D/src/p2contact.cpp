@@ -48,10 +48,16 @@ p2Contact::~p2Contact()
 {
 }
 
-void p2Contact::Update(p2ContactListener& contactListener)
+void p2Contact::Update(p2ContactListener& contactListener, p2Manifold& manifold)
 {
 	bool wasTouching = isTouching;
-	isTouching = SAT::CheckCollisionSAT(this);
+	//Link both body in manifold
+	manifold.bodyA = m_ColliderA->GetBody();
+	manifold.bodyB = m_ColliderB->GetBody();
+
+	isTouching = SAT::CheckCollisionSAT(this, manifold); // Check if there is a collision or not
+
+	//If there is a collision check if need to make change to velocity;
 
 	//Tell contactListener if is entering ou exiting an collision
 	if (isTouching && !wasTouching) {
@@ -136,7 +142,30 @@ void p2ContactManager::FindNewContact(std::list<p2Body*>& bodies)
 void p2ContactManager::Solve()
 {
 	for (p2Contact* contact : m_ContactList) {
-		contact->Update(*m_ContactListener);
+		p2Manifold manifold;
+			
+		contact->Update(*m_ContactListener, manifold);
+
+		if (manifold.contact) {
+			p2Vec2 relativeVelocity = manifold.bodyB->GetLinearVelocity() - manifold.bodyA->GetLinearVelocity();
+
+			float velocityAlongNormal = p2Vec2::Dot(relativeVelocity, manifold.normal);
+
+			//Do not resolve if velocities is pulling appart both body
+			if(velocityAlongNormal > 0){
+			break;
+			}
+
+			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
+			
+			float impulseScalar = -(1 + restitution) * velocityAlongNormal;
+			impulseScalar /= 1 / manifold.bodyA->GetMass() + 1 / manifold.bodyB->GetMass();
+
+			p2Vec2 impulse = manifold.normal * impulseScalar;
+
+			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - impulse * (1 / manifold.bodyA->GetMass()) );
+			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + impulse * (1 / manifold.bodyB->GetMass()) );
+		}
 	}
 }
 
@@ -241,21 +270,21 @@ void p2ContactManager::Draw(p2Draw* debugDraw)
 	//Vector from center to corner
 }
 
-bool SAT::CheckCollisionSAT(p2Contact * contact)
+bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
 {
 	switch (contact->GetColliderA()->GetShapeType()) {
 	case p2ColliderDef::ShapeType::CIRCLE:
 		switch (contact->GetColliderB()->GetShapeType()) {
 		case p2ColliderDef::ShapeType::CIRCLE:
-			return CheckCollisionCircles(contact);
+			return CheckCollisionCircles(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::RECT:
-			return CheckCollisionCircleRect(contact);
+			return CheckCollisionCircleRect(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::POLYGON:
-			return CheckCollisionPolygonCircle(contact);
+			return CheckCollisionPolygonCircle(contact, manifold);
 			break;
 		}
 		break;
@@ -263,15 +292,15 @@ bool SAT::CheckCollisionSAT(p2Contact * contact)
 	case p2ColliderDef::ShapeType::RECT:
 		switch (contact->GetColliderB()->GetShapeType()) {
 		case p2ColliderDef::ShapeType::CIRCLE:
-			return CheckCollisionCircleRect(contact);
+			return CheckCollisionCircleRect(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::RECT:
-			return CheckCollisionRects(contact);
+			return CheckCollisionRects(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::POLYGON:
-			return CheckCollisionPolygonRect(contact);
+			return CheckCollisionPolygonRect(contact, manifold);
 			break;
 		}
 		break;
@@ -279,15 +308,15 @@ bool SAT::CheckCollisionSAT(p2Contact * contact)
 	case p2ColliderDef::ShapeType::POLYGON:
 		switch (contact->GetColliderB()->GetShapeType()) {
 		case p2ColliderDef::ShapeType::CIRCLE:
-			return CheckCollisionPolygonCircle(contact);
+			return CheckCollisionPolygonCircle(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::RECT:
-			return CheckCollisionPolygonRect(contact);
+			return CheckCollisionPolygonRect(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::POLYGON:
-			return CheckCollisionPolygons(contact);
+			return CheckCollisionPolygons(contact, manifold);
 			break;
 		}
 		break;
@@ -295,7 +324,7 @@ bool SAT::CheckCollisionSAT(p2Contact * contact)
 	return false;
 }
 
-bool SAT::CheckCollisionRects(p2Contact * contact)
+bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 {
 	//Get all vectors and normal from rectA
 	p2Vec2 vectorsA[4];
@@ -362,13 +391,27 @@ bool SAT::CheckCollisionRects(p2Contact * contact)
 	return !isSeparated;
 }
 
-bool SAT::CheckCollisionCircles(p2Contact * contact)
+bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 {
-	return (contact->GetColliderA()->GetPosition() - contact->GetColliderB()->GetPosition()).GetMagnitude() < 
-		static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius() + static_cast<p2CircleShape*>(contact->GetColliderB()->GetShape())->GetRadius();
+	p2Vec2 distance = (contact->GetColliderB()->GetPosition() - contact->GetColliderA()->GetPosition());
+
+	float radiusTotal = static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius() + static_cast<p2CircleShape*>(contact->GetColliderB()->GetShape())->GetRadius();
+
+	bool isTouching = distance.GetMagnitude() < radiusTotal;
+	
+	if (isTouching) {
+		manifold.penetration = radiusTotal - distance.GetMagnitude();
+		manifold.normal = distance.Normalized();
+		manifold.contact = true;
+
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
-bool SAT::CheckCollisionCircleRect(p2Contact * contact)
+bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -413,7 +456,7 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact)
 	return rect2circle.GetMagnitude() - max - circle->GetRadius() < 0 || rect2circle.GetMagnitude() < 0;
 }
 
-bool SAT::CheckCollisionPolygons(p2Contact * contact)
+bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -497,7 +540,7 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact)
 	return !isSeparated;
 }
 
-bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
+bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -590,7 +633,7 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact)
 	return !isSeparated;
 }
 
-bool SAT::CheckCollisionPolygonCircle(p2Contact * contact)
+bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 {
 	//TO DO cela ne fonctionne pas
 	p2Collider* colliderA = contact->GetColliderA();

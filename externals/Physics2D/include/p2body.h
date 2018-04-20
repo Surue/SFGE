@@ -65,7 +65,7 @@ public:
 
 	p2Vec2 GetLinearVelocity() const;
 	
-	void SetLinearVelocity(p2Vec2 velocity);
+	void SetLinearVelocity(p2Vec2& velocity);
 
 	float GetAngularVelocity() const;
 	
@@ -83,6 +83,7 @@ public:
 
 	void AddForce(p2Vec2 f);
 	void ClearForce();
+	p2Vec2 GetForce();
 
 	p2BodyType GetType() const;
 	float GetGravityScale() const;

@@ -71,3 +71,8 @@ p2Body * p2Collider::GetBody() const
 {
 	return m_Body;
 }
+
+float p2Collider::GetRestitution() const
+{
+	return restitution;
+}

@@ -37,7 +37,7 @@ struct p2ColliderDef
 {
 	void* userData;
 	p2Shape* shape;
-	float restitution;
+	float restitution = 0;
 	bool isSensor;
 	p2Vec2 offset = p2Vec2(0.0f, 0.0f);
 	enum ShapeType{
@@ -79,6 +79,8 @@ public:
 	p2ColliderDef::ShapeType GetShapeType() const;
 
 	p2Body* GetBody() const;
+
+	float GetRestitution() const;
 
 	p2AABB aabb;
 

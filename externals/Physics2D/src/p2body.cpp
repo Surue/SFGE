@@ -70,7 +70,7 @@ p2Vec2 p2Body::GetLinearVelocity() const
 	return linearVelocity;
 }
 
-void p2Body::SetLinearVelocity(p2Vec2 velocity)
+void p2Body::SetLinearVelocity(p2Vec2& velocity)
 {
 	linearVelocity = velocity;
 }
@@ -109,6 +109,11 @@ void p2Body::AddForce(p2Vec2 f)
 void p2Body::ClearForce()
 {
 	m_Force = p2Vec2(0, 0);
+}
+
+p2Vec2 p2Body::GetForce()
+{
+	return m_Force;
 }
 
 p2BodyType p2Body::GetType() const
