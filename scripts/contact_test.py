@@ -13,13 +13,13 @@ class ContactTest(Component):
             self.shape.set_fill_color(Color.Green)
 
     def on_collision_enter(self, collider):
-        pass
+        self.contact_nmb += 1
 
     def on_collision_exit(self, collider):
-        pass
+        self.contact_nmb -= 1
 
     def on_trigger_enter(self, collider):
-        pass
+        self.contact_nmb += 1
 
     def on_trigger_exit(self, collider):
-        pass
+        self.contact_nmb -= 1

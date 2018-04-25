@@ -20,6 +20,11 @@ class PlayerCharacterBasic(Component):
         #d *= self.speed
         if self.body:
             self.body.velocity = d
+    def on_collision_enter(self, collider):
+        pass
+
+    def on_collision_exit(self, collider):
+        pass
 
     def on_trigger_enter(self, collider):
         pass

@@ -372,6 +372,10 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 	//Get MinMax projection on each normal
 	bool isSeparated = false;
 
+	int minNormalIndex = 0;
+	float mtv = std::numeric_limits<float>::max();
+	p2Vec2 normalCollision;
+
 	for (int i = 0; i < 2; i++) {
 		p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsA[i]);
 		p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsA[i]);
@@ -382,6 +386,17 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 		isSeparated = maxA < minB || maxB < minA;
 		if (isSeparated) {
 			break;
+		}
+		else {
+			if (mtv > maxA - minB) {
+				mtv = maxA - minB;
+				normalCollision = normalsA[i];
+			}
+
+			if (mtv > maxB - minA) {
+				mtv = maxB - minA;
+				normalCollision = normalsA[i];
+			}
 		}
 	}
 	if (!isSeparated) {
@@ -396,7 +411,26 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 			if (isSeparated) {
 				break;
 			}
+			else {
+				if (mtv > maxA - minB) {
+					mtv = maxA - minB;
+					normalCollision = normalsB[i];
+				}
+
+				if (mtv > maxB - minA) {
+					mtv = maxB - minA;
+					normalCollision = normalsB[i];
+				}
+			}
 		}
+	}
+
+	if (!isSeparated) {
+		std::cout << "MTV = " << mtv << "\n";
+		manifold.penetration = mtv;
+		manifold.contact = true;
+		manifold.normal = normalCollision;
+		normalCollision.Show();
 	}
 
 	return !isSeparated;
