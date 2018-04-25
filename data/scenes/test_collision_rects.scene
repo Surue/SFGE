@@ -12,44 +12,48 @@
                   "angle": 0.0
               },
               {
-                  "name": "Circle Shape Component",
+                  "name": "Box Shape Component",
                   "type": 3,
-                  "shape_type": 1,
-                  "radius": 50
+                  "shape_type": 2,
+                  "size": [100,100]
               },
               {
                   "name": "Rigidbody",
                   "type": 5,
                   "body_type": 2,
-                  "gravity_scale": 1
+                  "gravity_scale": 0
               },
               {
-                  "name": "BCircleCollider",
+                  "name": "BoxCollider",
                   "type": 6,
-                  "collider_type": 1,
-                  "radius": 50,
+                  "collider_type": 2,
+                  "size": [100,100],
                   "sensor": false
               },
               {
                   "type": 4,
                   "script_path": "scripts/contact_test.py"
-              }
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/player_character_basic.py"
+			  }
           ]
       },
 	  {
-          "name": "Circle1",
+          "name": "CBox1",
           "components": [
               {
                   "type": 1,
                   "position": [300, 500],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
-                  "name": "Rect Shape Component",
+                  "name": "Box Shape Component",
                   "type": 3,
                   "shape_type": 2,
-                  "size": [150, 150]
+                  "size": [150,150]
               },
               {
                   "name": "Rigidbody",
@@ -67,7 +71,11 @@
               {
                   "type": 4,
                   "script_path": "scripts/contact_test.py"
-              }
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/transform_rotation.py"
+			  }
           ]
       },
 	  {

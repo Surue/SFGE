@@ -49,7 +49,7 @@ struct p2Mat22
 
 	//function
 	/**
-	* \brief generate tthe rotation matrix with the given angle (in radian)
+	* \brief generate tthe rotation matrix with the given angle (in radian). Counter clock wise
 	*/
 	static const p2Mat22 RotationMatrix(float angle);
 	/**

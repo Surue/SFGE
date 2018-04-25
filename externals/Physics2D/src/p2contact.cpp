@@ -431,6 +431,7 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	p2Vec2 rectPosition;
 	float rectAngle;
 	p2Vec2 rectExtends;
+
 	p2CircleShape* circle;
 	p2Vec2 circlePosition;
 
@@ -454,88 +455,53 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 		circlePosition = colliderA->GetPosition();
 	}
 
-	p2Vec2 vectorsRect[4];
-	rect->GetVectorsCenter(vectorsRect, rectPosition, rectAngle);
-
 	p2Vec2 rect2circle = circlePosition - rectPosition;
 
-	float max = p2Vec2::Dot(vectorsRect[0] - rectPosition, rect2circle.Normalized());
-	int maxIndex = 0;
-
-	for (int i = 1; i < 4; i++) {
-		float curProj = p2Vec2::Dot(vectorsRect[i] - rectPosition, rect2circle.Normalized());
-
-		if (max < curProj) {
-			max = curProj;
-			maxIndex = i;
-		}
-	}
-
-	if (rect2circle.GetMagnitude() - max - circle->GetRadius() < 0 || rect2circle.GetMagnitude() < 0) {
-
-		p2Mat22 matrixRotation1 = p2Mat22(p2Vec2(cos(rectAngle), -sin(rectAngle)),
-			p2Vec2(sin(rectAngle), cos(rectAngle)));
-
-		p2Vec2 unrotedCircle = (matrixRotation1 * rect2circle) + rectPosition;
+	p2Vec2 unrotedCircle = (p2Mat22::RotationMatrix(rectAngle) * rect2circle) + rectPosition;
 		
-		p2Vec2 closestPoint;
+	p2Vec2 closestPoint;
 
-		//Clamp
-		if (unrotedCircle.x > rectPosition.x + rectExtends.x) {
-			closestPoint.x = rectPosition.x + rectExtends.x;
-		} else if (unrotedCircle.x < rectPosition.x - rectExtends.x) {
-			closestPoint.x = rectPosition.x - rectExtends.x;
-		}
-		else {
-			closestPoint.x = unrotedCircle.x;
-		}
-
-		if (unrotedCircle.y > rectPosition.y + rectExtends.y) {
-			closestPoint.y = rectPosition.y + rectExtends.y;
-		}
-		else if (unrotedCircle.y < rectPosition.y - rectExtends.y) {
-			closestPoint.y = rectPosition.y -  rectExtends.y;
-		}
-		else {
-			closestPoint.y = unrotedCircle.y;
-		}
-
-		//If center of circle is inside, clamp to the edge
-		if (unrotedCircle == closestPoint) {
-			if (abs(unrotedCircle.x) > abs(unrotedCircle.y)) {
-				// Clamp to closest extent
-				if (closestPoint.x > 0) {
-					closestPoint.x = rectPosition.x + rectExtends.x;
-				}
-				else {
-					closestPoint.x = rectPosition.x - rectExtends.x;
-				}
-			}
-			else {
-				// Clamp to closest extent
-				if (closestPoint.y > 0)
-					closestPoint.y = rectPosition.y + rectExtends.y;
-				else
-					closestPoint.y = rectPosition.y - rectExtends.y;
-			}
-		}
-
-		p2Mat22 matrixRotation2 = p2Mat22(p2Vec2(cos(-rectAngle), -sin(-rectAngle)),
-			p2Vec2(sin(-rectAngle), cos(-rectAngle)));
-
-		closestPoint = matrixRotation2 * (closestPoint - rectPosition) + rectPosition;
-
-		manifold.closetPoint = closestPoint;
-		//TO REMOVE
-
-		manifold.normal = (manifold.closetPoint - circlePosition).Normalized() * (-1);
-		manifold.penetration = circle->GetRadius() - manifold.normal.GetMagnitude();
-		manifold.contact = true;
-		return true;
+	//Clamp to don't be futher than the rect
+	if (unrotedCircle.x > rectPosition.x + rectExtends.x) {
+		closestPoint.x = rectPosition.x + rectExtends.x;
+	} else if (unrotedCircle.x < rectPosition.x - rectExtends.x) {
+		closestPoint.x = rectPosition.x - rectExtends.x;
+	} else {
+		closestPoint.x = unrotedCircle.x;
 	}
-	else {
-		return false;
+
+	if (unrotedCircle.y > rectPosition.y + rectExtends.y) {
+		closestPoint.y = rectPosition.y + rectExtends.y;
+	} else if (unrotedCircle.y < rectPosition.y - rectExtends.y) {
+		closestPoint.y = rectPosition.y -  rectExtends.y;
+	} else {
+		closestPoint.y = unrotedCircle.y;
 	}
+
+	//If center of circle is inside, clamp to the edge
+	if (unrotedCircle == closestPoint) {
+		if (abs(unrotedCircle.x - rectPosition.x) > abs(unrotedCircle.y - rectPosition.y)) {
+			if (closestPoint.x > rectPosition.x)
+				closestPoint.x = rectPosition.x + rectExtends.x;
+			else 
+				closestPoint.x = rectPosition.x - rectExtends.x;
+		} else {
+			if (closestPoint.y > rectPosition.y)
+				closestPoint.y = rectPosition.y + rectExtends.y;
+			else
+				closestPoint.y = rectPosition.y - rectExtends.y;
+		}
+	}
+
+	closestPoint = p2Mat22::RotationMatrix(-rectAngle) * (closestPoint - rectPosition) + rectPosition;
+
+	manifold.closetPoint = closestPoint; //TO REMOVE
+
+	manifold.normal = (manifold.closetPoint - circlePosition).Normalized() * (-1);
+	manifold.penetration = circle->GetRadius() - manifold.normal.GetMagnitude();
+	manifold.contact = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius();
+
+	return manifold.contact;
 }
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)

@@ -86,8 +86,8 @@ p2Mat22 p2Mat22::operator*=(p2Mat22 m)
 
 const p2Mat22 p2Mat22::RotationMatrix(float angle)
 {
-	return p2Mat22(p2Vec2(cos(angle), sin(angle)),
-					  p2Vec2(-sin(angle), cos(angle)));
+	return p2Mat22(p2Vec2(cos(angle), -sin(angle)),
+					  p2Vec2(sin(angle), cos(angle)));
 }
 
 p2Mat22 p2Mat22::Invert()
