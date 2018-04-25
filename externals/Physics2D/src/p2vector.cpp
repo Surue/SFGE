@@ -85,6 +85,11 @@ p2Vec2 p2Vec2::operator*=(float f)
 	return *this = *this * f;
 }
 
+bool p2Vec2::operator==(const p2Vec2 v)
+{
+	return x == v.x && y == v.y;
+}
+
 float p2Vec2::Dot(const p2Vec2 v1, const p2Vec2 v2)
 {
 	return (v1.x * v2.x) + (v1.y * v2.y);
@@ -95,6 +100,17 @@ p2Vec3 p2Vec2::Cross(const p2Vec2 v1, const p2Vec2 v2)
 	return p2Vec3(0,
 				  0,
 				  (v1.x * v2.y) - (v1.y * v2.x));
+}
+
+float p2Vec2::AnglesBetween(const p2Vec2 v1, const p2Vec2 v2)
+{
+	return acos(Dot(v1, v2) / (v1.GetMagnitude() * v2.GetMagnitude()));
+}
+
+p2Vec2 p2Vec2::Proj(const p2Vec2 v1, const p2Vec2 v2)
+{
+	p2Vec2 u = v2 / v2.GetMagnitude();
+	return u * Dot(v1, u);
 }
 
 float p2Vec2::GetMagnitude() const
@@ -201,7 +217,7 @@ p2Vec3 p2Vec3::Refl(const p2Vec3 inDir, const p2Vec3 normal)
 
 float p2Vec3::AnglesBetween(const p2Vec3 v1, const p2Vec3 v2)
 {
-	return acos(Dot(v1, v2) / (v1.GetMagnitude() * v2.GetMagnitude()))* M_PI/ 180;
+	return acos(Dot(v1, v2) / (v1.GetMagnitude() * v2.GetMagnitude()));
 }
 
 float p2Vec3::GetMagnitude() const

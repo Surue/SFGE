@@ -103,6 +103,8 @@ public:
 
 	const p2AABB* GetAABB() const;
 
+	p2World* GetWorld();
+
 private:
 	p2Vec2 position;
 	p2Vec2 linearVelocity;

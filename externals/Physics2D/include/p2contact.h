@@ -38,6 +38,8 @@ struct p2Manifold {
 	float penetration;
 	p2Vec2 normal;
 
+	p2Vec2 closetPoint; //TO REMOVE
+
 	bool contact = false;
 };
 
@@ -131,5 +133,7 @@ private:
 	p2ContactListener* m_ContactListener;
 
 	p2QuadTree m_QuadTree;
+
+	std::list<p2Vec2> PointsToDraw; //TO REMOVE
 };
 #endif

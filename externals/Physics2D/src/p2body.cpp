@@ -189,3 +189,8 @@ const p2AABB * p2Body::GetAABB() const
 {
 	return &aabb;
 }
+
+p2World * p2Body::GetWorld()
+{
+	return world;
+}
