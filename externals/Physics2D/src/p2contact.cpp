@@ -172,12 +172,12 @@ void p2ContactManager::Solve()
 			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
 			
 			float impulseScalar = -(1 + restitution) * velocityAlongNormal;
-			impulseScalar /= 1 / manifold.bodyA->GetMass() + 1 / manifold.bodyB->GetMass();
+			impulseScalar /= manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass();
 
 			p2Vec2 impulse = manifold.normal * impulseScalar;
 
-			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - impulse * (1 / manifold.bodyA->GetMass()) );
-			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + impulse * (1 / manifold.bodyB->GetMass()) );
+			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - impulse * (manifold.bodyA->GetInvMass()) );
+			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + impulse * (manifold.bodyB->GetInvMass()) );
 		}
 	}
 }

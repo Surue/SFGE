@@ -49,6 +49,12 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	gravityScale = bodyDef.gravityScale;
 
 	m_Mass = bodyDef.mass;
+	if (bodyDef.mass == 0) {
+		m_InvMass = 0;
+	}
+	else {
+		m_InvMass = 1 / m_Mass;
+	}
 
 	m_Angle = 0.0f;
 }
@@ -129,6 +135,11 @@ float p2Body::GetGravityScale() const
 float p2Body::GetMass() const
 {
 	return m_Mass;
+}
+
+float p2Body::GetInvMass() const
+{
+	return m_InvMass;
 }
 
 p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
