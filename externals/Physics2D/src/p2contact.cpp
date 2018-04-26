@@ -598,6 +598,9 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 	//Get MinMax projection on each normal
 	bool isSeparated = false;
 
+	p2Vec2 normalMinimal;
+	float mtv = std::numeric_limits<float>::max();
+
 	for (int i = 0; i < polygonA->GetVerticesCount(); i++) {
 		p2Vec2 minMaxA = GetMinMaxProj(polygonAVectors, polygonANormals[i]);
 		p2Vec2 minMaxB = GetMinMaxProj(polygonBVectors, polygonANormals[i]);
@@ -608,6 +611,15 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 		isSeparated = maxA < minB || maxB < minA;
 		if (isSeparated) {
 			break;
+		}
+
+		if (mtv > maxA - minB) {
+			mtv = maxA - minB;
+			normalMinimal = polygonANormals[i];
+		}
+		else if (mtv > maxB - minA) {
+			mtv = maxB - minA;
+			normalMinimal = polygonANormals[i] * -1;
 		}
 	}
 	if (!isSeparated) {
@@ -622,7 +634,22 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 			if (isSeparated) {
 				break;
 			}
+
+			if (mtv > maxA - minB) {
+				mtv = maxA - minB;
+				normalMinimal = polygonBNormals[i];
+			}
+			else if (mtv > maxB - minA) {
+				mtv = maxB - minA;
+				normalMinimal = polygonBNormals[i] * -1;
+			}
 		}
+	}
+
+	if (!isSeparated) {
+		manifold.penetration = mtv;
+		manifold.normal = normalMinimal;
+		manifold.contact = true;
 	}
 
 	return !isSeparated;
@@ -691,7 +718,10 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 	//Get MinMax projection on each normal
 	bool isSeparated = false;
 
-	for (int i = 0; i < 2; i++) {
+	p2Vec2 normalMinimal;
+	float mtv = std::numeric_limits<float>::max();
+
+	for (int i = 0; i < 4; i++) {
 		p2Vec2 minMaxA = GetMinMaxProj(rectVectors, 4, rectNormals[i]);
 		p2Vec2 minMaxB = GetMinMaxProj(polygonVectors, rectNormals[i]);
 
@@ -701,6 +731,15 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 		isSeparated = maxA < minB || maxB < minA;
 		if (isSeparated) {
 			break;
+		}
+
+		if (mtv > maxA - minB) {
+			mtv = maxA - minB;
+			normalMinimal = rectNormals[i];
+		}
+		else if (mtv > maxB - minA) {
+			mtv = maxB - minA;
+			normalMinimal = rectNormals[i] * -1;
 		}
 	}
 	if (!isSeparated) {
@@ -712,10 +751,26 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 			float minB = minMaxB.x; float maxB = minMaxB.y;
 
 			isSeparated = maxA < minB || maxB < minA;
+
 			if (isSeparated) {
 				break;
 			}
+
+			if (mtv > maxA - minB) {
+				mtv = maxA - minB;
+				normalMinimal = polygonNormals[i];
+			}
+			else if (mtv > maxB - minA) {
+				mtv = maxB - minA;
+				normalMinimal = polygonNormals[i] * -1;
+			}
 		}
+	}
+
+	if (!isSeparated) {
+		manifold.penetration = mtv;
+		manifold.normal = normalMinimal;
+		manifold.contact = true;
 	}
 
 	return !isSeparated;
