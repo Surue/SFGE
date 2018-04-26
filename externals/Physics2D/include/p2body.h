@@ -88,6 +88,7 @@ public:
 	p2BodyType GetType() const;
 	float GetGravityScale() const;
 	float GetMass() const;
+	float GetInvMass() const;
 	/**
 	* \brief Factory method creating a p2Collider
 	* \param colliderDef p2ColliderDef definition of the collider
@@ -116,6 +117,7 @@ private:
 	p2BodyType type;
 	float gravityScale;
 	float m_Mass;
+	float m_InvMass;
 
 	float m_Angle;
 

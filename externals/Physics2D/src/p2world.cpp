@@ -69,6 +69,8 @@ void p2World::Step(float dt)
 
 		//Calcule des accélérations
 		body->SetLinearVelocity((body->GetForce() * dt) + body->GetLinearVelocity());
+
+		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
 	}
 
 	//Find new Contact
@@ -82,7 +84,6 @@ void p2World::Step(float dt)
 
 	for (p2Body* body : m_BodyList)
 	{
-		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
 		body->ClearForce();
 	}
 }
