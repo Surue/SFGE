@@ -369,10 +369,15 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 
 	shapeB->GetNormals(normalsB, vectorsVerticesB, 4);
 
+	float mtv = std::numeric_limits<float>::max();
+	p2Vec2 normalMinimal;
+
 	//Get MinMax projection on each normal
 	bool isSeparated = false;
 
-	for (int i = 0; i < 2; i++) {
+	bool chooseA = false;
+
+	for (int i = 0; i < 4; i++) { //Force to go through all to have the right normal
 		p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsA[i]);
 		p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsA[i]);
 
@@ -383,9 +388,19 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 		if (isSeparated) {
 			break;
 		}
+		else {
+			if (mtv > maxA - minB) {
+				mtv = maxA - minB;
+				normalMinimal = normalsA[i];
+			}
+			else if(mtv > maxB - minA){
+				mtv = maxB - minA;
+				normalMinimal = normalsA[i] * -1;
+			}
+		}
 	}
 	if (!isSeparated) {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 4; i++) {
 			p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsB[i]);
 			p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsB[i]);
 
@@ -396,7 +411,23 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 			if (isSeparated) {
 				break;
 			}
+			else {
+				if (mtv > maxA - minB) {
+					mtv = maxA - minB;
+					normalMinimal = normalsB[i];
+				}
+				else if (mtv > maxB - minA) {
+					mtv = maxB - minA;
+					normalMinimal = normalsB[i] * -1;
+				}
+			}
 		}
+	}
+
+	if (!isSeparated) {
+		manifold.penetration = mtv;
+		manifold.normal = normalMinimal;
+		manifold.contact = true;
 	}
 
 	return !isSeparated;
