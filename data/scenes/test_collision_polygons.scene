@@ -1,3 +1,4 @@
+
 {
   "name": "ContactTestScene",
   "game_objects": [
@@ -6,15 +7,20 @@
           "components": [
               {
                   "type": 1,
-                  "position": [200, 100],
+                  "position": [320, 100],
                   "scale" : [1.0,1.0],
-                  "angle": 0.0
+                  "angle": 90.0
               },
-              {
-                  "name": "Circle Shape Component",
+			  {
+                  "name": "Polygon Shape Component",
                   "type": 3,
-                  "shape_type": 1,
-                  "radius": 50
+                  "shape_type": 3,
+                  "point_count": 5,
+				  "point0": [0, -100],
+				  "point1": [-95, -31],
+				  "point2": [-59, 81],
+				  "point3": [59, 81],
+				  "point4": [95, -31]
               },
               {
                   "name": "Rigidbody",
@@ -22,33 +28,45 @@
                   "body_type": 2,
                   "gravity_scale": 1
               },
-              {
-                  "name": "BCircleCollider",
+			  {
+                  "name": "PolygonCollider",
                   "type": 6,
-                  "collider_type": 1,
-                  "radius": 50,
-                  "sensor": false
+                  "collider_type": 4,
+                  "point_count": 5,
+				  "point0": [0, -100],
+				  "point1": [-95, -31],
+				  "point2": [-59, 81],
+				  "point3": [59, 81],
+				  "point4": [95, -31],
+                  "sensor": true
               },
               {
                   "type": 4,
                   "script_path": "scripts/contact_test.py"
+              },
+			  {
+                  "type": 4,
+                  "script_path": "scripts/transform_rotation.py"
               }
           ]
       },
 	  {
-          "name": "Circle1",
+          "name": "Body1",
           "components": [
               {
                   "type": 1,
-                  "position": [300, 500],
+                  "position": [200, 400],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 90.0
               },
-              {
-                  "name": "Rect Shape Component",
+			  {
+                  "name": "Polygon Shape Component",
                   "type": 3,
-                  "shape_type": 2,
-                  "size": [150, 150]
+                  "shape_type": 3,
+                  "point_count": 3,
+				  "point0": [50, 0],
+				  "point1": [100, 50],
+				  "point2": [100, 100]
               },
               {
                   "name": "Rigidbody",
@@ -56,12 +74,15 @@
                   "body_type": 2,
                   "gravity_scale": 0
               },
-              {
-                  "name": "BoxCollider",
+			  {
+                  "name": "PolygonCollider",
                   "type": 6,
-                  "collider_type": 2,
-                  "size": [150,150],
-                  "sensor": false
+                  "collider_type": 4,
+                  "point_count": 3,
+				  "point0": [50, 0],
+				  "point1": [100, 50],
+				  "point2": [100, 100],
+                  "sensor": true
               },
               {
                   "type": 4,
