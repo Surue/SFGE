@@ -723,7 +723,7 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 
 bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 {
-	//TO DO cela ne fonctionne pas
+	//Variables
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
 
@@ -733,7 +733,7 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	p2CircleShape* circle;
 	p2Vec2 circlePosition;
 
-
+	//Associate variables
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 		polygon = static_cast<p2PolygonShape*>(colliderA->GetShape());
 		polygonPosition = colliderA->GetPosition();
@@ -784,6 +784,9 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 
 	polygonNormals.push_back(normal);
 
+	p2Vec2 normalMinimal;
+	float mtv = std::numeric_limits<float>::max();
+
 	//Proj
 	bool isSeparated = false;
 	for (int i = 0; i < polygonNormals.size(); i++) {
@@ -795,9 +798,25 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 		float maxB = p2Vec2::Dot(circlePosition, polygonNormals[i]) + circle->GetRadius();
 
 		isSeparated = maxA < minB || maxB < minA;
+
 		if (isSeparated) {
 			break;
 		}
+
+		if (mtv > maxA - minB) {
+			mtv = maxA - minB;
+			normalMinimal = polygonNormals[i] * -1;
+		}
+		else if (mtv > maxB - minA) {
+			mtv = maxB - minA;
+			normalMinimal = polygonNormals[i];
+		}
+	}
+
+	if (!isSeparated) {
+		manifold.penetration = mtv;
+		manifold.normal = normalMinimal;
+		manifold.contact = true;
 	}
 
 	return !isSeparated;
