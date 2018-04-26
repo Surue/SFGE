@@ -462,6 +462,7 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 
 bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 {
+	//Variable
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
 
@@ -473,7 +474,7 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	p2CircleShape* circle;
 	p2Vec2 circlePosition;
 
-
+	//Associate variable
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
 		rect = static_cast<p2RectShape*>(colliderA->GetShape());
 		rectPosition = colliderA->GetPosition();
@@ -498,6 +499,8 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	p2Vec2 unrotedCircle = (p2Mat22::RotationMatrix(rectAngle) * rect2circle) + rectPosition;
 		
 	p2Vec2 closestPoint;
+
+	//Look for closest point on the rect to the circle
 
 	//Clamp to don't be futher than the rect
 	if (unrotedCircle.x > rectPosition.x + rectExtends.x) {
@@ -534,7 +537,6 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	closestPoint = p2Mat22::RotationMatrix(-rectAngle) * (closestPoint - rectPosition) + rectPosition;
 
 	manifold.closetPoint = closestPoint; //TO REMOVE
-
 	manifold.normal = (manifold.closetPoint - circlePosition).Normalized() * (-1);
 	manifold.penetration = circle->GetRadius() - (manifold.closetPoint - circlePosition).GetMagnitude();
 	manifold.contact = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius();

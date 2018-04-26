@@ -139,14 +139,14 @@ p2Shape * p2PolygonShape::Clone() const
 void p2PolygonShape::ComputeAABB(p2AABB * aabb, p2Vec2 position, float angle) const
 {
 	float minX, maxX, minY, maxY;
-	minX = ((p2Mat22::RotationMatrix(angle) * m_Vertices[0]) + position).x;
+	minX = ((p2Mat22::RotationMatrix(-angle) * m_Vertices[0]) + position).x;
 	maxX = minX;
 
-	minY = ((p2Mat22::RotationMatrix(angle) * m_Vertices[0]) + position).y;
+	minY = ((p2Mat22::RotationMatrix(-angle) * m_Vertices[0]) + position).y;
 	maxY = minY;
 
 	for (int i = 1; i < m_Vertices.size(); i++) {
-		p2Vec2 pos = (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+		p2Vec2 pos = (p2Mat22::RotationMatrix(-angle) * m_Vertices[i]) + position;
 		if (pos.x > maxX) maxX = pos.x;
 		if (pos.x < minX) minX = pos.x;
 		if (pos.y > maxY) maxY = pos.y;
@@ -188,7 +188,7 @@ const std::vector<p2Vec2> p2PolygonShape::GetVerticesWorld(p2Vec2 position, floa
 	worldCoords.resize(m_Vertices.size());
 
 	for (int i = 0; i < m_Vertices.size(); i++) {
-		worldCoords[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position;
+		worldCoords[i] = (p2Mat22::RotationMatrix(-angle) * m_Vertices[i]) + position;
 	}
 
 	return worldCoords;
@@ -197,10 +197,10 @@ const std::vector<p2Vec2> p2PolygonShape::GetVerticesWorld(p2Vec2 position, floa
 void p2PolygonShape::GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle)
 {
 	for (int i = 0; i < m_Vertices.size() - 1; i++) {
-		vectors[i] = (p2Mat22::RotationMatrix(angle) * m_Vertices[(i + 1)]) + position - ((p2Mat22::RotationMatrix(angle) * m_Vertices[i]) + position);
+		vectors[i] = (p2Mat22::RotationMatrix(-angle) * m_Vertices[(i + 1)]) + position - ((p2Mat22::RotationMatrix(-angle) * m_Vertices[i]) + position);
 	}
 
-	vectors[m_Vertices.size()-1] = (p2Mat22::RotationMatrix(angle) * m_Vertices[0]) + position - ((p2Mat22::RotationMatrix(angle) * m_Vertices[m_Vertices.size() - 1]) + position);
+	vectors[m_Vertices.size()-1] = (p2Mat22::RotationMatrix(-angle) * m_Vertices[0]) + position - ((p2Mat22::RotationMatrix(-angle) * m_Vertices[m_Vertices.size() - 1]) + position);
 }
 
 void p2PolygonShape::GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle)

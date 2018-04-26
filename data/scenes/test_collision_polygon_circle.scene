@@ -1,3 +1,4 @@
+
 {
   "name": "ContactTestScene",
   "game_objects": [
@@ -6,32 +7,46 @@
           "components": [
               {
                   "type": 1,
-                  "position": [200, 100],
+                  "position": [100, 100],
                   "scale" : [1.0,1.0],
                   "angle": 0.0
               },
-              {
-                  "name": "Circle Shape Component",
+			  {
+                  "name": "Polygon Shape Component",
                   "type": 3,
-                  "shape_type": 1,
-                  "radius": 50
+                  "shape_type": 3,
+                  "point_count": 3,
+				  "point0": [100, 100],
+				  "point1": [100, 50],
+				  "point2": [50, 0]
               },
               {
                   "name": "Rigidbody",
                   "type": 5,
                   "body_type": 2,
-                  "gravity_scale": 1
+                  "gravity_scale": 0
               },
-              {
-                  "name": "BCircleCollider",
+			  {
+                  "name": "PolygonCollider",
                   "type": 6,
-                  "collider_type": 1,
-                  "radius": 50,
-                  "sensor": false
+                  "collider_type": 4,
+                  "point_count": 3,
+				  "point0": [100, 100],
+				  "point1": [100, 50],
+				  "point2": [50, 0],
+                  "sensor": true
               },
               {
                   "type": 4,
                   "script_path": "scripts/contact_test.py"
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/player_character_basic.py"
+              },
+			  {
+                  "type": 4,
+                  "script_path": "scripts/transform_rotation.py"
               }
           ]
       },
@@ -42,13 +57,13 @@
                   "type": 1,
                   "position": [300, 500],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
-                  "name": "Rect Shape Component",
+                  "name": "Circle Shape Component",
                   "type": 3,
-                  "shape_type": 2,
-                  "size": [150, 150]
+                  "shape_type": 1,
+                  "radius": 75
               },
               {
                   "name": "Rigidbody",
@@ -57,16 +72,20 @@
                   "gravity_scale": 0
               },
               {
-                  "name": "BoxCollider",
+                  "name": "BCircleCollider",
                   "type": 6,
-                  "collider_type": 2,
-                  "size": [150,150],
-                  "sensor": false
+                  "collider_type": 1,
+                  "radius": 75,
+                  "sensor": true
               },
               {
                   "type": 4,
                   "script_path": "scripts/contact_test.py"
-              }
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/transform_rotation.py"
+			  }
           ]
       },
 	  {
