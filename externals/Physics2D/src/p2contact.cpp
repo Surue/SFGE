@@ -149,6 +149,13 @@ void p2ContactManager::Solve()
 		contact->Update(*m_ContactListener, manifold);
 
 		if (manifold.contact) {
+			//Change position to not be intersecting 
+
+			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (manifold.normal * (manifold.penetration / 2)));
+			manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (manifold.normal * (manifold.penetration / 2)));
+
+			//Compute Impulse
+
 			//TO REMOVE
 			PointsToDraw.push_back(manifold.closetPoint);
 			//TO REMOVE
@@ -529,7 +536,7 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	manifold.closetPoint = closestPoint; //TO REMOVE
 
 	manifold.normal = (manifold.closetPoint - circlePosition).Normalized() * (-1);
-	manifold.penetration = circle->GetRadius() - manifold.normal.GetMagnitude();
+	manifold.penetration = circle->GetRadius() - (manifold.closetPoint - circlePosition).GetMagnitude();
 	manifold.contact = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius();
 
 	return manifold.contact;
