@@ -209,24 +209,24 @@ void p2ContactManager::Solve()
 			break;
 			}
 
+			//Compute restitution
 			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
 			
-			float impulseScalar = -(1 + restitution) * velocityAlongNormal;
-			impulseScalar /= manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass();
+			float impulseScalar = (-1) *(1 + restitution) * velocityAlongNormal;
+			impulseScalar /= (manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass());
 
 			p2Vec2 impulse = manifold.normal * impulseScalar;
-
 
 			//Change position to not be in collision anymore and velocity only if body is dynamic
 
 			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
-				manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (manifold.normal * (manifold.penetration )));
-				manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - impulse * (manifold.bodyA->GetInvMass()));
+				manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (manifold.normal * (manifold.penetration / 2)));
+				manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - (impulse * (manifold.bodyA->GetInvMass())));
 			}
 
 			if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
-				manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (manifold.normal * (manifold.penetration )));
-				manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + impulse * (manifold.bodyB->GetInvMass()));
+				manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (manifold.normal * (manifold.penetration / 2)));
+				manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + (impulse * (manifold.bodyB->GetInvMass())));
 			}
 		}
 	}
@@ -586,12 +586,12 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 
 	closestPoint = p2Mat22::RotationMatrix(-rectAngle) * (closestPoint - rectPosition) + rectPosition;
 
-	manifold.closetPoint = closestPoint; //TO REMOVE
-	manifold.normal = (manifold.closetPoint - circlePosition).Normalized() * (-1);
+	manifold.closetPoint = closestPoint;
+	manifold.normal = (circlePosition - manifold.closetPoint).Normalized();
 	manifold.penetration = circle->GetRadius() - (manifold.closetPoint - circlePosition).GetMagnitude();
 	manifold.ShouldResolve = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius() && contact->ShouldResolveCollision();
 
-	return manifold.ShouldResolve;
+	return (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius();
 }
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
