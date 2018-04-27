@@ -86,6 +86,48 @@ bool p2Contact::OverlapAABB() const
 	return m_ColliderA->aabb.Overlap(&m_ColliderB->aabb);
 }
 
+bool p2Contact::CheckIfCollision(p2Contact& contact)
+{
+	if (contact.m_ColliderA->GetBody()->GetType() == p2BodyType::DYNAMIC){
+		return true;
+	}
+
+	if (contact.m_ColliderA->GetBody()->GetType() == p2BodyType::KINEMATIC) {
+		if (contact.m_ColliderA->IsSensor() || (contact.m_ColliderB->IsSensor() && contact.m_ColliderB->GetBody()->GetType() != p2BodyType::STATIC)) {
+			return true;
+		}
+	}
+
+	if (contact.m_ColliderB->GetBody()->GetType() == p2BodyType::DYNAMIC) {
+		return true;
+	}
+
+	if (contact.m_ColliderB->GetBody()->GetType() == p2BodyType::KINEMATIC) {
+		if (contact.m_ColliderB->IsSensor() || (contact.m_ColliderA->IsSensor() && contact.m_ColliderA->GetBody()->GetType() != p2BodyType::STATIC)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool p2Contact::ShouldResolveCollision() const
+{
+	if (m_ColliderA->GetBody()->GetType() == p2BodyType::DYNAMIC && !m_ColliderA->IsSensor()) {
+		if (!m_ColliderB->IsSensor()) {
+			return true;
+		}
+	}
+
+	if (m_ColliderB->GetBody()->GetType() == p2BodyType::DYNAMIC && !m_ColliderB->IsSensor()) {
+		if (!m_ColliderA->IsSensor()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool p2Contact::isOnContact()
 {
 	return isTouching;
@@ -137,7 +179,9 @@ void p2ContactManager::FindNewContact(std::list<p2Body*>& bodies)
 	m_QuadTree.Retrieve(allContact);
 	
 	for(p2Contact contact : allContact) {
-		CreateContact(contact.GetColliderA(), contact.GetColliderB());
+		if (p2Contact::CheckIfCollision(contact)) {
+			CreateContact(contact.GetColliderA(), contact.GetColliderB());
+		}
 	}
 }
 
@@ -148,12 +192,8 @@ void p2ContactManager::Solve()
 			
 		contact->Update(*m_ContactListener, manifold);
 
-		if (manifold.contact) {
-			//Change position to not be intersecting 
-
-			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (manifold.normal * (manifold.penetration / 2)));
-			manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (manifold.normal * (manifold.penetration / 2)));
-
+		//Correction collision
+		if (manifold.ShouldResolve) {
 			//Compute Impulse
 
 			//TO REMOVE
@@ -176,8 +216,18 @@ void p2ContactManager::Solve()
 
 			p2Vec2 impulse = manifold.normal * impulseScalar;
 
-			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - impulse * (manifold.bodyA->GetInvMass()) );
-			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + impulse * (manifold.bodyB->GetInvMass()) );
+
+			//Change position to not be in collision anymore and velocity only if body is dynamic
+
+			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
+				manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (manifold.normal * (manifold.penetration )));
+				manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - impulse * (manifold.bodyA->GetInvMass()));
+			}
+
+			if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
+				manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (manifold.normal * (manifold.penetration )));
+				manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + impulse * (manifold.bodyB->GetInvMass()));
+			}
 		}
 	}
 }
@@ -434,7 +484,7 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 	if (!isSeparated) {
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
-		manifold.contact = true;
+		manifold.ShouldResolve = contact->ShouldResolveCollision();
 	}
 
 	return !isSeparated;
@@ -451,7 +501,7 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 	if (isTouching) {
 		manifold.penetration = radiusTotal - distance.GetMagnitude();
 		manifold.normal = distance.Normalized();
-		manifold.contact = true;
+		manifold.ShouldResolve = contact->ShouldResolveCollision();
 
 		return true;
 	}
@@ -539,9 +589,9 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	manifold.closetPoint = closestPoint; //TO REMOVE
 	manifold.normal = (manifold.closetPoint - circlePosition).Normalized() * (-1);
 	manifold.penetration = circle->GetRadius() - (manifold.closetPoint - circlePosition).GetMagnitude();
-	manifold.contact = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius();
+	manifold.ShouldResolve = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius() && contact->ShouldResolveCollision();
 
-	return manifold.contact;
+	return manifold.ShouldResolve;
 }
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
@@ -649,7 +699,7 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 	if (!isSeparated) {
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
-		manifold.contact = true;
+		manifold.ShouldResolve = contact->ShouldResolveCollision();
 	}
 
 	return !isSeparated;
@@ -770,7 +820,7 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 	if (!isSeparated) {
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
-		manifold.contact = true;
+		manifold.ShouldResolve = contact->ShouldResolveCollision();
 	}
 
 	return !isSeparated;
@@ -871,7 +921,7 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	if (!isSeparated) {
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
-		manifold.contact = true;
+		manifold.ShouldResolve = contact->ShouldResolveCollision();
 	}
 
 	return !isSeparated;

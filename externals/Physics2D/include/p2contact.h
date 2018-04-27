@@ -40,7 +40,7 @@ struct p2Manifold {
 
 	p2Vec2 closetPoint; //TO REMOVE
 
-	bool contact = false;
+	bool ShouldResolve = false;
 };
 
 class SAT{
@@ -82,6 +82,9 @@ public:
 	p2Collider* GetColliderB() const;
 
 	bool OverlapAABB() const;
+
+	static bool CheckIfCollision(p2Contact& contact);
+	bool ShouldResolveCollision() const;
 
 	bool isOnContact();
 
