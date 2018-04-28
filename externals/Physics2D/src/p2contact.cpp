@@ -177,7 +177,7 @@ void p2ContactManager::FindNewContact(std::list<p2Body*>& bodies)
 
 	std::list<p2Contact> allContact = std::list<p2Contact>();
 	m_QuadTree.Retrieve(allContact);
-	
+
 	for(p2Contact contact : allContact) {
 		if (p2Contact::CheckIfCollision(contact)) {
 			CreateContact(contact.GetColliderA(), contact.GetColliderB());
@@ -187,6 +187,7 @@ void p2ContactManager::FindNewContact(std::list<p2Body*>& bodies)
 
 void p2ContactManager::Solve()
 {
+	std::cout << "Nombre de contact = " << m_ContactList.size() << "\n";
 	for (p2Contact* contact : m_ContactList) {
 		p2Manifold manifold;
 			
@@ -194,6 +195,7 @@ void p2ContactManager::Solve()
 
 		//Correction collision
 		if (manifold.ShouldResolve) {
+			std::cout << "Should Resolve\n";
 			//Compute Impulse
 
 			//TO REMOVE
@@ -259,7 +261,6 @@ void p2ContactManager::CreateContact(p2Collider * colliderA, p2Collider * collid
 			return;
 		}
 	}
-
 	m_ContactList.push_front(new p2Contact(colliderA, colliderB));
 }
 
@@ -569,9 +570,29 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 		closestPoint.y = unrotedCircle.y;
 	}
 
+	bool isInside = false;
+
 	//If center of circle is inside, clamp to the edge
 	if (unrotedCircle == closestPoint) {
-		if (abs(unrotedCircle.x - rectPosition.x) > abs(unrotedCircle.y - rectPosition.y)) {
+		isInside = true;
+
+		float extX = 0;
+		if (closestPoint.x < rectPosition.x) {
+			extX = rectExtends.x;
+		}
+		else {
+			extX = -rectExtends.x;
+		}
+
+		float extY = 0;
+		if (closestPoint.y < rectPosition.y) {
+			extY = rectExtends.y;
+		}
+		else {
+			extY = -rectExtends.y;
+		}
+
+		if (abs(closestPoint.x - rectPosition.x + extX) < abs(closestPoint.y - rectPosition.y + extY)) {
 			if (closestPoint.x > rectPosition.x)
 				closestPoint.x = rectPosition.x + rectExtends.x;
 			else 
@@ -588,10 +609,13 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 
 	manifold.closetPoint = closestPoint;
 	manifold.normal = (circlePosition - manifold.closetPoint).Normalized();
+	manifold.normal = p2Vec2(0, 0);
 	manifold.penetration = circle->GetRadius() - (manifold.closetPoint - circlePosition).GetMagnitude();
-	manifold.ShouldResolve = (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius() && contact->ShouldResolveCollision();
+	manifold.ShouldResolve = ((circlePosition - manifold.closetPoint).GetMagnitude() < circle->GetRadius() || isInside)  && contact->ShouldResolveCollision();
 
-	return (manifold.closetPoint - circlePosition).GetMagnitude() < circle->GetRadius();
+	manifold.ShouldResolve = true;
+
+	return (circlePosition - manifold.closetPoint).GetMagnitude() < circle->GetRadius() || isInside;
 }
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)

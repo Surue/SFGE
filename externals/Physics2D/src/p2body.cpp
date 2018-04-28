@@ -48,6 +48,10 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	this->world = world;
 	gravityScale = bodyDef.gravityScale;
 
+	if (type == p2BodyType::STATIC || type == p2BodyType::KINEMATIC) {
+		bodyDef.mass = 0;
+	}
+
 	m_Mass = bodyDef.mass;
 	if (bodyDef.mass == 0) {
 		m_InvMass = 0;
