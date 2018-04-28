@@ -145,6 +145,7 @@ void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 		for (auto itrObj = m_Objects.begin(); itrObj != m_Objects.end(); itrObj++) {
 			for (int i = 0; i < CHILD_TREE_NMB; i++) {
 
+				//Test this object with every object in child node
 				for (auto itrObjToCheck = nodes[i]->m_Objects.begin(); itrObjToCheck != nodes[i]->m_Objects.end(); itrObjToCheck++) {
 					if ((*itrObj)->GetAABB()->Overlap((*itrObjToCheck)->GetAABB())) {
 						//Test if two collider collide

@@ -212,29 +212,30 @@ void p2ContactManager::Solve()
 			//Compute restitution
 			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
 			
-			float impulseScalar = (-1) *(1 + restitution) * velocityAlongNormal;
+			float impulseScalar = (-1.0f) *(1.0f + restitution) * velocityAlongNormal;
 			impulseScalar /= (manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass());
 
 			p2Vec2 impulse = manifold.normal * impulseScalar;
 
 			//If both are dynamic, then both are equally move away from the oder one
 			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC && manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
-				manifold.penetration /= 2;
+				manifold.penetration /= 1;
 			}
+
+			const float k_slop = 0.01f; // Penetration allowance
+			const float percent = 0.8f; // Penetration percentage to correct
+			p2Vec2 correction = manifold.normal * (std::fmax(manifold.penetration - k_slop, 0.0f) / (manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass())) * percent;
 
 			//Change position to not be in collision anymore and velocity only if body is dynamic
 
-			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
-				manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (manifold.normal * (manifold.penetration)));
-				manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - (impulse * (manifold.bodyA->GetInvMass())));
-			}
+			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
+			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - (impulse * (manifold.bodyA->GetInvMass())));
 
-			if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
-				manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (manifold.normal * (manifold.penetration)));
-				manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + (impulse * (manifold.bodyB->GetInvMass())));
-			}
+			manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (correction * manifold.bodyB->GetInvMass()));
+			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + (impulse * (manifold.bodyB->GetInvMass())));
 		}
 	}
+
 }
 
 void p2ContactManager::Collide()
@@ -260,7 +261,8 @@ void p2ContactManager::SetContactListener(p2ContactListener * contactListener)
 void p2ContactManager::CreateContact(p2Collider * colliderA, p2Collider * colliderB)
 {
 	for (p2Contact* contact : m_ContactList) {
-		if (colliderA == contact->GetColliderA() && colliderB == contact->GetColliderB()) {
+		if (colliderA == contact->GetColliderA() && colliderB == contact->GetColliderB() || 
+			colliderA == contact->GetColliderB() && colliderB == contact->GetColliderA()) {
 			return;
 		}
 	}

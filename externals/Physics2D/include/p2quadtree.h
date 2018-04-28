@@ -71,7 +71,7 @@ public:
 	void Draw(const p2Draw* debugDraw) const;
 	
 private:
-	static const int MAX_OBJECTS = 4;
+	static const int MAX_OBJECTS = 10;
 	static const int MAX_LEVELS = 5;
 	static const int CHILD_TREE_NMB = 4;
 
