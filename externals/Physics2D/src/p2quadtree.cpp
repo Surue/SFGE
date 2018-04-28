@@ -147,7 +147,29 @@ void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 
 				for (auto itrObjToCheck = nodes[i]->m_Objects.begin(); itrObjToCheck != nodes[i]->m_Objects.end(); itrObjToCheck++) {
 					if ((*itrObj)->GetAABB()->Overlap((*itrObjToCheck)->GetAABB())) {
-			
+						//Test if two collider collide
+						for (auto colliderA : (*itrObj)->GetColliders()) {
+							for (auto colliderB : (*itrObjToCheck)->GetColliders()) {
+								if (colliderA->aabb.Overlap(&colliderB->aabb)) {
+									contacts.push_back(p2Contact(colliderA, colliderB));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//Check with all other object on the same level
+			if (m_Objects.size() > 1) {
+				auto itrObjToCheck = m_Objects.begin();
+
+				//Test if two body collide
+				itrObjToCheck = itrObj;
+				itrObjToCheck++;
+
+				while (itrObjToCheck != m_Objects.end()) {
+					if ((*itrObj)->GetAABB()->Overlap((*itrObjToCheck)->GetAABB())) {
+
 						//Test if two collider collide
 						for (auto colliderA : (*itrObj)->GetColliders()) {
 
@@ -158,6 +180,7 @@ void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 							}
 						}
 					}
+					itrObjToCheck++;
 				}
 			}
 		}

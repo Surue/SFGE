@@ -6,7 +6,7 @@
           "components": [
               {
                   "type": 1,
-                  "position": [200, 100],
+                  "position": [300, 200],
                   "scale" : [1.0,1.0],
                   "angle": 0.0
               },
@@ -14,7 +14,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50
+                  "radius": 25
               },
               {
                   "name": "Rigidbody",
@@ -26,8 +26,9 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
-                  "sensor": false
+                  "radius": 25,
+                  "sensor": false,
+				  "bouncing": 1.0
               },
               {
                   "type": 4,
@@ -61,7 +62,8 @@
                   "type": 6,
                   "collider_type": 2,
                   "size": [150,150],
-                  "sensor": false
+                  "sensor": false,
+				  "bouncing": 1.0
               },
               {
                   "type": 4,

@@ -54,7 +54,7 @@ int main()
 			file << "\n\t{\n\t\t\"name\": \"Body" << i << "\",\n\t\t\"components\" : [ \n\t\t{";
 			file << "\n\t\t\t\"type\" : 1, \n\t\t\t\"position\": [" << rand() % 1280 << ", " << rand() % 720 << "],";
 			file << "\n\t\t\t\"scale\": [1.0, 1.0], \n\t\t\t\"angle\": 0.0 \n\t\t},\n\t\t{";
-			file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 0, \n\t\t\t\"gravity_scale\": 1 \n\t\t},\n\t\t{";
+			file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 2, \n\t\t\t\"gravity_scale\": 0 \n\t\t},\n\t\t{";
 			float sizeX = (rand() % 10) + 1;
 			float sizeY = (rand() % 10) + 1;
 			file << "\n\t\t\t\"name\": \"BoxCollider\",\n\t\t\t\"type\" : 6,\n\t\t\t\"collider_type\" : 2, \n\t\t\t\"size\" : [" << sizeX << "," << sizeY << "],\n\t\t\t\"sensor\" : false \n\t\t},\n\t\t{";

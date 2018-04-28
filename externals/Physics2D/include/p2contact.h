@@ -38,7 +38,7 @@ struct p2Manifold {
 	float penetration;
 	p2Vec2 normal;
 
-	p2Vec2 closetPoint; //TO REMOVE
+	p2Vec2 contactPoint; 
 
 	bool ShouldResolve = false;
 };
