@@ -43,6 +43,13 @@ struct p2Manifold {
 	bool ShouldResolve = false;
 };
 
+struct p2Edge {
+	p2Vec2 max;
+	p2Vec2 pointA;
+	p2Vec2 pointB;
+	p2Vec2 vector;
+};
+
 class SAT{
 public:
 	static bool CheckCollisionSAT(p2Contact* contact, p2Manifold& manifold);
@@ -58,6 +65,12 @@ public:
 	static bool CheckCollisionPolygonRect(p2Contact* contact, p2Manifold& manifold);
 
 	static bool CheckCollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
+
+	static p2Vec2 FindContactPoint(p2Contact* const contact, p2Manifold& const manifold);
+
+	static p2Edge FindClosestEdge(std::vector<p2Vec2> const vertices, p2Vec2 const normal);
+
+	static std::vector<p2Vec2> ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj);
 private:
 	SAT();
 

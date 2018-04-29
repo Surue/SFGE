@@ -295,7 +295,7 @@ p2QuadTree * p2ContactManager::GetQuadTree()
 void p2ContactManager::Draw(p2Draw* debugDraw)
 {
 	//Corner
-	for (p2Contact* contact : m_ContactList) {
+	/*for (p2Contact* contact : m_ContactList) {
 		p2Vec2 cornersA[4];
 		switch (contact->GetColliderA()->GetShapeType()) {
 		case p2ColliderDef::RECT:
@@ -334,7 +334,7 @@ void p2ContactManager::Draw(p2Draw* debugDraw)
 			}
 			break;
 		}
-	}
+	}*/
 
 	//Vector from center to corner
 	for (p2Vec2 point : PointsToDraw) {
@@ -491,6 +491,12 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
+
+		if (manifold.ShouldResolve) {
+			manifold.contactPoint = FindContactPoint(contact, manifold);
+		}
+
+		manifold.normal = p2Vec2(0, 0);
 	}
 
 	return !isSeparated;
@@ -958,6 +964,190 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	}
 
 	return !isSeparated;
+}
+
+p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifold)
+{
+	p2Collider* colliderA = contact->GetColliderA();
+	p2Collider* colliderB = contact->GetColliderB();
+
+	std::vector<p2Vec2> cornersA;
+	std::vector<p2Vec2> cornersB;
+	
+	//We now this function is only called if we have rect or polygon
+	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
+		p2PolygonShape* shapeA = static_cast<p2PolygonShape*>(colliderA->GetShape());
+		cornersA.resize(shapeA->GetVerticesCount());
+		cornersA = shapeA->GetVerticesWorld(colliderA->GetPosition(), colliderA->GetBody()->GetAngle());
+	}
+	else if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
+		cornersA.resize(4);
+		static_cast<p2RectShape*>(colliderA->GetShape())->GetCorners(cornersA, colliderA->GetPosition(), colliderA->GetBody()->GetAngle());
+	}
+	else {
+		return manifold.contactPoint; //Assuming it's never call if it's a circle
+	}
+
+	if (colliderB->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
+		p2PolygonShape* shapeB = static_cast<p2PolygonShape*>(colliderB->GetShape());
+		cornersB.resize(shapeB->GetVerticesCount());
+		cornersB = shapeB->GetVerticesWorld(colliderB->GetPosition(), colliderB->GetBody()->GetAngle());
+	}
+	else if (colliderB->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
+		cornersB.resize(4);
+		static_cast<p2RectShape*>(colliderB->GetShape())->GetCorners(cornersB, colliderB->GetPosition(), colliderB->GetBody()->GetAngle());
+	}
+	else {
+		return manifold.contactPoint;//Assuming it's never call if it's a circle
+	}
+
+	p2Vec2 normalContact = manifold.normal;
+
+	p2Edge closestA = FindClosestEdge(cornersA, normalContact);
+	p2Edge closestB = FindClosestEdge(cornersB, normalContact * (-1));
+	
+	//std::cout << "( max ) | ( v1 ) | ( v2) \n";
+	//std::cout << "-------------------------\n";
+	//std::cout << "( " << closestA.max.x << ", " << closestA.max.y << ") | (" << closestA.pointA.x << ", " << closestA.pointA.y << ") | (" << closestA.pointB.x << ", " << closestA.pointB.y << ")\n";
+	//std::cout << "( " << closestB.max.x << ", " << closestB.max.y << ") | (" << closestB.pointA.x << ", " << closestB.pointA.y << ") | (" << closestB.pointB.x << ", " << closestB.pointB.y << ")\n";
+
+	//Find the reference and incident edge
+	p2Edge ref;
+	p2Edge inc;
+
+	bool flip = false;
+
+	if (abs(p2Vec2::Dot(closestA.vector, normalContact)) <= abs(p2Vec2::Dot(closestB.vector, normalContact))) {
+		ref = closestA;
+		inc = closestB;
+	}
+	else {
+		ref = closestB;
+		inc = closestA;
+
+		flip = true;
+	}
+	
+	//Start clipping the points
+	p2Vec2 refVector = ref.vector.Normalized();
+
+	//Create the max points
+	float offset1 = p2Vec2::Dot(refVector, ref.pointA);;
+	float offset2 = p2Vec2::Dot(refVector, ref.pointB);
+
+	//Clip other point with the limit
+	std::vector<p2Vec2> clippedPoints;
+	clippedPoints.resize(2);
+
+	clippedPoints = ClipPoints(inc.pointA, inc.pointB, refVector, offset1);
+
+	if (clippedPoints.size() < 2) {
+		std::cout << "MOTHERFUCKER 1\n";
+		return p2Vec2();
+	}
+
+	//Same clipping to the other direction
+	clippedPoints = ClipPoints(clippedPoints[0], clippedPoints[1], refVector * (-1), -offset2);
+	if (clippedPoints.size() < 2) {
+		std::cout << "MOTHERFUCKER 2\n";
+		return p2Vec2();
+	}
+
+	p2Vec2 refNormal = ref.vector.Normal().Normalized();
+	
+	if (flip) refNormal = refNormal;
+
+	float max = p2Vec2::Dot(refNormal, ref.max);
+
+	if (p2Vec2::Dot(refNormal, clippedPoints[0]) - max >= 0.0f) {
+		if (p2Vec2::Dot(refNormal, clippedPoints[1]) - max >= 0.0f) {
+			return (clippedPoints[0] + clippedPoints[1]) / 2;
+		}
+		else {
+			return clippedPoints[0];
+		}
+	}
+	return clippedPoints[1];
+}
+
+p2Edge SAT::FindClosestEdge(std::vector<p2Vec2> const vertices, p2Vec2 const normal)
+{
+	int index = 0;
+	float maxProj = p2Vec2::Dot(vertices[index], normal);
+
+	//Find the farthest vertex from the normal
+	for (int i = 1; i < vertices.size(); i++) {
+		float curProj = p2Vec2::Dot(vertices[i], normal);
+
+		if (curProj > maxProj) {
+			maxProj = curProj;
+			index = i;
+		}
+	}
+	
+	//Check the left and right edge from the previous one to see wich one if the most perpendicular to the normal
+	p2Vec2 v = vertices[index];
+	p2Vec2 v1;
+	if (index == vertices.size() - 1) {
+		v1 = vertices[0];
+	}
+	else {
+		v1 = vertices[index + 1];
+	}
+	p2Vec2 v2;
+	if (index == 0) {
+		v2 = vertices[vertices.size() - 1];
+	}
+	else {
+		v2 = vertices[index - 1];
+	}
+
+	p2Vec2 left = (v - v1).Normalized();
+	p2Vec2 right = (v - v2).Normalized();
+
+	p2Edge closestEdge;
+
+	if (p2Vec2::Dot(right, normal) <= p2Vec2::Dot(left, normal)) {
+		closestEdge.max = v2;
+		closestEdge.pointA = v2;
+		closestEdge.pointB = v;
+		closestEdge.vector = v - v2;
+	}
+	else {
+		closestEdge.max = v;
+		closestEdge.pointA = v;
+		closestEdge.pointB = v1;
+		closestEdge.vector = v1 - v;
+	}
+
+	return closestEdge;
+}
+
+std::vector<p2Vec2> SAT::ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj)
+{
+	std::vector<p2Vec2> clippedPoints;
+	//Projection of points allong the normal
+	float d1 = p2Vec2::Dot(pointsA, normal) - proj;
+	float d2 = p2Vec2::Dot(pointsB, normal) - proj;
+	
+	//If the points are past the proj along n
+	if (d1 >= 0.0f) clippedPoints.push_back(pointsA);
+	if (d2 >= 0.0f) clippedPoints.push_back(pointsB);
+
+	//If they are on opposing side, compute correct point to clip the point to the correct position
+	if (d1 * d2 < 0.0) {
+		p2Vec2 correctedPoint = pointsB - pointsA;
+
+		float u = d1 / (d1 - d2);
+
+		correctedPoint *= u;
+
+		correctedPoint += pointsA;
+
+		clippedPoints.push_back(correctedPoint);
+	}
+
+	return clippedPoints;
 }
 
 p2Vec2 SAT::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)

@@ -1,0 +1,132 @@
+{
+  "name": "ContactTestScene",
+  "game_objects": [
+      {
+          "name": "Circle1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [1100, 650],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [150, 100]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [150, 100],
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+			  {
+				"type": 4,
+				"script_path": "scripts/player_character_basic.py"
+			  },
+			  {
+				"type": 4,
+				"script_path": "scripts/transform_rotation.py"
+			  },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Box1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [800, 350],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [400, 150]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [400,150],
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Poly",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [320, 100],
+                  "scale" : [1.0,1.0],
+                  "angle": 90.0
+              },
+			  {
+                  "name": "Polygon Shape Component",
+                  "type": 3,
+                  "shape_type": 3,
+                  "point_count": 3,
+				  "point0": [50, 0],
+				  "point1": [100, 50],
+				  "point2": [100, 100]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+			  {
+                  "name": "PolygonCollider",
+                  "type": 6,
+                  "collider_type": 4,
+                  "point_count": 3,
+				  "point0": [50, 0],
+				  "point1": [100, 50],
+				  "point2": [100, 100],
+                  "sensor": false
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
+      }
+  ]
+}

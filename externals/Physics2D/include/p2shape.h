@@ -79,7 +79,9 @@ public:
 
 	void GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle);
 	void GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle);
+	void GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle);
 	void GetCorners(p2Vec2 corners[], p2Vec2 position, float angle);
+	void GetCorners(std::vector<p2Vec2>& corners, p2Vec2 position, float angle);
 private:
 	p2Vec2 m_Size;
 };

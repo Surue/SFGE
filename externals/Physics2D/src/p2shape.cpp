@@ -106,12 +106,31 @@ void p2RectShape::GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float an
 	vectors[3] = corners[0] - corners[3];
 }
 
+void p2RectShape::GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle)
+{
+	p2Vec2 corners[4];
+	GetCorners(corners, position, angle);
+
+	vectors[0] = corners[1] - corners[0];
+	vectors[1] = corners[2] - corners[1];
+	vectors[2] = corners[3] - corners[2];
+	vectors[3] = corners[0] - corners[3];
+}
+
 void p2RectShape::GetCorners(p2Vec2 corners[], p2Vec2 position, float angle)
 {
 	corners[0] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((-m_Size.x / 2.0f), (m_Size.y / 2.0f))) + position; //Bas gauche
 	corners[1] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((-m_Size.x / 2.0f), (-m_Size.y / 2.0f))) + position; //Haut gauche
 	corners[2] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((m_Size.x / 2.0f), (-m_Size.y / 2.0f))) + position; //Haut droite
 	corners[3] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((m_Size.x / 2.0f),(m_Size.y / 2.0f))) + position; //Bas droite
+}
+
+void p2RectShape::GetCorners(std::vector<p2Vec2>& corners, p2Vec2 position, float angle)
+{
+	corners[0] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((-m_Size.x / 2.0f), (m_Size.y / 2.0f))) + position; //Bas gauche
+	corners[1] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((-m_Size.x / 2.0f), (-m_Size.y / 2.0f))) + position; //Haut gauche
+	corners[2] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((m_Size.x / 2.0f), (-m_Size.y / 2.0f))) + position; //Haut droite
+	corners[3] = (p2Mat22::RotationMatrix(-angle) * p2Vec2((m_Size.x / 2.0f), (m_Size.y / 2.0f))) + position; //Bas droite
 }
 
 void p2Shape::GetNormals(p2Vec2 normals[], p2Vec2 vectors[], int numOfVectors) const
