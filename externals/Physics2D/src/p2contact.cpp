@@ -495,8 +495,6 @@ bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
 		if (manifold.ShouldResolve) {
 			manifold.contactPoint = FindContactPoint(contact, manifold);
 		}
-
-		manifold.normal = p2Vec2(0, 0);
 	}
 
 	return !isSeparated;
@@ -759,6 +757,9 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 	p2Vec2 polygonPosition;
 	float polygonAngle;
 
+	//Must flip if doing from polygon to rect
+	bool flip = false; 
+
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
 		rect = static_cast<p2RectShape*>(colliderA->GetShape());
 		rectPosition = colliderA->GetPosition();
@@ -776,6 +777,8 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 		polygon = static_cast<p2PolygonShape*>(colliderA->GetShape());
 		polygonPosition = colliderA->GetPosition();
 		polygonAngle = colliderA->GetBody()->GetAngle();
+
+		flip = true;
 	}
 
 	//Get all vectors and normal from rect
@@ -859,7 +862,16 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 	if (!isSeparated) {
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
+
+		if (flip) {
+			manifold.normal = manifold.normal * -1;
+		}
+
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
+
+		if (manifold.ShouldResolve) {
+			manifold.contactPoint = FindContactPoint(contact, manifold);
+		}
 	}
 
 	return !isSeparated;
