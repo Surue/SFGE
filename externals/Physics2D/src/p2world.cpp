@@ -133,9 +133,7 @@ void p2World::DrawDebugData()
 
 		//Draw center of mass
 		if (flags & p2Draw::centerOfMassBit) {
-			// TO DO 
-			// CHANGE FOR CENTER OF MASS NOT POSITION
-			m_DebugDraw->DrawTransform(body->GetPosition());
+			m_DebugDraw->DrawCircleFilled(body->GetCentroide(), 0.05, p2Color(0, 0, 153));
 		}
 
 		for (p2Collider* collider : body->GetColliders()) {

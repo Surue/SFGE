@@ -84,6 +84,8 @@ public:
 
 	p2AABB aabb;
 
+	p2Vec2 GetCentroide();
+
 private:
 	void* userData;
 	bool isSensor;
@@ -94,6 +96,8 @@ private:
 	p2Vec2 m_Offset = p2Vec2(0.0f, 0.0f);
 
 	p2Body* m_Body = nullptr;
+
+	p2Vec2 m_Centroide;
 };
 
 

@@ -85,6 +85,8 @@ public:
 	void ClearForce();
 	p2Vec2 GetForce();
 
+	void ApplyImpulse(p2Vec2 impulse, p2Vec2 contactPoint);
+
 	p2BodyType GetType() const;
 	float GetGravityScale() const;
 	float GetMass() const;
@@ -106,6 +108,8 @@ public:
 
 	p2World* GetWorld();
 
+	p2Vec2 GetCentroide();
+
 private:
 	p2Vec2 position;
 	p2Vec2 linearVelocity;
@@ -122,6 +126,8 @@ private:
 	float m_Angle;
 
 	p2World *world;
+
+	p2Vec2 m_Centroide;
 
 	std::list<p2Collider*> m_CollidersList;
 };

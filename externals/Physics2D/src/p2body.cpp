@@ -33,6 +33,7 @@ SOFTWARE.
 #include <p2body.h>
 #include <p2Collider.h>
 #include <p2World.h>
+#include <p2Matrix.h>
 
 #include <iostream>
 
@@ -126,6 +127,12 @@ p2Vec2 p2Body::GetForce()
 	return m_Force;
 }
 
+void p2Body::ApplyImpulse(p2Vec2 impulse, p2Vec2 contactPoint)
+{
+	linearVelocity += impulse * m_InvMass;
+	//TO come
+}
+
 p2BodyType p2Body::GetType() const
 {
 	return type;
@@ -208,4 +215,19 @@ const p2AABB * p2Body::GetAABB() const
 p2World * p2Body::GetWorld()
 {
 	return world;
+}
+
+p2Vec2 p2Body::GetCentroide()
+{
+	int count = 0;
+	p2Vec2 tmpCentroide = p2Vec2(0, 0);
+	for (p2Collider* collider : m_CollidersList) {
+		tmpCentroide += collider->GetCentroide();
+		tmpCentroide = tmpCentroide / 2.0f;
+	}
+
+	tmpCentroide = p2Mat22::RotationMatrix(m_Angle) * tmpCentroide;
+	tmpCentroide += position;
+
+	return tmpCentroide;
 }

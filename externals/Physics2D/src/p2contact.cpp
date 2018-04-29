@@ -228,11 +228,11 @@ void p2ContactManager::Solve()
 
 			//Change position to not be in collision anymore and velocity only if body is dynamic
 
-			/*manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
-			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - (impulse * (manifold.bodyA->GetInvMass())));
+			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
+			manifold.bodyA->ApplyImpulse(impulse * -1, manifold.contactPoint);
 
 			manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (correction * manifold.bodyB->GetInvMass()));
-			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + (impulse * (manifold.bodyB->GetInvMass())));*/
+			manifold.bodyB->ApplyImpulse(impulse, manifold.contactPoint);
 		}
 	}
 

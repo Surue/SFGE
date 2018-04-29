@@ -25,11 +25,43 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 	shape = colliderDef.shape->Clone();
 	shapeType = colliderDef.shapeType;
 
+
 	m_Body = body;
 
 	m_Offset = p2Vec2(colliderDef.offset.x, colliderDef.offset.y);
 	float radius = 0;
 	p2Vec2 size;
+
+	switch (shapeType) {
+	case p2ColliderDef::ShapeType::RECT:
+	case p2ColliderDef::ShapeType::CIRCLE:
+		m_Centroide = m_Offset;
+		break;
+
+	case p2ColliderDef::ShapeType::POLYGON:
+		m_Centroide = p2Vec2(0, 0);
+
+		float signedArea = 0.0f;
+		float area = 0.0f;
+
+		std::vector<p2Vec2> tmpVertices = static_cast<p2PolygonShape*>(shape)->GetVertices();
+		int i = 0;
+		for (i = 0; i < tmpVertices.size() - 1; ++i) {
+
+			area = p2Vec2::Cross(tmpVertices[i], tmpVertices[i + 1]).z;
+			signedArea += area;
+			m_Centroide += (tmpVertices[i] + tmpVertices[i + 1]) * area;
+		}
+
+		area = p2Vec2::Cross(tmpVertices[i], tmpVertices[0]).z;
+		signedArea += area;
+		m_Centroide += (tmpVertices[i] + tmpVertices[0]) * area;
+
+		signedArea *= 0.5f;
+
+		m_Centroide = m_Centroide / (6.0f * signedArea) + m_Offset;
+		break;
+	}
 }
 
 p2Collider::~p2Collider()
@@ -75,4 +107,9 @@ p2Body * p2Collider::GetBody() const
 float p2Collider::GetRestitution() const
 {
 	return restitution;
+}
+
+p2Vec2 p2Collider::GetCentroide()
+{
+	return m_Centroide;
 }
