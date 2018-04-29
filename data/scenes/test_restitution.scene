@@ -183,7 +183,7 @@
           ]
       },
       {
-          "name": "Box1",
+          "name": "Ground",
           "components": [
               {
                   "type": 1,
@@ -218,6 +218,186 @@
               }
           ]
       },
+	  {
+          "name": "Box1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [225, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50, 50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1,
+				  "mass" : 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Box2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [375, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50, 50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1,
+				  "mass" : 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0.75
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Box3",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [525, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50, 50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1,
+				  "mass" : 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0.5
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Box4",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [675, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50, 50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1,
+				  "mass" : 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0.25
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+	  },
+	  {
+          "name": "Box5",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [825, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 1.0
+              },
+              {
+                  "name": "Rect Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50, 50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1,
+				  "mass" : 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+	  },
 	  {
           "name": "ScriptDebugDraw",
           "components": [

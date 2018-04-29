@@ -228,11 +228,11 @@ void p2ContactManager::Solve()
 
 			//Change position to not be in collision anymore and velocity only if body is dynamic
 
-			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
+			/*manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
 			manifold.bodyA->SetLinearVelocity(manifold.bodyA->GetLinearVelocity() - (impulse * (manifold.bodyA->GetInvMass())));
 
 			manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (correction * manifold.bodyB->GetInvMass()));
-			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + (impulse * (manifold.bodyB->GetInvMass())));
+			manifold.bodyB->SetLinearVelocity(manifold.bodyB->GetLinearVelocity() + (impulse * (manifold.bodyB->GetInvMass())));*/
 		}
 	}
 
@@ -512,7 +512,7 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 		manifold.penetration = radiusTotal - distance.GetMagnitude();
 		manifold.normal = distance.Normalized();
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
-
+		manifold.contactPoint = (contact->GetColliderB()->GetPosition() + contact->GetColliderA()->GetPosition()) / 2;
 		return true;
 	}
 	else {
@@ -626,8 +626,6 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	manifold.penetration = circle->GetRadius() - (manifold.contactPoint - circlePosition).GetMagnitude();
 	manifold.ShouldResolve = ((circlePosition - manifold.contactPoint).GetMagnitude() < circle->GetRadius() || isInside)  && contact->ShouldResolveCollision();
 
-	manifold.ShouldResolve = true;
-
 	return (circlePosition - manifold.contactPoint).GetMagnitude() < circle->GetRadius() || isInside;
 }
 
@@ -737,6 +735,10 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
+
+		if (manifold.ShouldResolve) {
+			manifold.contactPoint = FindContactPoint(contact, manifold);
+		}
 	}
 
 	return !isSeparated;
@@ -863,11 +865,11 @@ bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
 
+		manifold.ShouldResolve = contact->ShouldResolveCollision();
+
 		if (flip) {
 			manifold.normal = manifold.normal * -1;
 		}
-
-		manifold.ShouldResolve = contact->ShouldResolveCollision();
 
 		if (manifold.ShouldResolve) {
 			manifold.contactPoint = FindContactPoint(contact, manifold);
@@ -973,6 +975,7 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
+		manifold.contactPoint = circlePosition + manifold.normal * circle->GetRadius();
 	}
 
 	return !isSeparated;
@@ -985,32 +988,45 @@ p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifo
 
 	std::vector<p2Vec2> cornersA;
 	std::vector<p2Vec2> cornersB;
+
+	bool bothRect = false; //If both are rect, no need to inverse normal later in the code because the normal is already in the right direction
+	bool bothPoly = false;
 	
+	bool rectToPoly = false;
+
 	//We now this function is only called if we have rect or polygon
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 		p2PolygonShape* shapeA = static_cast<p2PolygonShape*>(colliderA->GetShape());
 		cornersA.resize(shapeA->GetVerticesCount());
 		cornersA = shapeA->GetVerticesWorld(colliderA->GetPosition(), colliderA->GetBody()->GetAngle());
+		bothPoly = true;
+		rectToPoly = true;
 	}
 	else if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
 		cornersA.resize(4);
 		static_cast<p2RectShape*>(colliderA->GetShape())->GetCorners(cornersA, colliderA->GetPosition(), colliderA->GetBody()->GetAngle());
+		bothRect = true;
 	}
 	else {
-		return manifold.contactPoint; //Assuming it's never call if it's a circle
+		std::cout << "ERROR: FIND CONTACT POINT COLLIDER A\n";
+		return manifold.contactPoint;
 	}
 
 	if (colliderB->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 		p2PolygonShape* shapeB = static_cast<p2PolygonShape*>(colliderB->GetShape());
 		cornersB.resize(shapeB->GetVerticesCount());
 		cornersB = shapeB->GetVerticesWorld(colliderB->GetPosition(), colliderB->GetBody()->GetAngle());
+		bothRect = false;
 	}
 	else if (colliderB->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
 		cornersB.resize(4);
 		static_cast<p2RectShape*>(colliderB->GetShape())->GetCorners(cornersB, colliderB->GetPosition(), colliderB->GetBody()->GetAngle());
+		bothPoly = false;
+		rectToPoly = rectToPoly && true && !bothPoly && !bothRect;
 	}
 	else {
-		return manifold.contactPoint;//Assuming it's never call if it's a circle
+		std::cout << "ERROR: FIND CONTACT POINT COLLIDER B\n";
+		return manifold.contactPoint;
 	}
 
 	p2Vec2 normalContact = manifold.normal;
@@ -1036,7 +1052,7 @@ p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifo
 	else {
 		ref = closestB;
 		inc = closestA;
-
+		std::cout << "flip";
 		flip = true;
 	}
 	
@@ -1067,7 +1083,13 @@ p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifo
 
 	p2Vec2 refNormal = ref.vector.Normal().Normalized();
 	
-	if (flip) refNormal = refNormal;
+	//Must be upgraded: peut être regarder dans findClosestEdge qui devrait pouvoir savoir s'il doit inverser ou pas la valeur
+	if (rectToPoly) refNormal = refNormal * -1;
+
+	if (flip && !bothRect) refNormal = refNormal * -1;
+
+	if(!flip && bothPoly)  refNormal = refNormal * -1;
+	//Must be upgraded
 
 	float max = p2Vec2::Dot(refNormal, ref.max);
 
