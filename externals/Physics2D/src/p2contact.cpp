@@ -251,6 +251,11 @@ void p2ContactManager::Solve()
 
 			//Change position to not be in collision anymore and velocity only if body is dynamic
 
+			impulseScalar = (-1.0f) *(1.0f + restitution) * p2Vec2::Dot(relativeVelocity, manifold.normal);
+			impulseScalar /= (manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass());
+
+			impulse = manifold.normal * impulseScalar;
+
 			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
 			manifold.bodyA->ApplyImpulse(impulse * -1, manifold.contactPoint);
 
