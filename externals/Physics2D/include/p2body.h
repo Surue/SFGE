@@ -110,6 +110,8 @@ public:
 
 	p2Vec2 GetCentroide();
 
+	float GetInvInertia();
+
 private:
 	p2Vec2 position;
 	p2Vec2 linearVelocity;
@@ -124,6 +126,9 @@ private:
 	float m_InvMass;
 
 	float m_Angle;
+
+	float m_Inertia;
+	float m_InvInertia;
 
 	p2World *world;
 

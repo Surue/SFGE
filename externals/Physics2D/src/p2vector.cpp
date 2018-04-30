@@ -75,6 +75,11 @@ p2Vec2 p2Vec2::operator/(float f) const
 	return p2Vec2(x / f, y / f);
 }
 
+p2Vec2 p2Vec2::operator/=(float f)
+{
+	return *this = *this / f;
+}
+
 p2Vec2 p2Vec2::operator*(float f) const
 {
 	return p2Vec2(x * f, y * f);

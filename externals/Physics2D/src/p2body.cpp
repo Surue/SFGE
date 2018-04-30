@@ -62,6 +62,7 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	}
 
 	m_Angle = 0.0f;
+	angularVelocity = 0.0f;
 }
 
 p2Body::~p2Body()
@@ -130,7 +131,7 @@ p2Vec2 p2Body::GetForce()
 void p2Body::ApplyImpulse(p2Vec2 impulse, p2Vec2 contactPoint)
 {
 	linearVelocity += impulse * m_InvMass;
-	//TO come
+	angularVelocity += p2Vec2::Cross(contactPoint, impulse).z * m_InvInertia;
 }
 
 p2BodyType p2Body::GetType() const
@@ -157,6 +158,16 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 {
 	p2Collider* tmpCollider = new p2Collider(*colliderDef, this);
 	m_CollidersList.push_front(tmpCollider);
+
+	m_Centroide = p2Vec2(0, 0);
+	for (p2Collider* collider : m_CollidersList) {
+		m_Centroide += collider->GetCentroide();
+	}
+
+	m_Centroide /= m_CollidersList.size();
+
+	m_Inertia = tmpCollider->GetInertia(); //TO DO compute all inertia together
+	m_InvInertia = 1.0f / m_Inertia;
 
 	ComputeAABB();
 
@@ -226,8 +237,13 @@ p2Vec2 p2Body::GetCentroide()
 		tmpCentroide = tmpCentroide / 2.0f;
 	}
 
-	tmpCentroide = p2Mat22::RotationMatrix(m_Angle) * tmpCentroide;
+	tmpCentroide = p2Mat22::RotationMatrix(-m_Angle) * tmpCentroide;
 	tmpCentroide += position;
 
 	return tmpCentroide;
+}
+
+float p2Body::GetInvInertia()
+{
+	return m_InvInertia;
 }

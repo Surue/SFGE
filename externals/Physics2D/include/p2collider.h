@@ -86,6 +86,8 @@ public:
 
 	p2Vec2 GetCentroide();
 
+	float GetInertia();
+
 private:
 	void* userData;
 	bool isSensor;
@@ -98,6 +100,9 @@ private:
 	p2Body* m_Body = nullptr;
 
 	p2Vec2 m_Centroide;
+
+	float m_Inertia;
+	float m_InvInertia;
 };
 
 

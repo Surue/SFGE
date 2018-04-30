@@ -15,11 +15,11 @@
                   "type": 3,
                   "shape_type": 3,
                   "point_count": 5,
-				  "point0": [0, -100],
-				  "point1": [-95, -31],
+				  "point0": [95, -31],
+				  "point1": [59, 81],
 				  "point2": [-59, 81],
-				  "point3": [59, 81],
-				  "point4": [95, -31]
+				  "point3": [-95, -31],
+				  "point4": [0, -100]
               },
               {
                   "name": "Rigidbody",
@@ -32,11 +32,11 @@
                   "type": 6,
                   "collider_type": 4,
                   "point_count": 5,
-				  "point0": [0, -100],
-				  "point1": [-95, -31],
+				  "point0": [95, -31],
+				  "point1": [59, 81],
 				  "point2": [-59, 81],
-				  "point3": [59, 81],
-				  "point4": [95, -31],
+				  "point3": [-95, -31],
+				  "point4": [0, -100],
                   "sensor": false
               },
 			  {
@@ -58,7 +58,7 @@
           "components": [
               {
                   "type": 1,
-                  "position": [300, 200],
+                  "position": [300, 710],
                   "scale" : [1.0,1.0],
                   "angle": 0.0
               },
@@ -137,9 +137,9 @@
                   "type": 3,
                   "shape_type": 3,
                   "point_count": 3,
-				  "point0": [50, 0],
-				  "point1": [100, 50],
-				  "point2": [100, 100]
+				  "point0": [-59, 81],
+				  "point1": [-95, -31],
+				  "point2": [0, -100]
               },
               {
                   "name": "Rigidbody",
@@ -152,9 +152,9 @@
                   "type": 6,
                   "collider_type": 4,
                   "point_count": 3,
-				  "point0": [50, 0],
-				  "point1": [100, 50],
-				  "point2": [100, 100],
+				  "point0": [-59, 81],
+				  "point1": [-95, -31],
+				  "point2": [0, -100],
                   "sensor": false
               },
               {
@@ -177,11 +177,11 @@
                   "type": 3,
                   "shape_type": 3,
                   "point_count": 5,
-				  "point0": [0, -100],
-				  "point1": [-95, -31],
+				  "point0": [95, -31],
+				  "point1": [59, 81],
 				  "point2": [-59, 81],
-				  "point3": [59, 81],
-				  "point4": [95, -31]
+				  "point3": [-95, -31],
+				  "point4": [0, -100]
               },
               {
                   "name": "Rigidbody",
@@ -194,11 +194,11 @@
                   "type": 6,
                   "collider_type": 4,
                   "point_count": 5,
-				  "point0": [0, -100],
-				  "point1": [-95, -31],
+				  "point0": [95, -31],
+				  "point1": [59, 81],
 				  "point2": [-59, 81],
-				  "point3": [59, 81],
-				  "point4": [95, -31],
+				  "point3": [-95, -31],
+				  "point4": [0, -100],
                   "sensor": false
               },
               {

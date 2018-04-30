@@ -71,6 +71,7 @@ void p2World::Step(float dt)
 		body->SetLinearVelocity((body->GetForce() * dt) + body->GetLinearVelocity());
 
 		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
+		body->SetAngle(body->GetAngularVelocity() * dt + body->GetAngle());
 	}
 
 	//Find new Contact

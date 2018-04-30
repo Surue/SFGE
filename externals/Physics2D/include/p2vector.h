@@ -44,6 +44,7 @@ struct p2Vec2
 	p2Vec2 operator-(const p2Vec2 v) const;
 	p2Vec2 operator-=(const p2Vec2 v);
 	p2Vec2 operator /(float f) const;
+	p2Vec2 operator /=(float f);
 	p2Vec2 operator *(float f) const;
 	p2Vec2 operator*=(float f);
 	bool operator==(const p2Vec2 v);
