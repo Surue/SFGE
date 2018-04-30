@@ -222,16 +222,16 @@ void p2ContactManager::Solve()
 
 			//Other methode
 
-			float ma = manifold.bodyA->GetMass() / 200.0f;
-			float mb = manifold.bodyB->GetMass() / 200.0f;
+			float ma = manifold.bodyA->GetMass();
+			float mb = manifold.bodyB->GetMass();
 
-			p2Vec2 ra = manifold.bodyA->GetCentroide() - manifold.contactPoint;
-			p2Vec2 rb = manifold.bodyB->GetCentroide() - manifold.contactPoint;
+			p2Vec2 ra = manifold.contactPoint - manifold.bodyA->GetCentroide(); //Correct
+			p2Vec2 rb = manifold.contactPoint - manifold.bodyB->GetCentroide(); //Correct
 
-			float Ia = 1.0f / (manifold.bodyA->GetInvInertia());
-			float Ib = 1.0f / (manifold.bodyB->GetInvInertia());
+			float Ia = (manifold.bodyA->GetInvInertia());
+			float Ib = (manifold.bodyB->GetInvInertia());
 
-			p2Vec2 va = manifold.bodyA->GetLinearVelocity();
+			p2Vec2 va = manifold.bodyA->GetLinearVelocity(); 
 			p2Vec2 vb = manifold.bodyB->GetLinearVelocity();
 
 			float k = 1 / (ma * ma) + 2 / (ma * mb) + 1 / (mb * mb) - ra.x * ra.x / (ma * Ia) - rb.x * rb.x / (ma * Ib) - ra.y * ra.y / (ma * Ia) - ra.y*ra.y / (mb * Ia) - ra.x * ra.x / (mb * Ia) - rb.x * rb.x / (mb * Ib) - rb.y * rb.y / (ma * Ib) - rb.y * rb.y / (mb * Ib) + ra.y*ra.y*rb.x*rb.x/(Ia*Ib) + ra.x * ra.x *rb.y *rb.y / (Ia*Ib) - 2*ra.x*ra.y*rb.x*rb.y/(Ia*Ib);
