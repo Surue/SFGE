@@ -189,6 +189,21 @@ int p2PolygonShape::GetVerticesCount()
 void p2PolygonShape::SetVertice(p2Vec2 vertice, int index)
 {
 	m_Vertices[index] = vertice;
+
+	//Check if counter-clockwise, if not inverse order of verices
+	if (index == m_Vertices.size() - 1) {
+		float sum = 0;
+		int i = 0;
+		for (i = 0; i < m_Vertices.size() - 2; ++i) {
+			sum += ((m_Vertices[i + 1].x - m_Vertices[i].x)*(m_Vertices[i + 1].y + m_Vertices[i].y));
+		}
+
+		sum += ((m_Vertices[i + 1].x - m_Vertices[0].x)*(m_Vertices[i + 1].y + m_Vertices[0].y));
+
+		if (sum > 0) {
+			std::reverse(m_Vertices.begin(), m_Vertices.end());
+		}
+	}
 }
 
 const p2Vec2 p2PolygonShape::GetVertice(int index) const
