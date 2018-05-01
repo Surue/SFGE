@@ -92,6 +92,11 @@ float p2Body::GetAngularVelocity() const
 	return angularVelocity;
 }
 
+void p2Body::SetAngularVelocity(float angularVelocity)
+{
+	this->angularVelocity = angularVelocity;
+}
+
 p2Vec2 p2Body::GetPosition() const
 {
 	return position;
@@ -167,7 +172,12 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 	m_Centroide /= m_CollidersList.size();
 
 	m_Inertia = tmpCollider->GetInertia(); //TO DO compute all inertia together
-	m_InvInertia = 1.0f / m_Inertia;
+	if (m_Inertia == 0) {
+		m_InvInertia = 0.0f;
+	}
+	else {
+		m_InvInertia = 1.0f / m_Inertia;
+	}
 
 	ComputeAABB();
 

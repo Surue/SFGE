@@ -68,6 +68,7 @@ public:
 	void SetLinearVelocity(p2Vec2& velocity);
 
 	float GetAngularVelocity() const;
+	void SetAngularVelocity(float angularVelocity);
 	
 	p2Vec2 GetPosition() const;
 	void SetPosition(p2Vec2 position);

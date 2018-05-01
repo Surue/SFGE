@@ -209,37 +209,111 @@ void p2ContactManager::Solve()
 			break;
 			}
 
-			velocityAlongNormal = velocityAlongNormal + (1 / 1);
+			float mA = manifold.bodyA->GetMass();
+			float mB = manifold.bodyB->GetMass();
 
-			//Compute restitution
+			float iA = (manifold.bodyA->GetInvInertia());
+			float iB = (manifold.bodyB->GetInvInertia());
 
+			p2Vec2 tangent = p2Vec2(manifold.normal.y, -manifold.normal.x);
+
+			p2Vec2 rA = manifold.contactPoint - manifold.bodyA->GetCentroide();
+			p2Vec2 rB = manifold.contactPoint - manifold.bodyB->GetCentroide();
+
+			float rtA = p2Vec2::Cross(rA, tangent).z;
+			float rtB = p2Vec2::Cross(rB, tangent).z;
+
+			relativeVelocity += p2Vec2( -manifold.bodyB->GetAngularVelocity() * rB.y, manifold.bodyB->GetAngularVelocity() * rB.x);
+			relativeVelocity -= p2Vec2(-manifold.bodyA->GetAngularVelocity() * rA.y, manifold.bodyA->GetAngularVelocity() * rA.x);
+
+			float kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
+
+			float tangentMass = 0.0f;
+
+			if (kTangent > 0.0f) {
+				tangentMass = 1.0f / kTangent;
+			}
+
+			float velocityT = p2Vec2::Dot(relativeVelocity, p2Vec2(manifold.normal.y, -manifold.normal.x));
+			float lambda = tangentMass * (-velocityT);
+			float maxFriction = 1 * 1;
+			float newImpulse = lambda;
+			lambda = newImpulse;
+
+			p2Vec2 P = tangent * lambda;
+
+			p2Vec2 vA = manifold.bodyA->GetLinearVelocity() -  P * mA;
+			float wA = manifold.bodyA->GetAngularVelocity() - p2Vec2::Cross(rA, P).z * iA;
+
+			p2Vec2 vB = manifold.bodyB->GetLinearVelocity() + P * mB;
+			float wB = manifold.bodyB->GetAngularVelocity() + p2Vec2::Cross(rB, P).z * iB;
+
+			float vn = p2Vec2::Dot(relativeVelocity, manifold.normal);
+			
+			float kNormal = mA + mB + iA * p2Vec2::Cross(rA, manifold.normal).z * p2Vec2::Cross(rA, manifold.normal).z + iB * p2Vec2::Cross(rB, manifold.normal).z * p2Vec2::Cross(rB, manifold.normal).z;
+
+			float normalMass = 0.0f;
+			if (kNormal > 0.0f) {
+				normalMass = 1.0f / kNormal;
+			}
+
+			float vRel = p2Vec2::Dot(manifold.normal, vB + p2Vec2(- wB * rB.y, wB * rB.x) - vA - p2Vec2(-wA * rA.y, wA * rA.x));
 			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
 
+			float velocityBias = -restitution * vRel;
+			lambda = -normalMass * (vn - velocityBias);
+			
+			if (lambda > 0.0f) {
+				newImpulse = lambda;
+			} else{
+				newImpulse = 0.0f;
+			}
+
+			P = manifold.normal * lambda;
+
+			vA -= P * mA;
+			wA -= iA * p2Vec2::Cross(rA, P).z;
+
+			vB += P * mB;
+			wB += iB * p2Vec2::Cross(rB, P).z;
+
+			std::cout << "vA = "; vA.Show();
+			std::cout << "vB = "; vB.Show();
+			std::cout << "wA = " << wA << "\n";
+			std::cout << "wB = " << wB << "\n";
+			//Compute restitution
+
 			float impulseScalar = (-1.0f) *(1.0f + restitution) * p2Vec2::Dot(relativeVelocity, manifold.normal);
-			impulseScalar /= (manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass() + ((p2Vec2::Cross((manifold.contactPoint - manifold.bodyA->GetCentroide()).Normal(), manifold.normal).z * (p2Vec2::Cross((manifold.contactPoint - manifold.bodyA->GetCentroide()).Normal(), manifold.normal).z * manifold.bodyA->GetInvInertia()) + ((p2Vec2::Cross((manifold.contactPoint - manifold.bodyB->GetCentroide()).Normal(), manifold.normal).z * (p2Vec2::Cross((manifold.contactPoint - manifold.bodyB->GetCentroide()).Normal(), manifold.normal).z * manifold.bodyB->GetInvInertia()))))));
+
+			float crossRaN = p2Vec2::Cross(rA, manifold.normal).z;
+			float crossRbN = p2Vec2::Cross(rB, manifold.normal).z;
+			
+			impulseScalar /= ((manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass())*p2Vec2::Dot(manifold.normal, manifold.normal) + ((crossRaN * crossRaN * manifold.bodyA->GetInvInertia()) + (crossRbN * crossRbN * manifold.bodyB->GetInvInertia())));
 
 			p2Vec2 impulse = manifold.normal * impulseScalar;
 
+			
+
 			//Other methode
 
-			float ma = manifold.bodyA->GetMass();
-			float mb = manifold.bodyB->GetMass();
+			//float ma = manifold.bodyA->GetMass();
+			//float mb = manifold.bodyB->GetMass();
 
-			p2Vec2 ra = manifold.contactPoint - manifold.bodyA->GetCentroide(); //Correct
-			p2Vec2 rb = manifold.contactPoint - manifold.bodyB->GetCentroide(); //Correct
+			//p2Vec2 ra = manifold.contactPoint - manifold.bodyA->GetCentroide(); //Correct
+			//p2Vec2 rb = manifold.contactPoint - manifold.bodyB->GetCentroide(); //Correct
 
-			float Ia = (manifold.bodyA->GetInvInertia());
-			float Ib = (manifold.bodyB->GetInvInertia());
+			//float Ia = (manifold.bodyA->GetInvInertia());
+			//float Ib = (manifold.bodyB->GetInvInertia());
 
-			p2Vec2 va = manifold.bodyA->GetLinearVelocity(); 
-			p2Vec2 vb = manifold.bodyB->GetLinearVelocity();
+			//p2Vec2 va = manifold.bodyA->GetLinearVelocity(); 
+			//p2Vec2 vb = manifold.bodyB->GetLinearVelocity();
 
-			float k = 1 / (ma * ma) + 2 / (ma * mb) + 1 / (mb * mb) - ra.x * ra.x / (ma * Ia) - rb.x * rb.x / (ma * Ib) - ra.y * ra.y / (ma * Ia) - ra.y*ra.y / (mb * Ia) - ra.x * ra.x / (mb * Ia) - rb.x * rb.x / (mb * Ib) - rb.y * rb.y / (ma * Ib) - rb.y * rb.y / (mb * Ib) + ra.y*ra.y*rb.x*rb.x/(Ia*Ib) + ra.x * ra.x *rb.y *rb.y / (Ia*Ib) - 2*ra.x*ra.y*rb.x*rb.y/(Ia*Ib);
+			//float k = 1 / (ma * ma) + 2 / (ma * mb) + 1 / (mb * mb) - ra.x * ra.x / (ma * Ia) - rb.x * rb.x / (ma * Ib) - ra.y * ra.y / (ma * Ia) - ra.y*ra.y / (mb * Ia) - ra.x * ra.x / (mb * Ia) - rb.x * rb.x / (mb * Ib) - rb.y * rb.y / (ma * Ib) - rb.y * rb.y / (mb * Ib) + ra.y*ra.y*rb.x*rb.x/(Ia*Ib) + ra.x * ra.x *rb.y *rb.y / (Ia*Ib) - 2*ra.x*ra.y*rb.x*rb.y/(Ia*Ib);
 
-			float Jx = (restitution + 1) / k * (va.x - vb.x)*(1 / ma - ra.x*ra.x / Ia + 1 / mb - rb.x*rb.x / Ib) - (restitution + 1) / k * (va.y - vb.y)*(ra.x*ra.y / Ia + rb.x *rb.y / Ib);
-			float Jy = -(restitution + 1) / k * (va.x - vb.x)*(ra.x*ra.y / Ia + rb.x*rb.x / Ib) + (restitution + 1) / k * (va.y - vb.y)*(1 / ma - ra.y*ra.y / Ia + 1 / mb - rb.y*rb.y / Ib);
+			//float Jx = (restitution + 1) / k * (va.x - vb.x)*(1 / ma - ra.x*ra.x / Ia + 1 / mb - rb.x*rb.x / Ib) - (restitution + 1) / k * (va.y - vb.y)*(ra.x*ra.y / Ia + rb.x *rb.y / Ib);
+			//float Jy = -(restitution + 1) / k * (va.x - vb.x)*(ra.x*ra.y / Ia + rb.x*rb.x / Ib) + (restitution + 1) / k * (va.y - vb.y)*(1 / ma - ra.y*ra.y / Ia + 1 / mb - rb.y*rb.y / Ib);
 
-			impulse = p2Vec2(Jx, Jy);
+			//impulse = p2Vec2(Jx, Jy);
 			//If both are dynamic, then both are equally move away from the oder one
 			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC && manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
 				manifold.penetration /= 1;
@@ -256,11 +330,19 @@ void p2ContactManager::Solve()
 
 			impulse = manifold.normal * impulseScalar;
 
-			manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
-			manifold.bodyA->ApplyImpulse(impulse * -1, manifold.contactPoint);
+			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
+				manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
+				//manifold.bodyA->ApplyImpulse(impulse * -1, manifold.bodyA->GetCentroide());
+				manifold.bodyA->SetLinearVelocity(vA);
+				manifold.bodyA->SetAngularVelocity(wA);
+			}
 
-			manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (correction * manifold.bodyB->GetInvMass()));
-			manifold.bodyB->ApplyImpulse(impulse, manifold.contactPoint);
+			if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
+				manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (correction * manifold.bodyB->GetInvMass()));
+				//manifold.bodyB->ApplyImpulse(impulse, manifold.bodyB->GetCentroide());
+				manifold.bodyB->SetLinearVelocity(vB);
+				manifold.bodyB->SetAngularVelocity(wB);
+			}
 		}
 	}
 
