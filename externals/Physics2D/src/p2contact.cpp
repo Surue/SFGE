@@ -202,15 +202,8 @@ void p2ContactManager::Solve()
 
 			p2Vec2 relativeVelocity = manifold.bodyB->GetLinearVelocity() - manifold.bodyA->GetLinearVelocity();
 
-			float velocityAlongNormal = p2Vec2::Dot(relativeVelocity, manifold.normal);
-
-			//Do not resolve if velocities is pulling appart both body
-			if(velocityAlongNormal > 0){
-			break;
-			}
-
-			float mA = manifold.bodyA->GetMass();
-			float mB = manifold.bodyB->GetMass();
+			float mA = manifold.bodyA->GetInvMass();
+			float mB = manifold.bodyB->GetInvMass();
 
 			float iA = (manifold.bodyA->GetInvInertia());
 			float iB = (manifold.bodyB->GetInvInertia());
@@ -226,6 +219,14 @@ void p2ContactManager::Solve()
 			relativeVelocity += p2Vec2( -manifold.bodyB->GetAngularVelocity() * rB.y, manifold.bodyB->GetAngularVelocity() * rB.x);
 			relativeVelocity -= p2Vec2(-manifold.bodyA->GetAngularVelocity() * rA.y, manifold.bodyA->GetAngularVelocity() * rA.x);
 
+			float velocityAlongNormal = p2Vec2::Dot(relativeVelocity, manifold.normal);
+
+			//Do not resolve if velocities is pulling appart both body
+			if (velocityAlongNormal > 0) {
+				std::cout << "GO OUT\n";
+				break;
+			}
+
 			float kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
 
 			float tangentMass = 0.0f;
@@ -236,7 +237,7 @@ void p2ContactManager::Solve()
 
 			float velocityT = p2Vec2::Dot(relativeVelocity, p2Vec2(manifold.normal.y, -manifold.normal.x));
 			float lambda = tangentMass * (-velocityT);
-			float maxFriction = 1 * 1;
+			float maxFriction = 0 * 1;
 			float newImpulse = lambda;
 			lambda = newImpulse;
 
@@ -277,10 +278,6 @@ void p2ContactManager::Solve()
 			vB += P * mB;
 			wB += iB * p2Vec2::Cross(rB, P).z;
 
-			std::cout << "vA = "; vA.Show();
-			std::cout << "vB = "; vB.Show();
-			std::cout << "wA = " << wA << "\n";
-			std::cout << "wB = " << wB << "\n";
 			//Compute restitution
 
 			float impulseScalar = (-1.0f) *(1.0f + restitution) * p2Vec2::Dot(relativeVelocity, manifold.normal);
@@ -293,30 +290,9 @@ void p2ContactManager::Solve()
 			p2Vec2 impulse = manifold.normal * impulseScalar;
 
 			
-
-			//Other methode
-
-			//float ma = manifold.bodyA->GetMass();
-			//float mb = manifold.bodyB->GetMass();
-
-			//p2Vec2 ra = manifold.contactPoint - manifold.bodyA->GetCentroide(); //Correct
-			//p2Vec2 rb = manifold.contactPoint - manifold.bodyB->GetCentroide(); //Correct
-
-			//float Ia = (manifold.bodyA->GetInvInertia());
-			//float Ib = (manifold.bodyB->GetInvInertia());
-
-			//p2Vec2 va = manifold.bodyA->GetLinearVelocity(); 
-			//p2Vec2 vb = manifold.bodyB->GetLinearVelocity();
-
-			//float k = 1 / (ma * ma) + 2 / (ma * mb) + 1 / (mb * mb) - ra.x * ra.x / (ma * Ia) - rb.x * rb.x / (ma * Ib) - ra.y * ra.y / (ma * Ia) - ra.y*ra.y / (mb * Ia) - ra.x * ra.x / (mb * Ia) - rb.x * rb.x / (mb * Ib) - rb.y * rb.y / (ma * Ib) - rb.y * rb.y / (mb * Ib) + ra.y*ra.y*rb.x*rb.x/(Ia*Ib) + ra.x * ra.x *rb.y *rb.y / (Ia*Ib) - 2*ra.x*ra.y*rb.x*rb.y/(Ia*Ib);
-
-			//float Jx = (restitution + 1) / k * (va.x - vb.x)*(1 / ma - ra.x*ra.x / Ia + 1 / mb - rb.x*rb.x / Ib) - (restitution + 1) / k * (va.y - vb.y)*(ra.x*ra.y / Ia + rb.x *rb.y / Ib);
-			//float Jy = -(restitution + 1) / k * (va.x - vb.x)*(ra.x*ra.y / Ia + rb.x*rb.x / Ib) + (restitution + 1) / k * (va.y - vb.y)*(1 / ma - ra.y*ra.y / Ia + 1 / mb - rb.y*rb.y / Ib);
-
-			//impulse = p2Vec2(Jx, Jy);
 			//If both are dynamic, then both are equally move away from the oder one
-			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC && manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
-				manifold.penetration /= 1;
+			if (manifold.bodyA->GetType() != p2BodyType::DYNAMIC || manifold.bodyB->GetType() != p2BodyType::DYNAMIC) {
+				manifold.penetration *= 2;
 			}
 
 			const float k_slop = 0.01f; // Penetration allowance
@@ -325,21 +301,14 @@ void p2ContactManager::Solve()
 
 			//Change position to not be in collision anymore and velocity only if body is dynamic
 
-			impulseScalar = (-1.0f) *(1.0f + restitution) * p2Vec2::Dot(relativeVelocity, manifold.normal);
-			impulseScalar /= (manifold.bodyA->GetInvMass() + manifold.bodyB->GetInvMass());
-
-			impulse = manifold.normal * impulseScalar;
-
 			if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
 				manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - p2Mat22::RotationMatrix(manifold.bodyA->GetAngle()) * (correction * manifold.bodyA->GetInvMass()));
-				//manifold.bodyA->ApplyImpulse(impulse * -1, manifold.bodyA->GetCentroide());
 				manifold.bodyA->SetLinearVelocity(vA);
 				manifold.bodyA->SetAngularVelocity(wA);
 			}
 
 			if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
 				manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + p2Mat22::RotationMatrix(manifold.bodyB->GetAngle()) * (correction * manifold.bodyB->GetInvMass()));
-				//manifold.bodyB->ApplyImpulse(impulse, manifold.bodyB->GetCentroide());
 				manifold.bodyB->SetLinearVelocity(vB);
 				manifold.bodyB->SetAngularVelocity(wB);
 			}
@@ -1162,7 +1131,7 @@ p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifo
 	else {
 		ref = closestB;
 		inc = closestA;
-		std::cout << "flip";
+		//std::cout << "flip";
 		flip = true;
 	}
 	
