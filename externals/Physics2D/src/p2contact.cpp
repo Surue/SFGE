@@ -216,10 +216,12 @@ void p2ContactManager::Solve()
 			float rtA = p2Vec2::Cross(rA, tangent).z;
 			float rtB = p2Vec2::Cross(rB, tangent).z;
 
-			relativeVelocity += p2Vec2( -manifold.bodyB->GetAngularVelocity() * rB.y, manifold.bodyB->GetAngularVelocity() * rB.x);
+			relativeVelocity += p2Vec2(-manifold.bodyB->GetAngularVelocity() * rB.y, manifold.bodyB->GetAngularVelocity() * rB.x);
 			relativeVelocity -= p2Vec2(-manifold.bodyA->GetAngularVelocity() * rA.y, manifold.bodyA->GetAngularVelocity() * rA.x);
 
 			float velocityAlongNormal = p2Vec2::Dot(relativeVelocity, manifold.normal);
+
+			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
 
 			//Do not resolve if velocities is pulling appart both body
 			if (velocityAlongNormal > 0) {
@@ -233,12 +235,32 @@ void p2ContactManager::Solve()
 			if (kTangent > 0.0f) {
 				tangentMass = 1.0f / kTangent;
 			}
+			float kNormal = mA + mB + iA * p2Vec2::Cross(rA, manifold.normal).z * p2Vec2::Cross(rA, manifold.normal).z + iB * p2Vec2::Cross(rB, manifold.normal).z * p2Vec2::Cross(rB, manifold.normal).z;
+			
+			 //Friction
+			
+			//tangential speed
+			p2Vec2 velReal = manifold.bodyB->GetLinearVelocity() + p2Vec2(-manifold.bodyB->GetAngularVelocity() * rB.y, manifold.bodyB->GetAngularVelocity() * rB.x) - manifold.bodyA->GetLinearVelocity() - p2Vec2(-manifold.bodyA->GetAngularVelocity() * rA.y, manifold.bodyA->GetAngularVelocity() * rA.x);
+			float nVelReal = p2Vec2::Dot(manifold.normal, manifold.bodyB->GetLinearVelocity() + p2Vec2(-manifold.bodyB->GetAngularVelocity() * rB.y, manifold.bodyB->GetAngularVelocity() * rB.x) - manifold.bodyA->GetLinearVelocity() - p2Vec2(-manifold.bodyA->GetAngularVelocity() * rA.y, manifold.bodyA->GetAngularVelocity() * rA.x));
+			float normalImpulse = -(1+restitution) * nVelReal / kNormal;
+			
+			p2Vec2 tVel = velReal - manifold.normal * nVelReal;
+			//tangential speed
+			float tSpd = tVel.GetMagnitude();
 
-			float velocityT = p2Vec2::Dot(relativeVelocity, p2Vec2(manifold.normal.y, -manifold.normal.x));
+			float tangentImpusle = tSpd / kTangent;
+
+			float friction = 1.0f;
+
+			float velocityT = p2Vec2::Dot(relativeVelocity, tangent) - tSpd;
 			float lambda = tangentMass * (-velocityT);
-			float maxFriction = 0 * 1;
-			float newImpulse = lambda;
-			lambda = newImpulse;
+			float maxFriction = friction * normalImpulse;
+			float newImpulse = (lambda + tangentImpusle);
+
+			if (newImpulse < -maxFriction) newImpulse = -maxFriction;
+			if (newImpulse > maxFriction) newImpulse = maxFriction;
+
+			lambda = newImpulse - tangentImpusle;
 
 			p2Vec2 P = tangent * lambda;
 
@@ -250,7 +272,7 @@ void p2ContactManager::Solve()
 
 			float vn = p2Vec2::Dot(relativeVelocity, manifold.normal);
 			
-			float kNormal = mA + mB + iA * p2Vec2::Cross(rA, manifold.normal).z * p2Vec2::Cross(rA, manifold.normal).z + iB * p2Vec2::Cross(rB, manifold.normal).z * p2Vec2::Cross(rB, manifold.normal).z;
+			//Restitution 
 
 			float normalMass = 0.0f;
 			if (kNormal > 0.0f) {
@@ -258,7 +280,6 @@ void p2ContactManager::Solve()
 			}
 
 			float vRel = p2Vec2::Dot(manifold.normal, vB + p2Vec2(- wB * rB.y, wB * rB.x) - vA - p2Vec2(-wA * rA.y, wA * rA.x));
-			float restitution = std::fmin(contact->GetColliderA()->GetRestitution(), contact->GetColliderB()->GetRestitution());
 
 			float velocityBias = -restitution * vRel;
 			lambda = -normalMass * (vn - velocityBias);
@@ -1182,7 +1203,7 @@ p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifo
 
 	if (flip && !bothRect) refNormal = refNormal * -1;
 
-	if(!flip && bothPoly)  refNormal = refNormal * -1;
+	if (!flip && bothPoly)  refNormal = refNormal * -1;
 	//Must be upgraded
 
 	float max = p2Vec2::Dot(refNormal, ref.max);

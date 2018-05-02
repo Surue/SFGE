@@ -91,11 +91,23 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 		break;
 		case ColliderType::RECTANGLE:
 			{
-				p2RectShape* rectShape = new p2RectShape();
-				p2Vec2 boxSize = pixel2meter(GetVectorFromJson(componentJson, "size"));
-				rectShape->SetSize(boxSize);
-				shape = rectShape;
 				colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
+				sf::Vector2f boxSize = GetVectorFromJson(componentJson, "size");
+
+				p2RectShape* rect = new p2RectShape();
+				rect->SetSize(pixel2meter(boxSize));
+				shape = rect;
+				/*colliderDef.shapeType = p2ColliderDef::ShapeType::POLYGON;
+
+				p2PolygonShape* polyShape = new p2PolygonShape();
+				polyShape->SetVerticesCount(4);
+				
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(boxSize.x / 2, boxSize.y / 2)), 0);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(boxSize.x / 2, -boxSize.y / 2)), 1);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(-boxSize.x / 2, -boxSize.y / 2)), 2);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(-boxSize.x / 2, boxSize.y / 2)), 3);
+
+				shape = polyShape;*/
 				break; 
 			}
 		case ColliderType::POLYGON: //TO DO AJOUTER VERIFICATION CONVEXE, SINON TRANSFORMER EN CONVEXE

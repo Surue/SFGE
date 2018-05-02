@@ -38,8 +38,10 @@ SOFTWARE.
 namespace sfge
 {
 
+
 void Body2d::Init()
 {
+		m_Body->SetAngle((m_GameObject->GetComponent<Transform>()->GetEulerAngle() / 180.0f) * M_PI);
 }
 
 void Body2d::Update(float dt)
@@ -107,6 +109,14 @@ Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& comp
 	if (CheckJsonNumber(componentJson, "mass"))
 	{
 		bodyDef.mass = componentJson["mass"];
+	}
+
+	if (CheckJsonExists(componentJson, "angle"))
+	{
+		if (IsJsonValueNumeric(componentJson["angle"]))
+		{
+			std::cout << "ICI\n";
+		}
 	}
 
 	p2Body* body = world->CreateBody(&bodyDef);

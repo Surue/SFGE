@@ -50,6 +50,7 @@ struct p2BodyDef
 	p2Vec2 linearVelocity;
 	float gravityScale = 1;
 	float mass = 1;
+	float angle = 0;
 };
 
 /**

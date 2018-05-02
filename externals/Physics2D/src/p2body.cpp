@@ -61,7 +61,7 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 		m_InvMass = 1 / m_Mass;
 	}
 
-	m_Angle = 0.0f;
+	m_Angle = bodyDef.angle;
 	angularVelocity = 0.0f;
 }
 
