@@ -98,7 +98,7 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 				rect->SetSize(pixel2meter(boxSize));
 				shape = rect;
 				/*colliderDef.shapeType = p2ColliderDef::ShapeType::POLYGON;
-
+				sf::Vector2f boxSize = GetVectorFromJson(componentJson, "size");
 				p2PolygonShape* polyShape = new p2PolygonShape();
 				polyShape->SetVerticesCount(4);
 				

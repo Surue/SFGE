@@ -41,6 +41,9 @@ struct p2Manifold {
 	p2Vec2 contactPoint; 
 
 	bool ShouldResolve = false;
+
+	float normalImpulse = 0.0f;
+	float tangentImpulse = 0.0f;
 };
 
 struct p2Edge {
@@ -98,6 +101,9 @@ public:
 
 	static bool CheckIfCollision(p2Contact& contact);
 	bool ShouldResolveCollision() const;
+
+	bool SolvePosition(p2Manifold& manifold);
+	void SolveVelocity(p2Manifold& manifold);
 
 	bool isOnContact();
 
