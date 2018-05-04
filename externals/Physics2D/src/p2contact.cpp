@@ -130,14 +130,14 @@ bool p2Contact::ShouldResolveCollision() const
 
 bool p2Contact::SolvePosition(p2Manifold & manifold)
 {
-	const float k_slop = 0.005f; // Penetration allowance
-	const float percent = 0.2f; // Penetration percentage to correct
+	const float k_slop = 0.0005f; // Penetration allowance
+	const float percent = 0.8f; // Penetration percentage to correct
 
 	float mA = manifold.bodyA->GetInvMass();
 	float mB = manifold.bodyB->GetInvMass();
 
-	float iA = (manifold.bodyA->GetInvInertia());
-	float iB = (manifold.bodyB->GetInvInertia());
+	float iA = manifold.bodyA->GetInvInertia();
+	float iB = manifold.bodyB->GetInvInertia();
 
 	p2Vec2 rA = manifold.contactPoint - manifold.bodyA->GetPosition();
 	p2Vec2 rB = manifold.contactPoint - manifold.bodyB->GetPosition();
@@ -146,7 +146,7 @@ bool p2Contact::SolvePosition(p2Manifold & manifold)
 
 	float minPenetration = 0.0f;
 
-	if (penetration < minPenetration) {
+	if (penetration > minPenetration) {
 		minPenetration = penetration;
 	}
 
@@ -360,11 +360,11 @@ void p2ContactManager::Solve()
 			PointsToDraw.push_back(manifold.contactPoint);
 			//TO REMOVE
 
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 10; i++) {
 				contact->SolveVelocity(manifold);
 			}
 
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 10; i++) {
 				if (contact->SolvePosition(manifold)) {
 					break;
 				}
@@ -640,15 +640,19 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 {
 	p2Vec2 distance = (contact->GetColliderB()->GetPosition() - contact->GetColliderA()->GetPosition());
 
-	float radiusTotal = static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius() + static_cast<p2CircleShape*>(contact->GetColliderB()->GetShape())->GetRadius();
+	float radiusA = static_cast<p2CircleShape*>(contact->GetColliderA()->GetShape())->GetRadius();
+	float radiusB = static_cast<p2CircleShape*>(contact->GetColliderB()->GetShape())->GetRadius();
 
-	bool isTouching = distance.GetMagnitude() < radiusTotal;
+	p2Vec2 positionA = contact->GetColliderA()->GetPosition();
+	p2Vec2 positionB = contact->GetColliderB()->GetPosition();
+
+	float radiusTotal = radiusA + radiusB;
 	
-	if (isTouching) {
-		manifold.penetration = radiusTotal - distance.GetMagnitude();
+	if (distance.GetMagnitude() < radiusTotal) {
 		manifold.normal = distance.Normalized();
+		manifold.penetration = p2Vec2::Dot((positionA + manifold.normal * radiusA) - (positionB - manifold.normal * radiusB), manifold.normal);
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
-		manifold.contactPoint = (contact->GetColliderB()->GetPosition() + contact->GetColliderA()->GetPosition()) / 2;
+		manifold.contactPoint = (positionA + positionB) * 0.5f;
 		return true;
 	}
 	else {
@@ -670,6 +674,8 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	p2CircleShape* circle;
 	p2Vec2 circlePosition;
 
+	bool flip = false;
+
 	//Associate variable
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
 		rect = static_cast<p2RectShape*>(colliderA->GetShape());
@@ -688,6 +694,8 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 
 		circle = static_cast<p2CircleShape*>(colliderA->GetShape());
 		circlePosition = colliderA->GetPosition();
+
+		flip = true;
 	}
 
 	p2Vec2 rect2circle = circlePosition - rectPosition;
@@ -753,7 +761,7 @@ bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
 	closestPoint = p2Mat22::RotationMatrix(-rectAngle) * (closestPoint - rectPosition) + rectPosition;
 
 	manifold.contactPoint = closestPoint;
-	if (isInside) {
+	if (isInside || flip) {
 		manifold.normal = (circlePosition - manifold.contactPoint).Normalized() * (-1);
 	}
 	else {

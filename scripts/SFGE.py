@@ -6,7 +6,6 @@ class Vector2f:
         self.x = 0
         self.y = 0
 
-
 class Timer:
     def __init__(self, time, period):
         pass
@@ -43,10 +42,6 @@ class SpriteManager:
 
 
 class TextureManager:
-    pass    
-
-
-class GraphicsManager(Module):
     pass
 
 
@@ -72,7 +67,6 @@ class Transform(Component):
     def __init__(self, game_object):
         pass
 
-
 class KeyboardManager:
 
     def is_key_held(self, key):
@@ -84,9 +78,23 @@ class KeyboardManager:
     def is_key_up(self, key):
         pass
 
+
+class MouseManager:
+
+     def is_button_pressed(self, button):
+         pass
+
+     def local_position(self, window):
+         pass
+
 class InputManager:
     keyboard = KeyboardManager()
+    mouse = MouseManager()
+
+class GraphicManager(Module):
+    def get_window(self):
+        pass
 
 engine = Engine()
 input_manager = InputManager()
-    
+graphic_manager = GraphicManager()

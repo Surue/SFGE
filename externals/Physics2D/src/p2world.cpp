@@ -87,6 +87,22 @@ void p2World::Step(float dt)
 	{
 		body->ClearForce();
 	}
+
+	for (auto body : m_BodyList) {
+		//Calcule des forces
+		//Gravitation
+		p2Vec2 forces;
+		dt = 1 / 60.0f;
+		if (body->GetType() == p2BodyType::DYNAMIC) {
+			body->AddForce(m_Gravity * body->GetGravityScale());
+		}
+
+		//Calcule des accélérations
+		body->SetLinearVelocity((body->GetForce() * dt) + body->GetLinearVelocity());
+
+		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
+		body->SetAngle(body->GetAngularVelocity() * dt + body->GetAngle());
+	}
 }
 
 p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
@@ -144,7 +160,7 @@ void p2World::DrawDebugData()
 					p2RectShape* rect = static_cast<p2RectShape*>(collider->GetShape());
 
 					p2Vec2 size = rect->GetSize();
-					p2Vec2 position = collider->GetPosition() - (size / 2);
+					p2Vec2 position = collider->GetPosition() - (size * 0.5f);
 					float angle = body->GetAngle();
 
 					m_DebugDraw->DrawRectFilled(position, angle, size, p2Color(0, 0, 153));

@@ -111,12 +111,14 @@ Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& comp
 		bodyDef.mass = componentJson["mass"];
 	}
 
-	if (CheckJsonExists(componentJson, "angle"))
-	{
-		if (IsJsonValueNumeric(componentJson["angle"]))
-		{
-			std::cout << "ICI\n";
-		}
+	if (CheckJsonParameter(componentJson, "linear_velocity", json::value_t::array)) {
+		sf::Vector2f velocity = GetVectorFromJson(componentJson, "linear_velocity");
+		bodyDef.linearVelocity = sfge::pixel2meter(velocity);
+	}
+
+	if (CheckJsonParameter(componentJson, "initial_force", json::value_t::array)) {
+		sf::Vector2f force = GetVectorFromJson(componentJson, "initial_force");
+		bodyDef.InitialForce = sfge::pixel2meter(force);
 	}
 
 	p2Body* body = world->CreateBody(&bodyDef);

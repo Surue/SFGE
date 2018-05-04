@@ -24,6 +24,7 @@
 
 #include <engine/log.h>
 #include <input/input.h>
+#include <graphics/graphics.h>
 #include <python/python_engine.h>
 
 #include <engine/scene.h>
@@ -62,13 +63,23 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 	py::class_<Module> module(m, "Module");
 
+	py::class_<GraphicsManager> graphicManager(m, "GraphicManager");
+	graphicManager
+		.def("get_window", &GraphicsManager::GetWindow, py::return_value_policy::reference);
+
 	py::class_<SceneManager> sceneManager(m, "SceneManager");
 	sceneManager
 		.def("load_scene", &SceneManager::LoadScene);
 
 	py::class_<InputManager> inputManager(m, "InputManager");
 	inputManager
-		.def_property_readonly("keyboard", &InputManager::GetKeyboardManager, py::return_value_policy::reference);
+		.def_property_readonly("keyboard", &InputManager::GetKeyboardManager, py::return_value_policy::reference)
+		.def_property_readonly("mouse", &InputManager::GetMouseManager, py::return_value_policy::reference);
+
+	py::class_<MouseManager> mouseManager(m, "MouseManager");
+	mouseManager
+		.def("is_button_pressed", &MouseManager::isButtonPressed)
+		.def("local_position", &MouseManager::localPosition);
 
 	py::class_<KeyboardManager> keyboardManager(m, "KeyboardManager");
 	keyboardManager
@@ -189,12 +200,7 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.def(py::init<float, float>())
 		.def_readwrite("x", &p2Vec2::x)
 		.def_readwrite("y", &p2Vec2::y);
-		
 }
-
-
-
-
 
 void PythonManager::Init()
 {
@@ -205,6 +211,7 @@ void PythonManager::Init()
 	sfgeModule.attr("engine")=  py::cast(&m_Engine);
 	sfgeModule.attr("scene_manager") = py::cast(m_Engine.GetSceneManager());
 	sfgeModule.attr("input_manager") = py::cast(m_Engine.GetInputManager());
+	sfgeModule.attr("graphic_manager") = py::cast(m_Engine.GetGraphicsManager());
 }
 
 void PythonManager::Update(sf::Time)

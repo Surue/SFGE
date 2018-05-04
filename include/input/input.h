@@ -121,7 +121,16 @@ private:
 class MouseManager
 {
 public:
-	sf::Vector2i localPosition(sf::Window& window);
+	/**
+	* \brief Called each frame to update the keyboard status
+	*/
+	void Update(sf::Time dt);
+
+	bool isButtonPressed(sf::Mouse::Button button);
+
+	sf::Vector2i localPosition(sf::RenderWindow& window);
+
+private:
 };
 
 }

@@ -95,7 +95,16 @@ bool KeyboardManager::IsKeyUp(sf::Keyboard::Key key)
 	return !keyPressedStatusArray[(int)key].keyPressed && keyPressedStatusArray[(int)key].previousKeyPressed;
 }
 
-sf::Vector2i MouseManager::localPosition(sf::Window& window)
+void MouseManager::Update(sf::Time dt)
+{
+}
+
+bool MouseManager::isButtonPressed(sf::Mouse::Button button)
+{
+	return sf::Mouse::isButtonPressed(button);
+}
+
+sf::Vector2i MouseManager::localPosition(sf::RenderWindow& window)
 {
 	return sf::Mouse::getPosition(window);
 }
