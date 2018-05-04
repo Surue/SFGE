@@ -21,19 +21,23 @@
                   "name": "Rigidbody",
                   "type": 5,
                   "body_type": 2,
-                  "gravity_scale": 1
+                  "gravity_scale": 0
               },
               {
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
                   "radius": 50,
-                  "sensor": true
+                  "sensor": false
               },
               {
                   "type": 4,
                   "script_path": "scripts/contact_test.py"
-              }
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/player_character_basic.py"
+			  }
           ]
       },
 	  {
@@ -62,7 +66,7 @@
                   "type": 6,
                   "collider_type": 1,
                   "radius": 75,
-                  "sensor": true
+                  "sensor": false
               },
               {
                   "type": 4,

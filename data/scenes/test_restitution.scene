@@ -225,7 +225,7 @@
                   "type": 1,
                   "position": [225, 50],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
                   "name": "Rect Shape Component",
@@ -261,7 +261,7 @@
                   "type": 1,
                   "position": [375, 50],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
                   "name": "Rect Shape Component",
@@ -297,7 +297,7 @@
                   "type": 1,
                   "position": [525, 50],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
                   "name": "Rect Shape Component",
@@ -333,7 +333,7 @@
                   "type": 1,
                   "position": [675, 50],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
                   "name": "Rect Shape Component",
@@ -369,7 +369,7 @@
                   "type": 1,
                   "position": [825, 50],
                   "scale" : [1.0,1.0],
-                  "angle": 1.0
+                  "angle": 0.0
               },
               {
                   "name": "Rect Shape Component",
