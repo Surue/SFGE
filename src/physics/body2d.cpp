@@ -78,6 +78,21 @@ p2Vec2 Body2d::GetVelocity()
 	return p2Vec2();
 }
 
+void Body2d::SetPosition(sf::Vector2f pos)
+{
+	m_Body->SetPosition(sfge::pixel2meter(pos));
+}
+
+float Body2d::GetGravityScale() const
+{
+	return m_Body->GetGravityScale();
+}
+
+void Body2d::SetGravityScale(float gravityScale)
+{
+	m_Body->SetGravityScale(gravityScale);
+}
+
 Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& componentJson)
 {
 	auto physicsManager = engine.GetPhysicsManager();

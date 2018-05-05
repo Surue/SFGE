@@ -61,6 +61,11 @@ public:
 	void SetVelocity(p2Vec2 v);
 	p2Vec2 GetVelocity();
 
+	void SetPosition(sf::Vector2f pos);
+
+	float GetGravityScale() const;
+	void SetGravityScale(float gravityScale);
+
 	/**
 	* \brief Factory method that creates a Body2d Component
 	* \return Body2d ptr that will be attached to the GameObject and will be destroyed by the PhysicsManager

@@ -69,9 +69,9 @@ public:
 
 	static bool CheckCollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
 
-	static p2Vec2 FindContactPoint(p2Contact* const contact, p2Manifold& const manifold);
+	static p2Vec2 FindContactPoint(const p2Contact* contact, const p2Manifold& manifold);
 
-	static p2Edge FindClosestEdge(std::vector<p2Vec2> const vertices, p2Vec2 const normal);
+	static p2Edge FindClosestEdge(const std::vector<p2Vec2> vertices, const p2Vec2 normal);
 
 	static std::vector<p2Vec2> ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj);
 private:

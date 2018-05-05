@@ -37,13 +37,6 @@ int main()
 
 	engine.GetSceneManager()->SetCurrentScene("data/scenes/test_iterative_resolutiuon.scene");
 
-	std::shared_ptr<sf::RenderWindow> window = engine.GetGraphicsManager()->GetWindow();
-
-	sf::Vector2i mousePosition = engine.GetInputManager()->GetMouseManager()->localPosition(*window);
-
-	std::cout << "COUCOUO\n";
-	std::cout << "mousePosition" << mousePosition.x << ", " << mousePosition.y << "\n";
-
 	engine.Start();
 #if WIN32
 	system("pause");

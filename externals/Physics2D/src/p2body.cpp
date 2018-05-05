@@ -151,6 +151,11 @@ float p2Body::GetGravityScale() const
 	return gravityScale;
 }
 
+void p2Body::SetGravityScale(float gravityScale)
+{
+	this->gravityScale = gravityScale;
+}
+
 float p2Body::GetMass() const
 {
 	return m_Mass;

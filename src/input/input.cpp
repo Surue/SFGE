@@ -56,6 +56,7 @@ void InputManager::Init()
 void InputManager::Update(sf::Time dt)
 {
 	m_KeyboardManager->Update(dt);
+	m_MouseManager->Update(dt);
 }
 
 void InputManager::Destroy()
@@ -97,15 +98,30 @@ bool KeyboardManager::IsKeyUp(sf::Keyboard::Key key)
 
 void MouseManager::Update(sf::Time dt)
 {
+	for (int i = 0; i < sf::Mouse::ButtonCount; i++)
+	{
+		mouseKeyPressesStatusArray[i].previousMouseKeyPressed = mouseKeyPressesStatusArray[i].mouseKeyPressed;
+		mouseKeyPressesStatusArray[i].mouseKeyPressed = sf::Mouse::isButtonPressed((sf::Mouse::Button)i);
+	}
 }
 
-bool MouseManager::isButtonPressed(sf::Mouse::Button button)
+bool MouseManager::IsButtonHeld(sf::Mouse::Button button)
 {
-	return sf::Mouse::isButtonPressed(button);
+	return mouseKeyPressesStatusArray[(int)button].mouseKeyPressed;
 }
 
-sf::Vector2i MouseManager::localPosition(sf::RenderWindow& window)
+bool MouseManager::IsButtonDown(sf::Mouse::Button button)
 {
-	return sf::Mouse::getPosition(window);
+	return !mouseKeyPressesStatusArray[(int)button].previousMouseKeyPressed && mouseKeyPressesStatusArray[(int)button].mouseKeyPressed;
+}
+
+bool MouseManager::IsButtonUp(sf::Mouse::Button button)
+{
+	return !mouseKeyPressesStatusArray[(int)button].mouseKeyPressed && mouseKeyPressesStatusArray[(int)button].previousMouseKeyPressed;
+}
+
+sf::Vector2i MouseManager::localPosition(std::shared_ptr<sf::RenderWindow> window)
+{
+	return sf::Mouse::getPosition(*window.get());
 }
 }

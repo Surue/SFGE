@@ -115,6 +115,8 @@ private:
 	KeyPressedStatus keyPressedStatusArray[sf::Keyboard::Key::KeyCount] ={};
 };
 
+struct MouseKeyPressedStatus { bool previousMouseKeyPressed; bool mouseKeyPressed; };
+
 /**
 * \brief Manage the mouse position status
 */
@@ -126,11 +128,14 @@ public:
 	*/
 	void Update(sf::Time dt);
 
-	bool isButtonPressed(sf::Mouse::Button button);
+	bool IsButtonHeld(sf::Mouse::Button button);
+	bool IsButtonDown(sf::Mouse::Button button);
+	bool IsButtonUp(sf::Mouse::Button button);
 
-	sf::Vector2i localPosition(sf::RenderWindow& window);
+	sf::Vector2i localPosition(std::shared_ptr<sf::RenderWindow> window);
 
 private:
+	MouseKeyPressedStatus mouseKeyPressesStatusArray[sf::Mouse::Button::ButtonCount] = {};
 };
 
 }

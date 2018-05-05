@@ -30,7 +30,7 @@
                   "collider_type": 2,
                   "size": [1200,150],
                   "sensor": false,
-				  "bouncing": 0
+				  "bouncing": 1
               }
           ]
       },
@@ -39,7 +39,7 @@
           "components": [
               {
                   "type": 1,
-                  "position": [150, 350],
+                  "position": [160, 350],
                   "scale" : [1.0,1.0],
                   "angle": -5.0
               },
@@ -62,7 +62,7 @@
                   "collider_type": 2,
                   "size": [150, 700],
                   "sensor": false,
-				  "bouncing": 0
+				  "bouncing": 1
               }
           ]
       },
@@ -71,7 +71,7 @@
           "components": [
               {
                   "type": 1,
-                  "position": [1050, 350],
+                  "position": [1040, 350],
                   "scale" : [1.0,1.0],
                   "angle": 5.0
               },
@@ -94,7 +94,7 @@
                   "collider_type": 2,
                   "size": [150, 700],
                   "sensor": false,
-				  "bouncing": 0
+				  "bouncing": 1
               }
           ]
       },
@@ -111,7 +111,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -124,10 +124,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -143,7 +147,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -156,10 +160,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -175,7 +183,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -188,10 +196,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -207,7 +219,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -220,10 +232,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -239,7 +255,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -252,10 +268,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },{
           "name": "Circle6",
@@ -270,7 +290,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -283,10 +303,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -302,7 +326,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -315,10 +339,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -334,7 +362,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -347,10 +375,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -366,7 +398,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -379,10 +411,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -398,7 +434,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -411,10 +447,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },{
           "name": "Circle11",
@@ -429,7 +469,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -442,10 +482,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -461,7 +505,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -474,10 +518,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -493,7 +541,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -506,9 +554,9 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
+				  "bouncing": 0.5
               }
           ]
       },
@@ -525,7 +573,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -538,10 +586,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -557,7 +609,7 @@
                   "name": "Circle Shape Component",
                   "type": 3,
                   "shape_type": 1,
-                  "radius": 50,
+                  "radius": 75,
 				  "mass" : 1
               },
               {
@@ -570,10 +622,14 @@
                   "name": "BCircleCollider",
                   "type": 6,
                   "collider_type": 1,
-                  "radius": 50,
+                  "radius": 75,
                   "sensor": false,
-				  "bouncing": 0.0
-              }
+				  "bouncing": 0.5
+              },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/drag_and_drop.py"
+			  }
           ]
       },
 	  {
@@ -582,10 +638,6 @@
 			  {
 				  "type": 4,
 				  "script_path": "scripts/debug_draw_data.py"
-			  },
-			  {
-				  "type": 4,
-				  "script_path": "scripts/drag_and_drop.py"
 			  }
           ]
       }

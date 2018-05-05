@@ -54,8 +54,6 @@ p2World::~p2World()
 	}
 }
 
-
-
 void p2World::Step(float dt)
 {
 	for (auto body : m_BodyList) {
@@ -121,6 +119,16 @@ void p2World::SetContactListener(p2ContactListener * contactListener)
 p2Vec2 p2World::GetGravity() const
 {
 	return m_Gravity;
+}
+
+std::vector<p2Body> p2World::QuerryAABB(p2AABB aabb)
+{
+	return std::vector<p2Body>();
+}
+
+std::vector<p2Body> p2World::CircleOverlap(p2AABB aabb)
+{
+	return std::vector<p2Body>();
 }
 
 void p2World::SetDebugDraw(p2Draw * debugDraw)

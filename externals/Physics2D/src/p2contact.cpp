@@ -652,7 +652,7 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 		manifold.normal = distance.Normalized();
 		manifold.penetration = p2Vec2::Dot((positionA + manifold.normal * radiusA) - (positionB - manifold.normal * radiusB), manifold.normal);
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
-		manifold.contactPoint = (positionA + positionB) * 0.5f;
+		manifold.contactPoint = ((positionA + manifold.normal * radiusA) + (positionB - manifold.normal * radiusB)) * 0.5f;
 		return true;
 	}
 	else {
@@ -1125,7 +1125,7 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	return !isSeparated;
 }
 
-p2Vec2 SAT::FindContactPoint(p2Contact* const contact, p2Manifold & const manifold)
+p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();

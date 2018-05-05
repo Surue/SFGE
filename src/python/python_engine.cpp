@@ -78,8 +78,14 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 	py::class_<MouseManager> mouseManager(m, "MouseManager");
 	mouseManager
-		.def("is_button_pressed", &MouseManager::isButtonPressed)
+		.def("is_button_pressed", &MouseManager::IsButtonHeld)
+		.def("is_button_down", &MouseManager::IsButtonDown)
+		.def("is_button_up", &MouseManager::IsButtonUp)
 		.def("local_position", &MouseManager::localPosition);
+
+	py::enum_<sf::Mouse::Button>(mouseManager, "Button")
+		.value("Left", sf::Mouse::Left)
+		.value("Right", sf::Mouse::Right);
 
 	py::class_<KeyboardManager> keyboardManager(m, "KeyboardManager");
 	keyboardManager
@@ -148,7 +154,9 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 	py::class_<Body2d, Component> body(m, "Body");
 	body
-		.def_property("velocity", &Body2d::GetVelocity, &Body2d::SetVelocity);
+		.def_property("velocity", &Body2d::GetVelocity, &Body2d::SetVelocity)
+		.def("set_position", &Body2d::SetPosition)
+		.def_property("gravity_scale", &Body2d::GetGravityScale, &Body2d::SetGravityScale);
 
 	py::class_<Sound, Component> sound(m, "Sound");
 	sound
@@ -173,6 +181,7 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.def_readonly_static("Magenta", &sf::Color::Magenta)
 		.def_readonly_static("Cyan", &sf::Color::Cyan)
 		.def_readonly_static("Transparent", &sf::Color::Transparent);
+
 	py::class_<Timer> timer(m, "Timer");
 	timer
 		.def(py::init<float, float>())
@@ -194,12 +203,22 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 		.def_readwrite("x", &sf::Vector2f::x)
 		.def_readwrite("y", &sf::Vector2f::y);
 
+	py::class_<sf::Vector2i> vector2i(m, "Vector2i");
+	vector2i
+		.def_readwrite("x", &sf::Vector2i::x)
+		.def_readwrite("y", &sf::Vector2i::y);
+
 	py::class_<p2Vec2> p2vec2(m, "p2Vec2");
 	p2vec2
 		.def(py::init<>())
 		.def(py::init<float, float>())
 		.def_readwrite("x", &p2Vec2::x)
 		.def_readwrite("y", &p2Vec2::y);
+
+	py::class_<sf::Window> window(m, "Window");
+
+	py::class_<sf::RenderWindow, std::shared_ptr<sf::RenderWindow>> renderWindow(m, "RenderWindow");
+
 }
 
 void PythonManager::Init()

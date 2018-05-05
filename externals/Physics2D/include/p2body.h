@@ -92,6 +92,7 @@ public:
 
 	p2BodyType GetType() const;
 	float GetGravityScale() const;
+	void SetGravityScale(float gravityScale);
 	float GetMass() const;
 	float GetInvMass() const;
 	/**

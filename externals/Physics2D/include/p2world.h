@@ -30,6 +30,7 @@ SOFTWARE.
 #include <p2draw.h>
 
 #include <list>
+#include <map>
 
 class p2Body;
 
@@ -56,6 +57,9 @@ public:
 	void SetContactListener(p2ContactListener* contactListener);
 
 	p2Vec2 GetGravity() const;
+
+	std::vector<p2Body> QuerryAABB(p2AABB aabb);
+	std::vector<p2Body> CircleOverlap(p2AABB aabb);
 
 	//Raytracing() // TO DO
 
