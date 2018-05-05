@@ -121,14 +121,44 @@ p2Vec2 p2World::GetGravity() const
 	return m_Gravity;
 }
 
-std::vector<p2Body> p2World::QuerryAABB(p2AABB aabb)
+std::list<p2Body*> p2World::AABBOverlap(p2AABB aabb)
 {
-	return std::vector<p2Body>();
+	return m_ContactManager.GetQuadTree()->AABBOverlap(aabb);
 }
 
-std::vector<p2Body> p2World::CircleOverlap(p2AABB aabb)
+std::list<p2Body*> p2World::CircleOverlap(p2AABB aabb)
 {
-	return std::vector<p2Body>();
+	p2Vec2 center = aabb.GetCenter();
+
+	float radius = aabb.topRight.x - center.x;
+
+	std::list<p2Body*> bodies = AABBOverlap(aabb);
+
+	auto it = bodies.begin();
+	while (it != bodies.end())
+	{
+		p2Vec2 bodyPosition = (*it)->GetPosition();
+		float distance = (bodyPosition.x - center.x) * (bodyPosition.x - center.x) + (bodyPosition.y - center.y) * (bodyPosition.y - center.y);
+
+		if (distance > radius * radius) {
+			bodies.erase(it++);
+		}
+		else {
+			++it;
+		}
+	}
+
+	return bodies;
+}
+
+std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float maxDistance)
+{
+	return std::list<p2Body*>();
+}
+
+p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
+{
+	return nullptr;
 }
 
 void p2World::SetDebugDraw(p2Draw * debugDraw)
@@ -153,7 +183,7 @@ void p2World::DrawDebugData()
 	for (p2Body* body : m_BodyList) {
 		//Draw aabb of body
 		if (flags & p2Draw::aabbBit) {
-			m_DebugDraw->DrawRect(body->GetAABB()->bottomLeft, 0, body->GetAABB()->GetExtends() * 2, p2Color(153, 0, 0));
+			m_DebugDraw->DrawRect(body->GetAABB().bottomLeft, 0, body->GetAABB().GetExtends() * 2, p2Color(153, 0, 0));
 		}
 
 		//Draw center of mass

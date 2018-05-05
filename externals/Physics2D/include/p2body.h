@@ -108,13 +108,15 @@ public:
 	
 	void ComputeAABB();
 
-	const p2AABB* GetAABB() const;
+	const p2AABB& GetAABB() const;
 
 	p2World* GetWorld();
 
 	p2Vec2 GetCentroide();
 
 	float GetInvInertia();
+
+	void ApplyExplosiveForce(float explosiveForce, float explosionRadius, p2Vec2 explosionPosition);
 
 private:
 	p2Vec2 position;

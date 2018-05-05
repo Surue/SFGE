@@ -83,7 +83,7 @@ p2Collider * p2Contact::GetColliderB() const
 
 bool p2Contact::OverlapAABB() const
 {
-	return m_ColliderA->aabb.Overlap(&m_ColliderB->aabb);
+	return m_ColliderA->aabb.Overlap(m_ColliderB->aabb);
 }
 
 bool p2Contact::CheckIfCollision(p2Contact& contact)
@@ -310,18 +310,18 @@ void p2ContactManager::FindNewContact(std::list<p2Body*>& bodies)
 
 	p2AABB fullAABB;
 	auto it = bodies.begin();
-	fullAABB.bottomLeft = (*it)->GetAABB()->bottomLeft;
-	fullAABB.topRight = (*it)->GetAABB()->topRight;
+	fullAABB.bottomLeft = (*it)->GetAABB().bottomLeft;
+	fullAABB.topRight = (*it)->GetAABB().topRight;
 	it++;
 	
 	while (it != bodies.end())
 	{
 		//Check the biggest aabb
-		fullAABB.bottomLeft.x = fmin(fullAABB.bottomLeft.x, (*it)->GetAABB()->bottomLeft.x);
-		fullAABB.bottomLeft.y = fmax(fullAABB.bottomLeft.y, (*it)->GetAABB()->bottomLeft.y);
+		fullAABB.bottomLeft.x = fmin(fullAABB.bottomLeft.x, (*it)->GetAABB().bottomLeft.x);
+		fullAABB.bottomLeft.y = fmax(fullAABB.bottomLeft.y, (*it)->GetAABB().bottomLeft.y);
 
-		fullAABB.topRight.x = fmax(fullAABB.topRight.x, (*it)->GetAABB()->topRight.x);
-		fullAABB.topRight.y = fmin(fullAABB.topRight.y, (*it)->GetAABB()->topRight.y);
+		fullAABB.topRight.x = fmax(fullAABB.topRight.x, (*it)->GetAABB().topRight.x);
+		fullAABB.topRight.y = fmin(fullAABB.topRight.y, (*it)->GetAABB().topRight.y);
 
 		it++;
 	}
@@ -398,7 +398,8 @@ void p2ContactManager::CreateContact(p2Collider * colliderA, p2Collider * collid
 {
 	for (p2Contact* contact : m_ContactList) {
 		if (colliderA == contact->GetColliderA() && colliderB == contact->GetColliderB() || 
-			colliderA == contact->GetColliderB() && colliderB == contact->GetColliderA()) {
+			colliderA == contact->GetColliderB() && colliderB == contact->GetColliderA() ||
+			colliderA == colliderB) {
 			return;
 		}
 	}

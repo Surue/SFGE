@@ -235,9 +235,9 @@ void p2Body::ComputeAABB()
 	}
 }
 
-const p2AABB * p2Body::GetAABB() const
+const p2AABB & p2Body::GetAABB() const
 {
-	return &aabb;
+	return aabb;
 }
 
 p2World * p2Body::GetWorld()
@@ -263,4 +263,21 @@ p2Vec2 p2Body::GetCentroide()
 float p2Body::GetInvInertia()
 {
 	return m_InvInertia;
+}
+
+void p2Body::ApplyExplosiveForce(float explosiveForce, float explosionRadius, p2Vec2 explosionPosition)
+{
+	p2AABB aabb;
+	aabb.bottomLeft = position - p2Vec2(explosionRadius, -explosionRadius);
+	aabb.topRight = position + p2Vec2(explosionRadius, -explosionRadius);
+
+	std::list<p2Body*> bodiesToApplyForce = world->CircleOverlap(aabb);
+
+	for (p2Body* body : bodiesToApplyForce) {
+		float distance = (body->position - position).GetMagnitude();
+
+		float force = explosiveForce * (explosionRadius / distance);
+
+		body->AddForce((body->position - position).Normalized() * force);
+	}
 }

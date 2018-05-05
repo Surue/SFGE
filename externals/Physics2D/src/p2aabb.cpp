@@ -44,22 +44,21 @@ const p2Vec2 p2AABB::GetExtends() const
 	return (topRight - bottomLeft) * 0.5f;
 }
 
-bool p2AABB::Contains(const p2AABB* other) const
+bool p2AABB::Contains(const p2AABB& aabb) const
 {
 	bool isContaining = true;
-
-	isContaining = isContaining && bottomLeft.x <= other->bottomLeft.x;
-	isContaining = isContaining && bottomLeft.y >= other->bottomLeft.y;
-	isContaining = isContaining && topRight.x >= other->topRight.x;
-	isContaining = isContaining && topRight.y <= other->topRight.y;
+	isContaining = isContaining && bottomLeft.x <= aabb.bottomLeft.x;
+	isContaining = isContaining && bottomLeft.y >= aabb.bottomLeft.y;
+	isContaining = isContaining && topRight.x >= aabb.topRight.x;
+	isContaining = isContaining && topRight.y <= aabb.topRight.y;
 
 	return isContaining;
 }
 
-bool p2AABB::Overlap(const p2AABB* aabb) const
+bool p2AABB::Overlap(const p2AABB& aabb) const
 {
-	bool x = (std::abs(GetCenter().x - aabb->GetCenter().x) <= GetExtends().x  + aabb->GetExtends().x );
-	bool y = (std::abs(GetCenter().y - aabb->GetCenter().y) <= GetExtends().y * -1 + aabb->GetExtends().y * -1);
+	bool x = (std::abs(GetCenter().x - aabb.GetCenter().x) <= GetExtends().x  + aabb.GetExtends().x );
+	bool y = (std::abs(GetCenter().y - aabb.GetCenter().y) <= GetExtends().y * -1 + aabb.GetExtends().y * -1);
 
 	return x && y;
 }

@@ -156,7 +156,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 	body
 		.def_property("velocity", &Body2d::GetVelocity, &Body2d::SetVelocity)
 		.def("set_position", &Body2d::SetPosition)
-		.def_property("gravity_scale", &Body2d::GetGravityScale, &Body2d::SetGravityScale);
+		.def_property("gravity_scale", &Body2d::GetGravityScale, &Body2d::SetGravityScale)
+		.def("add_explosive_force", &Body2d::AddExplosiveForce);
 
 	py::class_<Sound, Component> sound(m, "Sound");
 	sound

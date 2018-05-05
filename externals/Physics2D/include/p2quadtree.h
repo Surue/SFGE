@@ -66,6 +66,8 @@ public:
 	*/
 	void Retrieve(std::list<p2Contact>& contacts) const;
 
+	std::list<p2Body*> AABBOverlap(p2AABB aabb) const;
+
 	void SetAABB(const p2AABB aabb);
 
 	void Draw(const p2Draw* debugDraw) const;

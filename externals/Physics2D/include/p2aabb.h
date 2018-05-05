@@ -44,9 +44,9 @@ struct p2AABB
 	*/
 	const p2Vec2 GetExtends() const;
 
-	bool Contains(const p2AABB* aabb) const;
+	bool Contains(const p2AABB& aabb) const;
 
-	bool Overlap(const p2AABB* aabb) const;
+	bool Overlap(const p2AABB& aabb) const;
 
 	void GetSubAABBQuad(p2AABB p2AABB[]) const;
 };

@@ -58,12 +58,13 @@ public:
 
 	p2Vec2 GetGravity() const;
 
-	std::vector<p2Body> QuerryAABB(p2AABB aabb);
-	std::vector<p2Body> CircleOverlap(p2AABB aabb);
+	std::list<p2Body*> AABBOverlap(p2AABB aabb);
 
-	//Raytracing() // TO DO
+	std::list<p2Body*> CircleOverlap(p2AABB aabb);
 
-	//CircleCast() = Unity.CircleOverlap() // TO DO
+	std::list<p2Body*> RaycastAll(p2Vec2 vector, p2Vec2 position, float maxDistance = std::numeric_limits<float>::infinity());
+
+	p2Body* Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance = std::numeric_limits<float>::infinity());
 
 	/**
 	* \brief Register methods for debug drawing.
@@ -76,7 +77,6 @@ public:
 	void DrawDebugData();
 
 	p2Draw* GetDebugDraw() const;
-
 
 private:
 	std::list<p2Body *> m_BodyList;

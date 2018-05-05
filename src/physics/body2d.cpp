@@ -93,6 +93,11 @@ void Body2d::SetGravityScale(float gravityScale)
 	m_Body->SetGravityScale(gravityScale);
 }
 
+void Body2d::AddExplosiveForce(float explosiveForce, float explosionRadius, sf::Vector2f explosionPosition) const
+{
+	m_Body->ApplyExplosiveForce(explosiveForce, sfge::pixel2meter(explosionRadius), sfge::pixel2meter(explosionPosition));
+}
+
 Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& componentJson)
 {
 	auto physicsManager = engine.GetPhysicsManager();

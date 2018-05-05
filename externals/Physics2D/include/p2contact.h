@@ -143,6 +143,10 @@ public:
 
 	void CreateContact(p2Collider* colliderA, p2Collider* colliderB);
 
+	void CreateContactDebug(p2Collider* colliderA, p2Collider* colliderB) {
+		m_ContactListener->BeginContact(new p2Contact(colliderA, colliderB));
+	}
+
 	void Destroy();
 	void Destroy(p2Contact *contact);
 
