@@ -30,6 +30,12 @@ SOFTWARE.
 
 #include <cstdint>
 #include <vector>
+#include <list>
+
+struct raycastStruct {
+	p2Vec2 posA;
+	p2Vec2 posB;
+};
 
 struct p2Color {
 	p2Color() {}
@@ -72,7 +78,8 @@ public:
 		colliderBit			= 0x0001,
 		aabbBit				= 0x0002,
 		aabbColliderBit		= 0x0004,
-		centerOfMassBit		= 0x0008
+		centerOfMassBit		= 0x0008,
+		raycastBit			= 0x0010,				
 	};
 
 	/**
@@ -99,7 +106,11 @@ public:
 
 	virtual void DrawTransform(const p2Vec2 transform) const = 0;
 
+	virtual void DrawLine(const p2Vec2 posA, const p2Vec2 posB) const = 0;
+
 	p2Color TRANSPARENT = p2Color(0, 0, 0, 0);
+
+	std::list<raycastStruct> m_Segment;
 
 protected:
 	uint32_t m_DrawFlags;

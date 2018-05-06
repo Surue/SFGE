@@ -129,6 +129,16 @@ void DebugDraw::DrawTransform(const p2Vec2 transform) const
 {
 }
 
+void DebugDraw::DrawLine(const p2Vec2 posA, const p2Vec2 posB) const
+{
+	sf::Vertex line[] = {
+		sf::Vertex(sfge::meter2pixel(posA)),
+		sf::Vertex(sfge::meter2pixel(posB))
+	};
+
+	m_Window->draw(line, 2, sf::Lines);
+}
+
 sf::Color DebugDraw::p2Color2SfColor(const p2Color & color) const
 {
 	sf::Color result((sf::Uint8)(color.r), (sf::Uint8)(color.g), (sf::Uint8)(color.b), (sf::Uint8)(color.a)); // TO DO

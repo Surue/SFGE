@@ -52,6 +52,8 @@ public:
 
 	void DrawTransform(const p2Vec2 transform) const;
 
+	void DrawLine(const p2Vec2 posA, const p2Vec2 posB) const;
+
 	sf::Color p2Color2SfColor(const p2Color &color) const;
 private:
 	sf::RenderWindow *m_Window;

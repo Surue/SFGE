@@ -101,6 +101,9 @@ void p2World::Step(float dt)
 		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
 		body->SetAngle(body->GetAngularVelocity() * dt + body->GetAngle());
 	}
+
+	//TO REMOVE
+	Raycast(p2Vec2(1, 1), p2Vec2(5, 5), 10);
 }
 
 p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
@@ -153,11 +156,22 @@ std::list<p2Body*> p2World::CircleOverlap(p2AABB aabb)
 
 std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float maxDistance)
 {
+	//Get a list of all possible body
 	return std::list<p2Body*>();
 }
 
 p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 {
+	uint32_t flags = m_DebugDraw->GetFlags();
+
+	if (flags && p2Draw::raycastBit) {
+		raycastStruct tmp;
+		tmp.posA = position;
+		tmp.posB = position + vector.Normalized() * maxDistance;
+		m_DebugDraw->m_Segment.push_front(tmp);
+	}
+
+
 	return nullptr;
 }
 
@@ -226,6 +240,14 @@ void p2World::DrawDebugData()
 				m_DebugDraw->DrawRect(collider->aabb.bottomLeft, 0, collider->aabb.GetExtends() * 2, p2Color(153, 0, 0));
 			}
 		}
+	}
+
+
+	//Draw raycast
+	for (auto it = m_DebugDraw->m_Segment.begin(); it != m_DebugDraw->m_Segment.end(); ) {
+		m_DebugDraw->DrawLine(it->posA, it->posB);
+
+		it = m_DebugDraw->m_Segment.erase(it);
 	}
 }
 

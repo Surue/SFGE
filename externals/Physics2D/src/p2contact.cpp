@@ -130,8 +130,8 @@ bool p2Contact::ShouldResolveCollision() const
 
 bool p2Contact::SolvePosition(p2Manifold & manifold)
 {
-	const float k_slop = 0.0005f; // Penetration allowance
-	const float percent = 0.8f; // Penetration percentage to correct
+	const float k_slop = 0.001f; // Penetration allowance
+	const float percent = 0.2f; // Penetration percentage to correct
 
 	float mA = manifold.bodyA->GetInvMass();
 	float mB = manifold.bodyB->GetInvMass();
@@ -142,7 +142,7 @@ bool p2Contact::SolvePosition(p2Manifold & manifold)
 	p2Vec2 rA = manifold.contactPoint - manifold.bodyA->GetPosition();
 	p2Vec2 rB = manifold.contactPoint - manifold.bodyB->GetPosition();
 
-	float penetration = manifold.penetration;
+	float penetration = -manifold.penetration;
 
 	float minPenetration = 0.0f;
 
@@ -150,7 +150,7 @@ bool p2Contact::SolvePosition(p2Manifold & manifold)
 		minPenetration = penetration;
 	}
 
-	float C = percent * (-penetration + k_slop);
+	float C = percent * (penetration + k_slop);
 	if (C > 0.0f) {
 		C = 0.0f;
 	}
@@ -171,18 +171,12 @@ bool p2Contact::SolvePosition(p2Manifold & manifold)
 
 	p2Vec2 P = manifold.normal * impulse;
 
-	//Change position to not be in collision anymore and velocity only if body is dynamic
-
-	if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
-		manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - P * mA);
-		manifold.bodyA->SetAngle(manifold.bodyA->GetAngle() - iA * p2Vec2::Cross(rA, P).z);
-	}
-
-	if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
-		manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + P * mB);
-		manifold.bodyB->SetAngle(manifold.bodyB->GetAngle() + iB * p2Vec2::Cross(rB, P).z);
-	}
-
+	manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - P * mA);
+	manifold.bodyA->SetAngle(manifold.bodyA->GetAngle() - iA * p2Vec2::Cross(rA, P).z);
+	
+	manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + P * mB);
+	manifold.bodyB->SetAngle(manifold.bodyB->GetAngle() + iB * p2Vec2::Cross(rB, P).z);
+	
 	return minPenetration >= -3.0f * k_slop;
 }
 
@@ -277,15 +271,11 @@ void p2Contact::SolveVelocity(p2Manifold & manifold)
 	vB += P * mB;
 	wB += iB * p2Vec2::Cross(rB, P).z;
 
-	if (manifold.bodyA->GetType() == p2BodyType::DYNAMIC) {
-		manifold.bodyA->SetLinearVelocity(vA);
-		manifold.bodyA->SetAngularVelocity(wA);
-	}
+	manifold.bodyA->SetLinearVelocity(vA);
+	manifold.bodyA->SetAngularVelocity(wA);
 
-	if (manifold.bodyB->GetType() == p2BodyType::DYNAMIC) {
-		manifold.bodyB->SetLinearVelocity(vB);
-		manifold.bodyB->SetAngularVelocity(wB);
-	}
+	manifold.bodyB->SetLinearVelocity(vB);
+	manifold.bodyB->SetAngularVelocity(wB);
 }
 
 bool p2Contact::isOnContact()

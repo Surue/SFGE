@@ -127,9 +127,17 @@ public:
 	* \brief Called each frame to update the keyboard status
 	*/
 	void Update(sf::Time dt);
-
+	/**
+	* \brief Get if the button is held
+	*/
 	bool IsButtonHeld(sf::Mouse::Button button);
+	/**
+	* \brief Get if the button is down
+	*/
 	bool IsButtonDown(sf::Mouse::Button button);
+	/**
+	* \brief Get if the button is up
+	*/
 	bool IsButtonUp(sf::Mouse::Button button);
 
 	sf::Vector2i localPosition(std::shared_ptr<sf::RenderWindow> window);
