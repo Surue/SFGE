@@ -6,7 +6,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [289, 644],
+			"position": [936, 484],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -20,7 +20,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [10,6],
+			"size" : [7,1],
 			"sensor" : false 
 		},
 		{
@@ -34,7 +34,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [250, 12],
+			"position": [220, 335],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -48,7 +48,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [1,1],
+			"size" : [9,6],
 			"sensor" : false 
 		},
 		{
@@ -62,7 +62,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [959, 82],
+			"position": [207, 32],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -76,7 +76,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [1,5],
+			"size" : [7,10],
 			"sensor" : false 
 		},
 		{
@@ -90,7 +90,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [1076, 169],
+			"position": [1037, 30],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -104,7 +104,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [4,5],
+			"size" : [9,5],
 			"sensor" : false 
 		},
 		{
@@ -118,7 +118,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [112, 703],
+			"position": [752, 255],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -132,7 +132,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [2,6],
+			"size" : [2,2],
 			"sensor" : false 
 		},
 		{
@@ -146,371 +146,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [1098, 690],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [3,6],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body6",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [271, 628],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [10,2],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body7",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [1142, 475],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [1,8],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body8",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [1237, 301],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [5,2],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body9",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [916, 682],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [10,7],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body10",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [994, 250],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [6,6],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body11",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [1192, 329],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [4,7],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body12",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [1211, 271],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [2,4],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body13",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [342, 69],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [4,3],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body14",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [1223, 5],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [9,8],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body15",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [104, 641],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [8,9],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body16",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [209, 151],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [4,1],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body17",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [844, 452],
-			"scale": [1.0, 1.0], 
-			"angle": 0.0 
-		},
-		{
-			"name": "Rigidbody",
-			"type" : 5, 
-			"body_type": 2, 
-			"gravity_scale": 0 
-		},
-		{
-			"name": "BoxCollider",
-			"type" : 6,
-			"collider_type" : 2, 
-			"size" : [6,9],
-			"sensor" : false 
-		},
-		{
-			"type": 4,
-			"script_path" : "scripts/box_random_movement.py"
-		}
-		]
-	},
-	{
-		"name": "Body18",
-		"components" : [ 
-		{
-			"type" : 1, 
-			"position": [906, 470],
+			"position": [379, 84],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -534,11 +170,11 @@
 		]
 	},
 	{
-		"name": "Body19",
+		"name": "Body6",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [404, 342],
+			"position": [1158, 563],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -552,7 +188,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [3,8],
+			"size" : [2,2],
 			"sensor" : false 
 		},
 		{
@@ -562,11 +198,11 @@
 		]
 	},
 	{
-		"name": "Body20",
+		"name": "Body7",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [3, 150],
+			"position": [283, 85],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -580,7 +216,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [6,7],
+			"size" : [2,5],
 			"sensor" : false 
 		},
 		{
@@ -590,11 +226,11 @@
 		]
 	},
 	{
-		"name": "Body21",
+		"name": "Body8",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [372, 71],
+			"position": [33, 162],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -608,7 +244,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [6,8],
+			"size" : [9,6],
 			"sensor" : false 
 		},
 		{
@@ -618,11 +254,11 @@
 		]
 	},
 	{
-		"name": "Body22",
+		"name": "Body9",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [55, 415],
+			"position": [567, 633],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -636,7 +272,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [1,7],
+			"size" : [1,6],
 			"sensor" : false 
 		},
 		{
@@ -646,11 +282,11 @@
 		]
 	},
 	{
-		"name": "Body23",
+		"name": "Body10",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [71, 89],
+			"position": [739, 21],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -664,7 +300,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [2,7],
+			"size" : [10,7],
 			"sensor" : false 
 		},
 		{
@@ -674,11 +310,11 @@
 		]
 	},
 	{
-		"name": "Body24",
+		"name": "Body11",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [895, 156],
+			"position": [1260, 300],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -692,7 +328,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [1,1],
+			"size" : [1,4],
 			"sensor" : false 
 		},
 		{
@@ -702,11 +338,11 @@
 		]
 	},
 	{
-		"name": "Body25",
+		"name": "Body12",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [10, 65],
+			"position": [1028, 665],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -720,7 +356,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [3,3],
+			"size" : [3,4],
 			"sensor" : false 
 		},
 		{
@@ -730,11 +366,11 @@
 		]
 	},
 	{
-		"name": "Body26",
+		"name": "Body13",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [540, 191],
+			"position": [426, 349],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -748,7 +384,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [4,10],
+			"size" : [2,4],
 			"sensor" : false 
 		},
 		{
@@ -758,11 +394,39 @@
 		]
 	},
 	{
-		"name": "Body27",
+		"name": "Body14",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [479, 249],
+			"position": [591, 97],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [2,3],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body15",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [952, 527],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -786,11 +450,11 @@
 		]
 	},
 	{
-		"name": "Body28",
+		"name": "Body16",
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [1201, 283],
+			"position": [931, 466],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -804,7 +468,343 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [1,2],
+			"size" : [4,6],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body17",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [429, 459],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [10,1],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body18",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [883, 150],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [10,4],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body19",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [1272, 44],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [10,3],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body20",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [327, 9],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [4,3],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body21",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [345, 369],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [2,6],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body22",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [568, 383],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [1,8],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body23",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [357, 62],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [5,10],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body24",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [375, 412],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [4,6],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body25",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [774, 460],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [2,5],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body26",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [1223, 714],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [5,3],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body27",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [504, 420],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [1,7],
+			"sensor" : false 
+		},
+		{
+			"type": 4,
+			"script_path" : "scripts/box_random_movement.py"
+		}
+		]
+	},
+	{
+		"name": "Body28",
+		"components" : [ 
+		{
+			"type" : 1, 
+			"position": [767, 119],
+			"scale": [1.0, 1.0], 
+			"angle": 0.0 
+		},
+		{
+			"name": "Rigidbody",
+			"type" : 5, 
+			"body_type": 2, 
+			"gravity_scale": 0 
+		},
+		{
+			"name": "BoxCollider",
+			"type" : 6,
+			"collider_type" : 2, 
+			"size" : [10,2],
 			"sensor" : false 
 		},
 		{
@@ -818,7 +818,7 @@
 		"components" : [ 
 		{
 			"type" : 1, 
-			"position": [652, 625],
+			"position": [78, 280],
 			"scale": [1.0, 1.0], 
 			"angle": 0.0 
 		},
@@ -832,7 +832,7 @@
 			"name": "BoxCollider",
 			"type" : 6,
 			"collider_type" : 2, 
-			"size" : [9,9],
+			"size" : [7,1],
 			"sensor" : false 
 		},
 		{
@@ -847,7 +847,10 @@
 			"type": 4,
 			"script_path" : "scripts/debug_draw_data.py"}]}
 	]
-}"angle": 0.0 
+}
+}}
+	]
+} 
 		},
 		{
 			"name": "Rigidbody",

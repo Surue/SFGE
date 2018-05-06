@@ -240,3 +240,21 @@ void p2PolygonShape::GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 pos
 void p2PolygonShape::GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle)
 {
 }
+
+p2Shape * p2LineShape::Clone() const
+{
+	p2LineShape* clone = new p2LineShape();
+	*clone = *this;
+	return clone;
+}
+
+void p2LineShape::ComputeAABB(p2AABB * aabb, p2Vec2 position, float angle) const
+{
+	
+}
+
+void p2LineShape::SetLine(p2Vec2 p1, p2Vec2 p2)
+{
+	posA = p1;
+	posB = p2;
+}

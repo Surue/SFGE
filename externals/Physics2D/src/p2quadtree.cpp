@@ -228,6 +228,11 @@ void p2QuadTree::SetAABB(const p2AABB aabb)
 	m_Bounds = aabb;
 }
 
+p2AABB & p2QuadTree::GetAABB() 
+{
+	return m_Bounds;
+}
+
 void p2QuadTree::Draw(const p2Draw* debugDraw) const
 {
 	if (nodes[0] != nullptr) {

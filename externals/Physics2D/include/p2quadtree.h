@@ -69,6 +69,7 @@ public:
 	std::list<p2Body*> AABBOverlap(p2AABB aabb) const;
 
 	void SetAABB(const p2AABB aabb);
+	p2AABB& GetAABB();
 
 	void Draw(const p2Draw* debugDraw) const;
 	

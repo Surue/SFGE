@@ -1116,6 +1116,61 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	return !isSeparated;
 }
 
+bool SAT::CheckCollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
+{
+	p2Collider* colliderA = contact->GetColliderA();
+	p2Collider* colliderB = contact->GetColliderB();
+
+	p2CircleShape* circle;
+	p2LineShape* line;
+
+	p2Vec2 circlePosition;
+	p2Vec2 posA, posB;
+	float radius;
+
+	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE) {
+		circle = static_cast<p2CircleShape*>(colliderA->GetShape());
+		circlePosition = colliderA->GetPosition();
+
+		line = static_cast<p2LineShape*>(colliderB->GetShape());
+	}
+	else {
+		circle = static_cast<p2CircleShape*>(colliderB->GetShape());
+		circlePosition = colliderB->GetPosition();
+
+		line = static_cast<p2LineShape*>(colliderA->GetShape());
+	}
+
+	radius = circle->GetRadius();
+
+	posA = line->posA;
+	posB = line->posB;
+
+	float distance = (posB - posA).GetMagnitude();
+	
+	float proj = (((circlePosition.x - posA.x)*(posB.x - posA.x)) + ((circlePosition.y - posA.y)*(posB.y - posA.y))) / distance;
+
+	p2Vec2 closestPoint = posA + ((posB - posA) * proj);
+
+	//Check if point is on the line
+	float d1 = (closestPoint - posA).GetMagnitude();
+	float d2 = (closestPoint - posB).GetMagnitude();
+
+	float buffer = 0.1f; //Help to get the collision with the line
+
+	if (d1 + d2 >= distance - buffer && d1 + d2 <= distance + buffer) {
+		manifold.penetration = radius - (circlePosition - closestPoint).GetMagnitude();
+		manifold.normal = (posB - posA).Normal().Normalized();
+		manifold.ShouldResolve = false;
+		manifold.contactPoint = closestPoint;
+
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();

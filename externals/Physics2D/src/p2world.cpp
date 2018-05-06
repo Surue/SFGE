@@ -103,7 +103,7 @@ void p2World::Step(float dt)
 	}
 
 	//TO REMOVE
-	Raycast(p2Vec2(1, 1), p2Vec2(5, 5), 10);
+	Raycast(p2Vec2(1, -1), p2Vec2(5, 5), 10);
 }
 
 p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
@@ -156,23 +156,84 @@ std::list<p2Body*> p2World::CircleOverlap(p2AABB aabb)
 
 std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float maxDistance)
 {
-	//Get a list of all possible body
-	return std::list<p2Body*>();
-}
+	p2Vec2 posB = position + vector.Normalized() * maxDistance;
+	//Clamp raycast to maxAABB from quadtree
+	p2AABB maxAABB = m_ContactManager.GetQuadTree()->GetAABB();
 
-p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
-{
+	if (posB.x > maxAABB.topRight.x) posB.x = maxAABB.topRight.x; //CORRECTION À FAIRE
+	if (posB.x < maxAABB.bottomLeft.x) posB.x = maxAABB.bottomLeft.x; //CORRECTION À FAIRE
+
+	if (posB.y < maxAABB.topRight.y) posB.y = maxAABB.topRight.y; //CORRECTION À FAIRE
+	if (posB.y > maxAABB.bottomLeft.y) posB.y = maxAABB.bottomLeft.y; //CORRECTION À FAIRE
+
+	//Draw raycast if needed
 	uint32_t flags = m_DebugDraw->GetFlags();
 
 	if (flags && p2Draw::raycastBit) {
 		raycastStruct tmp;
 		tmp.posA = position;
-		tmp.posB = position + vector.Normalized() * maxDistance;
+		tmp.posB = posB;
 		m_DebugDraw->m_Segment.push_front(tmp);
 	}
 
+	//Create aabb
+	p2AABB aabb;
 
-	return nullptr;
+	aabb.bottomLeft.x = std::fmin(position.x, posB.x);
+	aabb.bottomLeft.y = std::fmax(position.y, posB.y);
+
+	aabb.topRight.x = std::fmax(position.x, posB.x);
+	aabb.topRight.y = std::fmin(position.y, posB.y);
+
+	m_DebugDraw->DrawRect(aabb.bottomLeft, 0, aabb.GetExtends() * 2, p2Color(153, 153, 0));
+
+	//Get all possible contact
+	std::list<p2Body*> bodies = AABBOverlap(aabb);
+
+	std::cout << "nb = " << bodies.size() << "\n";
+
+	p2Body body;
+	p2ColliderDef colliderDef;
+	p2LineShape line;
+	line.posA = position;
+	line.posB = posB;
+	colliderDef.shape = &line;
+	p2Collider* lineCollider = &p2Collider(colliderDef, &body);
+
+	auto it = bodies.begin();
+	while (it != bodies.end()) {
+		for (p2Collider* collider : (*it)->GetColliders()) {
+			p2Manifold manifold;
+
+			p2Contact(collider, lineCollider);
+		}
+		it++;
+	}
+
+	//Remove non-colliding object
+
+
+	return std::list<p2Body*>();
+}
+
+p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
+{
+	std::list<p2Body*> bodies = RaycastAll(vector, position, maxDistance);
+
+	float minDistance = std::numeric_limits<float>::infinity();
+
+	p2Body* objectTouchByRaycast = nullptr;
+
+	for (p2Body* body : bodies) {
+		float distance = (position - body->GetPosition()).GetMagnitude();
+
+		if (minDistance > distance) {
+			minDistance = distance;
+			objectTouchByRaycast = body;
+		}
+	}
+
+	return objectTouchByRaycast;
 }
 
 void p2World::SetDebugDraw(p2Draw * debugDraw)

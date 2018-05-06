@@ -107,4 +107,18 @@ private:
 	std::vector<p2Vec2> m_Vertices;
 };
 
+class p2LineShape : public p2Shape
+{
+public:
+	p2Shape * Clone() const override;
+
+	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
+
+	void SetLine(p2Vec2 p1, p2Vec2 p2);
+
+
+	p2Vec2 posA, posB;
+private:
+};
+
 #endif
