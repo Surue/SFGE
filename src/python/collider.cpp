@@ -91,23 +91,23 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 		break;
 		case ColliderType::RECTANGLE:
 			{
-				colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
+				/*colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
 				sf::Vector2f boxSize = GetVectorFromJson(componentJson, "size");
 
 				p2RectShape* rect = new p2RectShape();
 				rect->SetSize(pixel2meter(boxSize));
-				shape = rect;
-				/*colliderDef.shapeType = p2ColliderDef::ShapeType::POLYGON;
+				shape = rect;*/
 				sf::Vector2f boxSize = GetVectorFromJson(componentJson, "size");
 				p2PolygonShape* polyShape = new p2PolygonShape();
 				polyShape->SetVerticesCount(4);
 				
-				polyShape->SetVertice(pixel2meter(sf::Vector2f(boxSize.x / 2, boxSize.y / 2)), 0);
-				polyShape->SetVertice(pixel2meter(sf::Vector2f(boxSize.x / 2, -boxSize.y / 2)), 1);
-				polyShape->SetVertice(pixel2meter(sf::Vector2f(-boxSize.x / 2, -boxSize.y / 2)), 2);
-				polyShape->SetVertice(pixel2meter(sf::Vector2f(-boxSize.x / 2, boxSize.y / 2)), 3);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(-boxSize.x * 0.5f, boxSize.y * 0.5f)), 0);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(-boxSize.x * 0.5f, -boxSize.y * 0.5f)), 1);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(boxSize.x * 0.5f, -boxSize.y * 0.5f)), 2);
+				polyShape->SetVertice(pixel2meter(sf::Vector2f(boxSize.x * 0.5f, boxSize.y * 0.5f)), 3);
 
-				shape = polyShape;*/
+				shape = polyShape;
+				colliderDef.shapeType = p2ColliderDef::ShapeType::POLYGON;
 				break; 
 			}
 		case ColliderType::POLYGON: //TO DO AJOUTER VERIFICATION CONVEXE, SINON TRANSFORMER EN CONVEXE

@@ -1026,6 +1026,8 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	p2CircleShape* circle;
 	p2Vec2 circlePosition;
 
+	bool flip = false;
+
 	//Associate variables
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 		polygon = static_cast<p2PolygonShape*>(colliderA->GetShape());
@@ -1034,6 +1036,8 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 
 		circle = static_cast<p2CircleShape*>(colliderB->GetShape());
 		circlePosition = colliderB->GetPosition();
+
+		flip = true;
 	}
 	else {
 		polygon = static_cast<p2PolygonShape*>(colliderB->GetShape());
@@ -1063,7 +1067,7 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	//Get normals from polygon
 	std::vector<p2Vec2> polygonNormals;
 
-	polygonNormals.resize(polygon->GetVerticesCount() + 1);
+	polygonNormals.resize(polygon->GetVerticesCount());
 
 	std::vector<p2Vec2> polygonVectorsVertices;
 	polygonVectorsVertices.resize(polygon->GetVerticesCount());
@@ -1073,9 +1077,9 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 
 	//Make axis from closet point to center of circle and add this to normals to check
 	p2Vec2 polygon2circle = circlePosition - vectorsPolygon[indexClosestVertice];
-	p2Vec2 normal = polygon2circle.Normalized();
 
-	polygonNormals.push_back(normal);
+	//Add normal from circle to polygon
+	polygonNormals.push_back(polygon2circle.Normalized());
 
 	p2Vec2 normalMinimal;
 	float mtv = std::numeric_limits<float>::max();
@@ -1085,7 +1089,6 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	for (int i = 0; i < polygonNormals.size(); i++) {
 		p2Vec2 minMaxA = GetMinMaxProj(vectorsPolygon, polygonNormals[i]);
 		float minA = minMaxA.x; float maxA = minMaxA.y;
-
 
 		float minB = p2Vec2::Dot(circlePosition, polygonNormals[i]) - circle->GetRadius(); 
 		float maxB = p2Vec2::Dot(circlePosition, polygonNormals[i]) + circle->GetRadius();
@@ -1107,10 +1110,17 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	}
 
 	if (!isSeparated) {
+		if (flip) {
+			manifold.contactPoint = circlePosition + normalMinimal * circle->GetRadius();
+			normalMinimal *= -1;
+		}
+		else {
+			manifold.contactPoint = circlePosition + normalMinimal * circle->GetRadius();
+		}
+
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
-		manifold.contactPoint = circlePosition + manifold.normal * circle->GetRadius();
 	}
 
 	return !isSeparated;
@@ -1188,11 +1198,15 @@ bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
 
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 		polygon = static_cast<p2PolygonShape*>(colliderA->GetShape());
+		polygonPosition = colliderA->GetPosition();
+		polygonAngle = colliderA->GetBody()->GetAngle();
 
 		line = static_cast<p2LineShape*>(colliderB->GetShape());
 	}
 	else {
 		polygon = static_cast<p2PolygonShape*>(colliderB->GetShape());
+		polygonPosition = colliderB->GetPosition();
+		polygonAngle = colliderB->GetBody()->GetAngle();
 
 		line = static_cast<p2LineShape*>(colliderA->GetShape());
 	}
@@ -1201,20 +1215,49 @@ bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
 	posB = line->posB;
 
 	std::vector<p2Vec2> vertices;
-	polygon->GetVectorsVertices(vertices, polygonPosition, polygonAngle);
+	vertices.resize(polygon->GetVerticesCount());
+	vertices = polygon->GetVerticesWorld(polygonPosition, polygonAngle);
 
-	for (int i = 0; i < vertices.size() - 1; i++) {
-		p2Vec2 pos1 = vertices[i];
+	std::vector<p2Vec2> closestPoints;
+
+	bool isTouching = false;
+
+	for (int i = 0; i < vertices.size(); i++) {
+		p2Vec2 pos2 = vertices[i];
 		int next = i + 1;
 		if (next == vertices.size()) next = 0;
-		p2Vec2 pos2 = vertices[next];
+		p2Vec2 pos1 = vertices[next];
 
 		float divisor = (posB.y - posA.y) * (pos2.x - pos1.x) - (posB.x - posA.x) * (pos2.y - pos1.y);
 
 		float u1 = ((posB.x - posA.x) * (pos1.y - posA.y) - (posB.y - posA.y) * (pos1.x - posA.x)) / divisor;
 		float u2 = ((pos2.x - posA.x) * (pos1.y - posA.y) - (pos2.y - posA.y) * (pos1.x - posA.x)) / divisor;
 
-		if(u1 >= 0 )
+		if (u1 >= 0 && u1 <= 1 && u2 >= 0 && u2 <= 1) {
+			p2Vec2 intersection = pos1 + ((pos2 - pos1) * u1);
+			closestPoints.push_back(intersection);
+			isTouching = true;
+
+			//if second point found, it's useless to continue
+			if (closestPoints.size() == 2) {
+				break;
+			}
+		}
+	}
+	
+	if (isTouching) {
+		if (closestPoints.size() == 2) {
+			if ((posA - closestPoints[0]).GetMagnitude() < (posA - closestPoints[1]).GetMagnitude()) {
+				manifold.contactPoint = closestPoints[0];
+			}
+			else {
+				manifold.contactPoint = closestPoints[1];
+			}
+		}
+
+		manifold.normal = (polygonPosition - manifold.contactPoint).Normalized();
+		manifold.ShouldResolve = false;
+		return true;
 	}
 
 	return false;

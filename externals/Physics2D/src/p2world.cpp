@@ -210,11 +210,16 @@ std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float max
 			}
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
-				std::cout << "rect\n";
+				
 			}
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 				std::cout << "polygon\n";
+				if (SAT::CheckCollisionLinePolygon(&tmp, manifold)) {
+					m_ContactManager.PointsToDraw.push_back(manifold.contactPoint);
+					isTouching = true;
+					continue;
+				}
 			}
 		}
 
@@ -295,11 +300,45 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 			}
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
-				std::cout << "rect\n";
+				p2Vec2 boxSize = static_cast<p2RectShape*>(collider->GetShape())->GetSize();
+				p2ColliderDef colliderDefPoly;
+				p2PolygonShape* polygonShape = new p2PolygonShape();
+				polygonShape->SetVerticesCount(4);
+
+				polygonShape->SetVertice(p2Vec2(boxSize.x * 0.5f, boxSize.y * 0.5f), 0);
+				polygonShape->SetVertice(p2Vec2(boxSize.x * 0.5f, -boxSize.y * 0.5f), 1);
+				polygonShape->SetVertice(p2Vec2(-boxSize.x * 0.5f, -boxSize.y * 0.5f), 2);
+				polygonShape->SetVertice(p2Vec2(-boxSize.x * 0.5f, boxSize.y * 0.5f), 3);
+
+				colliderDefPoly.shape = polygonShape;
+				colliderDefPoly.shapeType = p2ColliderDef::ShapeType::RECT;
+				p2Collider* colliderForceToPolygon = new p2Collider(colliderDefPoly, (*it));
+
+				p2Contact test = p2Contact(colliderForceToPolygon, lineCollider);
+
+				if (SAT::CheckCollisionLinePolygon(&test, manifold)) {
+					float distance = (line->posA - manifold.contactPoint).GetMagnitude();
+					if (minDistance > distance) {
+						minDistance = distance;
+						closestBody = *it;
+						contactpoint = manifold.contactPoint;
+						isTouching = true;
+					}
+				}
+
+				delete(colliderForceToPolygon);
 			}
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
-				std::cout << "polygon\n";
+				if (SAT::CheckCollisionLinePolygon(&tmp, manifold)) {
+					float distance = (line->posA - manifold.contactPoint).GetMagnitude();
+					if (minDistance > distance) {
+						minDistance = distance;
+						closestBody = *it;
+						contactpoint = manifold.contactPoint;
+						isTouching = true;
+					}
+				}
 			}
 		}
 
