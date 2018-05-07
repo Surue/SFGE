@@ -156,12 +156,12 @@ public:
 
 	void Draw(p2Draw* debugDraw);
 
+	std::list<p2Vec2> PointsToDraw; //TO REMOVE
+
 private:
 	std::list<p2Contact*> m_ContactList;
 	p2ContactListener* m_ContactListener;
 
 	p2QuadTree m_QuadTree;
-
-	std::list<p2Vec2> PointsToDraw; //TO REMOVE
 };
 #endif
