@@ -1157,7 +1157,7 @@ bool SAT::CheckCollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
 
 		p2Vec2 pointOnLine = direction * t + posA;
 
-		float distance = radius - (pointOnLine - circlePosition).GetMagnitude();
+		float distance = sqrt((radius * radius) - (pointOnLine - circlePosition).GetMagnitude() * (pointOnLine - circlePosition).GetMagnitude());
 
 		p2Vec2 closestPoint = direction * (t - distance) + posA;
 

@@ -268,7 +268,7 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 	p2ColliderDef colliderDef;
 	p2LineShape* line = new p2LineShape();
 	line->posA = position;
-	line->posB = posB;
+	line->posB = position + vector.Normalized() * maxDistance;
 	colliderDef.shape = line;
 	p2Collider* lineCollider = new p2Collider(colliderDef, &body);
 
