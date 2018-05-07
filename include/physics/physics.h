@@ -93,6 +93,11 @@ public:
 	void Collect() override;
 
 	const static float pixelPerMeter;
+
+	/**
+	* \brief call raycast of physics2D
+	*/
+	Body2d* Raycast(sf::Vector2f direction, sf::Vector2f position, float maxDistance);
 private:
 	friend class Body2d;
 	friend class Collider;

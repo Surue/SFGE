@@ -35,6 +35,54 @@
           ]
       },
 	  {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [620, 100],
+                  "scale" : [1.0,1.0],
+                  "angle": 90.0
+              },
+			  {
+                  "name": "Polygon Shape Component",
+                  "type": 3,
+                  "shape_type": 3,
+                  "point_count": 5,
+				  "point0": [0, -100],
+				  "point1": [-95, -31],
+				  "point2": [-59, 81],
+				  "point3": [59, 81],
+				  "point4": [95, -31]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+			  {
+                  "name": "PolygonCollider",
+                  "type": 6,
+                  "collider_type": 4,
+                  "point_count": 5,
+				  "point0": [0, -100],
+				  "point1": [-95, -31],
+				  "point2": [-59, 81],
+				  "point3": [59, 81],
+				  "point4": [95, -31],
+                  "sensor": false
+              },
+			  {
+				"type": 4,
+				"script_path": "scripts/player_character_basic.py"
+			  },
+			  {
+                  "type": 4,
+                  "script_path": "scripts/transform_rotation.py"
+              }
+          ]
+      },
+	  {
           "name": "Circle1",
           "components": [
               {
@@ -63,10 +111,6 @@
                   "radius": 25,
                   "sensor": false,
 				  "bouncing": 1.0
-              },
-              {
-                  "type": 4,
-                  "script_path": "scripts/player_character_basic.py"
               }
           ]
       },
@@ -172,6 +216,10 @@
 			  {
 				  "type": 4,
 				  "script_path": "scripts/debug_draw_data.py"
+			  },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/raycast_star.py"
 			  }
           ]
       }

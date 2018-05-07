@@ -71,6 +71,10 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 	sceneManager
 		.def("load_scene", &SceneManager::LoadScene);
 
+	py::class_<PhysicsManager> physicManager(m, "PhysicManager");
+	physicManager
+		.def("raycast", &PhysicsManager::Raycast, py::return_value_policy::reference);
+
 	py::class_<InputManager> inputManager(m, "InputManager");
 	inputManager
 		.def_property_readonly("keyboard", &InputManager::GetKeyboardManager, py::return_value_policy::reference)
@@ -232,6 +236,7 @@ void PythonManager::Init()
 	sfgeModule.attr("scene_manager") = py::cast(m_Engine.GetSceneManager());
 	sfgeModule.attr("input_manager") = py::cast(m_Engine.GetInputManager());
 	sfgeModule.attr("graphic_manager") = py::cast(m_Engine.GetGraphicsManager());
+	sfgeModule.attr("physic_manager") = py::cast(m_Engine.GetPhysicsManager());
 }
 
 void PythonManager::Update(sf::Time)

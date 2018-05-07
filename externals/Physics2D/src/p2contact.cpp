@@ -1254,6 +1254,9 @@ bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
 				manifold.contactPoint = closestPoints[1];
 			}
 		}
+		else {
+			manifold.contactPoint = closestPoints[0];
+		}
 
 		manifold.normal = (polygonPosition - manifold.contactPoint).Normalized();
 		manifold.ShouldResolve = false;

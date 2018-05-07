@@ -91,6 +91,17 @@ void PhysicsManager::Collect()
 {
 }
 
+Body2d* PhysicsManager::Raycast(sf::Vector2f direction, sf::Vector2f position, float maxDistance)
+{
+	p2Body* bodyPhysic = m_World->Raycast(sfge::pixel2meter(direction), sfge::pixel2meter(position), sfge::pixel2meter(maxDistance));
+
+	for (Body2d* body : m_Bodies) {
+		if (body->GetBody() == bodyPhysic) {
+			return body;
+		}
+	}
+}
+
 void ContactListener::BeginContact(p2Contact* contact) 
 {
 	Collider* firstCollider = nullptr;
