@@ -71,6 +71,8 @@ public:
 
 	static bool CheckCollisionLineCircle(p2Contact* contact, p2Manifold& manifold);
 
+	static bool CheckCollisionLinePolygon(p2Contact* contact, p2Manifold& manifold);
+
 	static p2Vec2 FindContactPoint(const p2Contact* contact, const p2Manifold& manifold);
 
 	static p2Edge FindClosestEdge(const std::vector<p2Vec2> vertices, const p2Vec2 normal);

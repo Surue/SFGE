@@ -1174,6 +1174,52 @@ bool SAT::CheckCollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
 	}
 }
 
+bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
+{
+	p2Collider* colliderA = contact->GetColliderA();
+	p2Collider* colliderB = contact->GetColliderB();
+
+	p2PolygonShape* polygon;
+	p2LineShape* line;
+
+	p2Vec2 posA, posB;
+	p2Vec2 polygonPosition;
+	float polygonAngle;
+
+	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
+		polygon = static_cast<p2PolygonShape*>(colliderA->GetShape());
+
+		line = static_cast<p2LineShape*>(colliderB->GetShape());
+	}
+	else {
+		polygon = static_cast<p2PolygonShape*>(colliderB->GetShape());
+
+		line = static_cast<p2LineShape*>(colliderA->GetShape());
+	}
+
+	posA = line->posA;
+	posB = line->posB;
+
+	std::vector<p2Vec2> vertices;
+	polygon->GetVectorsVertices(vertices, polygonPosition, polygonAngle);
+
+	for (int i = 0; i < vertices.size() - 1; i++) {
+		p2Vec2 pos1 = vertices[i];
+		int next = i + 1;
+		if (next == vertices.size()) next = 0;
+		p2Vec2 pos2 = vertices[next];
+
+		float divisor = (posB.y - posA.y) * (pos2.x - pos1.x) - (posB.x - posA.x) * (pos2.y - pos1.y);
+
+		float u1 = ((posB.x - posA.x) * (pos1.y - posA.y) - (posB.y - posA.y) * (pos1.x - posA.x)) / divisor;
+		float u2 = ((pos2.x - posA.x) * (pos1.y - posA.y) - (pos2.y - posA.y) * (pos1.x - posA.x)) / divisor;
+
+		if(u1 >= 0 )
+	}
+
+	return false;
+}
+
 p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
