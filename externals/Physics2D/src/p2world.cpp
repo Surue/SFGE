@@ -141,27 +141,23 @@ std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float max
 {
 	p2Vec2 posB = position + vector.Normalized() * maxDistance;
 
+	//Create collider used as raycast
+	p2Body body;
+
+	p2ColliderDef colliderDef;
+	p2LineShape* line = new p2LineShape();
+	line->m_PosA = position;
+	line->m_PosB = posB;
+	colliderDef.shape = line;
+	p2Collider* lineCollider = new p2Collider(colliderDef, &body);
+
 	//Create aabb
 	p2AABB aabb;
 
-	aabb.bottomLeft.x = std::fmin(position.x, posB.x);
-	aabb.bottomLeft.y = std::fmax(position.y, posB.y);
-
-	aabb.topRight.x = std::fmax(position.x, posB.x);
-	aabb.topRight.y = std::fmin(position.y, posB.y);
+	line->ComputeAABB(&aabb, position, 0);
 
 	//Get all possible contact
 	std::list<p2Body*> bodies = AABBOverlap(aabb);
-
-	p2Body body;
-
-	//Create collider used as raycast
-	p2ColliderDef colliderDef;
-	p2LineShape* line = new p2LineShape();
-	line->posA = position;
-	line->posB = posB;
-	colliderDef.shape = line;
-	p2Collider* lineCollider =  new p2Collider(colliderDef, &body);
 
 	//Remove all bodies not collidings with the raycast
 	auto it = bodies.begin();
@@ -218,27 +214,23 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 	p2Vec2 contactpoint = posB;
 	float minDistance = std::numeric_limits<float>::infinity();
 
+	//Create collider used as raycast
+	p2Body body;
+
+	p2ColliderDef colliderDef;
+	p2LineShape* line = new p2LineShape();
+	line->m_PosA = position;
+	line->m_PosB = posB;
+	colliderDef.shape = line;
+	p2Collider* lineCollider = new p2Collider(colliderDef, &body);
+
 	//Create aabb
 	p2AABB aabb;
 
-	aabb.bottomLeft.x = std::fmin(position.x, posB.x);
-	aabb.bottomLeft.y = std::fmax(position.y, posB.y);
-
-	aabb.topRight.x = std::fmax(position.x, posB.x);
-	aabb.topRight.y = std::fmin(position.y, posB.y);
+	line->ComputeAABB(&aabb, position, 0);
 
 	//Get all possible contact
 	std::list<p2Body*> bodies = AABBOverlap(aabb);
-
-	p2Body body;
-
-	//Create collider used as raycast
-	p2ColliderDef colliderDef;
-	p2LineShape* line = new p2LineShape();
-	line->posA = position;
-	line->posB = position + vector.Normalized() * maxDistance;
-	colliderDef.shape = line;
-	p2Collider* lineCollider = new p2Collider(colliderDef, &body);
 
 	//Remove all non colliding bodies
 	auto it = bodies.begin();
@@ -253,7 +245,7 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE) {
 				if (SAT::CheckCollisionLineCircle(&tmp, manifold)) {
 
-					float distance = (line->posA - manifold.contactPoint).GetMagnitude();
+					float distance = (line->m_PosA - manifold.contactPoint).GetMagnitude();
 					if (minDistance > distance) {
 						minDistance = distance;
 						closestBody = *it;
@@ -265,7 +257,7 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 				if (SAT::CheckCollisionLinePolygon(&tmp, manifold)) {
-					float distance = (line->posA - manifold.contactPoint).GetMagnitude();
+					float distance = (line->m_PosA - manifold.contactPoint).GetMagnitude();
 					if (minDistance > distance) {
 						minDistance = distance;
 						closestBody = *it;

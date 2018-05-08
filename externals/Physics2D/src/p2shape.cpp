@@ -71,7 +71,6 @@ void p2Shape::GetNormals(std::vector<p2Vec2>& normals, std::vector<p2Vec2> vecto
 	}
 }
 
-
 p2Shape * p2PolygonShape::Clone() const
 {
 	p2PolygonShape* clone = new p2PolygonShape();
@@ -174,11 +173,15 @@ p2Shape * p2LineShape::Clone() const
 
 void p2LineShape::ComputeAABB(p2AABB * aabb, p2Vec2 position, float angle) const
 {
-	
+	aabb->bottomLeft.x = std::fmin(m_PosA.x, m_PosB.x);
+	aabb->bottomLeft.y = std::fmax(m_PosA.y, m_PosB.y);
+
+	aabb->topRight.x = std::fmax(m_PosA.x, m_PosB.x);
+	aabb->topRight.y = std::fmin(m_PosA.y, m_PosB.y);
 }
 
 void p2LineShape::SetLine(p2Vec2 p1, p2Vec2 p2)
 {
-	posA = p1;
-	posB = p2;
+	m_PosA = p1;
+	m_PosB = p2;
 }

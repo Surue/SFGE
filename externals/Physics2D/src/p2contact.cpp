@@ -779,8 +779,8 @@ bool SAT::CheckCollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
 
 	radius = circle->GetRadius();
 
-	posA = line->posA;
-	posB = line->posB;
+	posA = line->m_PosA;
+	posB = line->m_PosB;
 
 	p2Vec2 normal = (posB - posA).Normal().Normalized();
 
@@ -837,8 +837,8 @@ bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
 		line = static_cast<p2LineShape*>(colliderA->GetShape());
 	}
 
-	posA = line->posA;
-	posB = line->posB;
+	posA = line->m_PosA;
+	posB = line->m_PosB;
 
 	std::vector<p2Vec2> vertices;
 	vertices.resize(polygon->GetVerticesCount());

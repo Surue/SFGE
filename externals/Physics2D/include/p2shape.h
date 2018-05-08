@@ -37,6 +37,9 @@ SOFTWARE.
 class p2Shape
 {
 public:
+	/**
+	* \brief Clone shape
+	*/
 	virtual p2Shape* Clone() const = 0;
 
 	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const = 0;
@@ -51,14 +54,24 @@ public:
 class p2CircleShape : public p2Shape
 {
 public:
-	p2Shape * Clone() const override;
 	/**
-	* \brief Setter for the radius
+	* \brief Clone shape
+	*/
+	p2Shape * Clone() const override;
+
+	//Radius
+	/**
+	* \brief Set the radius
 	*/
 	void SetRadius(float radius);
-
+	/**
+	* \brief Get the radius
+	*/
 	float GetRadius();
 
+	/**
+	* \brief Compute AABB
+	*/
 	void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
 private:
 	float m_Radius;
@@ -70,19 +83,52 @@ private:
 class p2PolygonShape : public p2Shape
 {
 public:
+	/**
+	* \brief Clone shape
+	*/
 	p2Shape * Clone() const override;
-
+	/**
+	* \brief Compute AABB
+	*/
 	void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
 
+	//Vertices
+	/**
+	* \brief set number of vertex
+	*/
 	void SetVerticesCount(int verticesCount);
+	/**
+	* \brief get number of vertex
+	*/
 	int GetVerticesCount();
-
+	/**
+	* \brief set one vertex
+	* \param vertice
+	* \param index of vertex
+	*/
 	void SetVertice(p2Vec2 vertice, int index);
+	/**
+	* \brief get vertex at the given index
+	*/
 	const p2Vec2 GetVertice(int index) const;
+	/**
+	* \brief get all vertices in local position
+	*/
 	const std::vector<p2Vec2> GetVertices() const;
+	/**
+	* \brief get all vertices in world position
+	*/
 	const std::vector<p2Vec2> GetVerticesWorld(p2Vec2 position, float angle) const;
-
+	
+	/**
+	* \brief get edges
+	* \param vectors std::vectors used as callback
+	*/
 	void GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle);
+	/**
+	* \brief get vectors from center to vertex
+	* \param vectors [] used as callback
+	*/
 	void GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle);
 private:
 	std::vector<p2Vec2> m_Vertices;
@@ -91,14 +137,20 @@ private:
 class p2LineShape : public p2Shape
 {
 public:
+	/**
+	* \brief Clone shape
+	*/
 	p2Shape * Clone() const override;
-
+	/**
+	* \brief Compute AABB
+	*/
 	virtual void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
-
+	/**
+	* \brief Set line points
+	*/
 	void SetLine(p2Vec2 p1, p2Vec2 p2);
 
-
-	p2Vec2 posA, posB;
+	p2Vec2 m_PosA, m_PosB;
 private:
 };
 
