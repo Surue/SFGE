@@ -102,6 +102,11 @@ Body2d* PhysicsManager::Raycast(sf::Vector2f direction, sf::Vector2f position, f
 	}
 }
 
+void PhysicsManager::SetIterativeResolution(int iterativeCount)
+{
+	m_World->GetContactManager().SetIteration(iterativeCount);
+}
+
 void ContactListener::BeginContact(p2Contact* contact) 
 {
 	Collider* firstCollider = nullptr;

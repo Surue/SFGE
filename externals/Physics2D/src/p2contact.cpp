@@ -57,7 +57,7 @@ void p2Contact::Update(p2ContactListener& contactListener, p2Manifold& manifold)
 	manifold.bodyA = m_ColliderA->GetBody();
 	manifold.bodyB = m_ColliderB->GetBody();
 
-	isTouching = SAT::CheckCollisionSAT(this, manifold); // Check if there is a collision or not
+	isTouching = ContactSolver::CheckCollision(this, manifold); // Check if there is a collision or not
 
 	//If there is a collision check if need to make change to velocity;
 
@@ -293,6 +293,7 @@ p2ContactManager::p2ContactManager()
 {
 	m_ContactList = std::list<p2Contact*>();
 	m_QuadTree = p2QuadTree();
+	std::cout << "CREATE\n";
 }
 
 p2ContactManager::~p2ContactManager()
@@ -473,4 +474,10 @@ void p2ContactManager::Draw(p2Draw* debugDraw)
 	}
 
 	PointsToDraw.clear();
+}
+
+void p2ContactManager::SetIteration(int iterationCount)
+{
+	m_VelocityCorrectionIteration = iterationCount;
+	m_PositionCorrectionIteration = iterationCount;
 }

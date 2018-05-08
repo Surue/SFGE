@@ -56,7 +56,7 @@ void Engine::Init(bool windowless, bool editor)
 	}
 	else
 	{
-		Log::GetInstance()->Msg("Game Engine Configuration Successfull");
+		//Log::GetInstance()->Msg("Game Engine Configuration Successfull");
 	}
 
 	m_GraphicsManager = new GraphicsManager(*this, true, windowless);

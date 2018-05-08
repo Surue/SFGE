@@ -38,7 +38,7 @@ std::unique_ptr<Configuration> Configuration::LoadConfig(std::string configFilen
 	{
 		std::ostringstream oss;
 		oss << "Creating Configuration from " << configFilename;
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 	
 	auto jsonConfigPtr = LoadJson(configFilename);

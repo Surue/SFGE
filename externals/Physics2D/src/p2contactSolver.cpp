@@ -37,17 +37,17 @@ SOFTWARE.
 #include <iostream>
 #include <algorithm>
 
-bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
+bool ContactSolver::CheckCollision(p2Contact * contact, p2Manifold& manifold)
 {
 	switch (contact->GetColliderA()->GetShapeType()) {
 	case p2ColliderDef::ShapeType::CIRCLE:
 		switch (contact->GetColliderB()->GetShapeType()) {
 		case p2ColliderDef::ShapeType::CIRCLE:
-			return CheckCollisionCircles(contact, manifold);
+			return CollisionCircles(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::POLYGON:
-			return CheckCollisionPolygonCircle(contact, manifold);
+			return CollisionPolygonCircle(contact, manifold);
 			break;
 		}
 		break;
@@ -55,11 +55,11 @@ bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
 	case p2ColliderDef::ShapeType::POLYGON:
 		switch (contact->GetColliderB()->GetShapeType()) {
 		case p2ColliderDef::ShapeType::CIRCLE:
-			return CheckCollisionPolygonCircle(contact, manifold);
+			return CollisionPolygonCircle(contact, manifold);
 			break;
 
 		case p2ColliderDef::ShapeType::POLYGON:
-			return CheckCollisionPolygons(contact, manifold);
+			return CollisionPolygons(contact, manifold);
 			break;
 		}
 		break;
@@ -67,7 +67,7 @@ bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
 	return false;
 }
 
-bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
+bool ContactSolver::CollisionCircles(p2Contact * contact, p2Manifold& manifold)
 {
 	p2Vec2 distance = (contact->GetColliderB()->GetPosition() - contact->GetColliderA()->GetPosition());
 
@@ -91,7 +91,7 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 	}
 }
 
-bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
+bool ContactSolver::CollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -206,7 +206,7 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 	return !isSeparated;
 }
 
-bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
+bool ContactSolver::CollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 {
 	//Variables
 	p2Collider* colliderA = contact->GetColliderA();
@@ -318,7 +318,7 @@ bool SAT::CheckCollisionPolygonCircle(p2Contact * contact, p2Manifold& manifold)
 	return !isSeparated;
 }
 
-bool SAT::CheckCollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
+bool ContactSolver::CollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -376,7 +376,7 @@ bool SAT::CheckCollisionLineCircle(p2Contact * contact, p2Manifold & manifold)
 	}
 }
 
-bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
+bool ContactSolver::CollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -458,7 +458,7 @@ bool SAT::CheckCollisionLinePolygon(p2Contact * contact, p2Manifold & manifold)
 	return false;
 }
 
-p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifold)
+p2Vec2 ContactSolver::FindContactPoint(const p2Contact* contact, const p2Manifold & manifold)
 {
 	p2Collider* colliderA = contact->GetColliderA();
 	p2Collider* colliderB = contact->GetColliderB();
@@ -522,14 +522,12 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 	clippedPoints = ClipPoints(inc.pointA, inc.pointB, refVector, offset1);
 
 	if (clippedPoints.size() < 2) {
-		std::cout << "MOTHERFUCKER 1\n";
 		return p2Vec2();
 	}
 
 	//Same clipping to the other direction
 	clippedPoints = ClipPoints(clippedPoints[0], clippedPoints[1], refVector * (-1), -offset2);
 	if (clippedPoints.size() < 2) {
-		std::cout << "MOTHERFUCKER 2\n";
 		return p2Vec2();
 	}
 
@@ -550,7 +548,7 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 	return clippedPoints[1];
 }
 
-p2Edge SAT::FindClosestEdge(std::vector<p2Vec2> const vertices, p2Vec2 const normal)
+p2Edge ContactSolver::FindClosestEdge(std::vector<p2Vec2> const vertices, p2Vec2 const normal)
 {
 	int index = 0;
 	float maxProj = p2Vec2::Dot(vertices[index], normal);
@@ -603,7 +601,7 @@ p2Edge SAT::FindClosestEdge(std::vector<p2Vec2> const vertices, p2Vec2 const nor
 	return closestEdge;
 }
 
-std::vector<p2Vec2> SAT::ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj)
+std::vector<p2Vec2> ContactSolver::ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj)
 {
 	std::vector<p2Vec2> clippedPoints;
 	//Projection of points allong the normal
@@ -630,7 +628,7 @@ std::vector<p2Vec2> SAT::ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 norma
 	return clippedPoints;
 }
 
-p2Vec2 SAT::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)
+p2Vec2 ContactSolver::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)
 {
 	float minProj = p2Vec2::Dot(proj[0], axis);
 	float maxProj = p2Vec2::Dot(proj[0], axis);
@@ -649,7 +647,7 @@ p2Vec2 SAT::GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis)
 	return p2Vec2(minProj, maxProj);
 }
 
-p2Vec2 SAT::GetMinMaxProj(std::vector<p2Vec2>& proj, p2Vec2 axis)
+p2Vec2 ContactSolver::GetMinMaxProj(std::vector<p2Vec2>& proj, p2Vec2 axis)
 {
 	float minProj = p2Vec2::Dot(proj[0], axis);
 	float maxProj = p2Vec2::Dot(proj[0], axis);

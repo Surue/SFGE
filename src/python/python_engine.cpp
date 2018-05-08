@@ -73,7 +73,8 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 	py::class_<PhysicsManager> physicManager(m, "PhysicManager");
 	physicManager
-		.def("raycast", &PhysicsManager::Raycast, py::return_value_policy::reference);
+		.def("raycast", &PhysicsManager::Raycast, py::return_value_policy::reference)
+		.def("set_iterative_resolution", &PhysicsManager::SetIterativeResolution);
 
 	py::class_<InputManager> inputManager(m, "InputManager");
 	inputManager
@@ -231,7 +232,7 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 void PythonManager::Init()
 {
-	Log::GetInstance()->Msg("Initialise the python embed interpretor");
+	//Log::GetInstance()->Msg("Initialise the python embed interpretor");
 	py::initialize_interpreter();
 	//Adding refecrence to c++ engine modules
 	py::module sfgeModule = py::module::import("SFGE");
@@ -251,7 +252,7 @@ void PythonManager::Destroy()
 {
 	pythonInstanceMap.clear();
 	pythonModuleObjectMap.clear();
-	Log::GetInstance()->Msg("Finalize the python embed interpretor");
+	//Log::GetInstance()->Msg("Finalize the python embed interpretor");
 	py::finalize_interpreter();
 }
 
@@ -285,7 +286,7 @@ unsigned int PythonManager::LoadPyComponentFile(std::string script_path, GameObj
 				{
 					std::ostringstream oss;
 					oss << "Loaded Python script: " << script_path << " has id: " << scriptId;
-					Log::GetInstance()->Msg(oss.str());
+					//Log::GetInstance()->Msg(oss.str());
 				}
 				try
 				{
@@ -312,7 +313,7 @@ unsigned int PythonManager::LoadPyComponentFile(std::string script_path, GameObj
 				{
 					std::ostringstream oss;
 					oss << "Loading module: "<<module_name<<" with Component: "<<class_name;
-					Log::GetInstance()->Msg(oss.str());
+					//Log::GetInstance()->Msg(oss.str());
 				}
 				py::object globals  = py::globals();
 

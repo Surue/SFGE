@@ -58,7 +58,7 @@ std::shared_ptr<Scene> SceneManager::LoadSceneFromName(std::string sceneName)
 	{
 		std::ostringstream oss;
 		oss << "Loading scene from: " << sceneName;
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 	auto sceneJsonPtr = LoadJson(sceneName);
 	
@@ -84,7 +84,7 @@ std::shared_ptr<Scene> SceneManager::LoadSceneFromJson(json& sceneJson)
 	{
 		std::ostringstream oss;
 		oss << "Loading scene: " << scene->name;
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 	if (CheckJsonParameter(sceneJson, "game_objects", json::value_t::array))
 	{
@@ -168,7 +168,7 @@ void SceneManager::LoadScene(std::string sceneName)
 		sf::Time loadingTime = loadingClock.getElapsedTime();
 		std::ostringstream oss;
 		oss << "Scene Loading Time: " << loadingTime.asSeconds();
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 }
 

@@ -62,7 +62,7 @@ Component* Component::LoadComponent(Engine& engine, json& componentJson, GameObj
 		componentName = oss.str();
 	}
 
-	Log::GetInstance()->Msg("Loading component: " + componentName);
+	//Log::GetInstance()->Msg("Loading component: " + componentName);
 	if (CheckJsonNumber(componentJson, "type"))
 	{
 		ComponentType componentType = (ComponentType)componentJson["type"];
@@ -82,7 +82,7 @@ Component* Component::LoadComponent(Engine& engine, json& componentJson, GameObj
 			}
 			break;
 		case ComponentType::SPRITE:
-			Log::GetInstance()->Msg("Loading Sprite Component");
+			//Log::GetInstance()->Msg("Loading Sprite Component");
 			component = Sprite::LoadSprite(engine,  componentJson, gameObject);
 			break;
 		case ComponentType::PYCOMPONENT:

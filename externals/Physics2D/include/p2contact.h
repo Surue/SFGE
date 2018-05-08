@@ -145,6 +145,11 @@ public:
 	*/
 	std::list<p2Vec2> PointsToDraw;
 
+	/**
+	* \brief set number of iteration for solving position and velocities
+	*/
+	void SetIteration(int iterationCount);
+
 private:
 	std::list<p2Contact*> m_ContactList;
 	p2ContactListener* m_ContactListener;

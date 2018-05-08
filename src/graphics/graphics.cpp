@@ -137,7 +137,7 @@ void GraphicsManager::CheckVersion()
 	std::stringstream log_message;
 	log_message << "OpenGL version: " << settings.majorVersion << "." << settings.minorVersion << std::endl;
 
-	Log::GetInstance()->Msg(log_message.str());
+	//Log::GetInstance()->Msg(log_message.str());
 }
 
 void checkVersion()

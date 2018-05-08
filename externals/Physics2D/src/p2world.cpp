@@ -46,7 +46,7 @@ p2World::~p2World()
 {
 	auto it = m_BodyList.begin();
 
-	m_ContactManager.Destroy();
+	m_ContactManager.Clear();
 
 	while (it != m_BodyList.end()) {
 		delete(*it);
@@ -142,7 +142,7 @@ std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float max
 	p2Vec2 posB = position + vector.Normalized() * maxDistance;
 
 	//Create collider used as raycast
-	p2Body body;
+	p2Body body = p2Body();
 
 	p2ColliderDef colliderDef;
 	p2LineShape* line = new p2LineShape();
@@ -170,13 +170,13 @@ std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float max
 
 			p2Contact tmp = p2Contact(collider, lineCollider);
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE) {
-				if (SAT::CheckCollisionLineCircle(&tmp, manifold)) {
+				if (ContactSolver::CollisionLineCircle(&tmp, manifold)) {
 					isTouching = true;
 				}
 			}
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
-				if (SAT::CheckCollisionLinePolygon(&tmp, manifold)) {
+				if (ContactSolver::CollisionLinePolygon(&tmp, manifold)) {
 					isTouching = true;
 				}
 			}
@@ -215,7 +215,7 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 	float minDistance = std::numeric_limits<float>::infinity();
 
 	//Create collider used as raycast
-	p2Body body;
+	p2Body body = p2Body();;
 
 	p2ColliderDef colliderDef;
 	p2LineShape* line = new p2LineShape();
@@ -243,7 +243,7 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 
 			p2Contact tmp = p2Contact(collider, lineCollider);
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE) {
-				if (SAT::CheckCollisionLineCircle(&tmp, manifold)) {
+				if (ContactSolver::CollisionLineCircle(&tmp, manifold)) {
 
 					float distance = (line->m_PosA - manifold.contactPoint).GetMagnitude();
 					if (minDistance > distance) {
@@ -256,7 +256,7 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 			}
 
 			if (collider->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
-				if (SAT::CheckCollisionLinePolygon(&tmp, manifold)) {
+				if (ContactSolver::CollisionLinePolygon(&tmp, manifold)) {
 					float distance = (line->m_PosA - manifold.contactPoint).GetMagnitude();
 					if (minDistance > distance) {
 						minDistance = distance;
@@ -300,6 +300,11 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 void p2World::SetDebugDraw(p2Draw * debugDraw)
 {
 	m_DebugDraw = debugDraw;
+}
+
+p2ContactManager p2World::GetContactManager()
+{
+	return m_ContactManager;
 }
 
 void p2World::DrawDebugData()

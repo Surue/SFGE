@@ -29,6 +29,9 @@ SOFTWARE.
 
 class p2Contact;
 
+/**
+* \brief representation of collision
+*/
 struct p2Manifold {
 	p2Body *bodyA;
 	p2Body *bodyB;
@@ -43,6 +46,9 @@ struct p2Manifold {
 	float tangentImpulse = 0.0f;
 };
 
+/**
+* \brief represent an edge, use to find contact point
+*/
 struct p2Edge {
 	p2Vec2 max;
 	p2Vec2 pointA;
@@ -50,27 +56,48 @@ struct p2Edge {
 	p2Vec2 vector;
 };
 
-class SAT{
+class ContactSolver{
 public:
-	static bool CheckCollisionSAT(p2Contact* contact, p2Manifold& manifold);
+	/**
+	* \brief is called from the p2Contact::Update to check the collision and create the manifold
+	*/
+	static bool CheckCollision(p2Contact* contact, p2Manifold& manifold);
+	/**
+	* \brief check collision between 2 circles
+	*/
+	static bool CollisionCircles(p2Contact* contact, p2Manifold& manifold);
+	/**
+	* \brief check collision between 2 polygons
+	*/
+	static bool CollisionPolygons(p2Contact* contact, p2Manifold& manifold);
+	/**
+	* \brief check collision between a circle and a polygon
+	*/
+	static bool CollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionCircles(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionPolygons(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionLineCircle(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionLinePolygon(p2Contact* contact, p2Manifold& manifold);
-
+	/**
+	* \brief check collision between a circle and a line
+	*/
+	static bool CollisionLineCircle(p2Contact* contact, p2Manifold& manifold);
+	/**
+	* \brief check collision between a line and a polygon
+	*/
+	static bool CollisionLinePolygon(p2Contact* contact, p2Manifold& manifold);
+	/**
+	* \brief find the contact point of a collision
+	*/
 	static p2Vec2 FindContactPoint(const p2Contact* contact, const p2Manifold& manifold);
-
+	/**
+	* \brief closest edge of a polygon
+	*/
 	static p2Edge FindClosestEdge(const std::vector<p2Vec2> vertices, const p2Vec2 normal);
-
+	/**
+	* \brief clip a point onto a line
+	*/
 	static std::vector<p2Vec2> ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj);
 private:
-	SAT();
+	//Make it non instanciable
+	ContactSolver();
 
 	static p2Vec2 GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis);
 

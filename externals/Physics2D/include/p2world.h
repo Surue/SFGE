@@ -101,7 +101,10 @@ public:
 	* \brief Register methods for debug drawing.
 	*/
 	void SetDebugDraw(p2Draw* debugDraw);
-
+	/**
+	* \brief get the contact manager
+	*/
+	p2ContactManager GetContactManager();
 	/**
 	* \brief get the gravity
 	*/

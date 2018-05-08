@@ -68,7 +68,7 @@ GameObject* GameObject::LoadGameObject(Engine& engine, json& gameObjectJson)
 	{
 		std::ostringstream oss;
 		oss << "Loading game_object: " << gameObject->m_Name;
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 
 	if (CheckJsonParameter(gameObjectJson, "components", json::value_t::array))

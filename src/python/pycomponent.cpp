@@ -33,7 +33,7 @@ namespace sfge
 
 void PyComponent::Init()
 {
-	Log::GetInstance()->Msg("Init PyComponent from C++");
+	//Log::GetInstance()->Msg("Init PyComponent from C++");
 	try
 	{
 		PYBIND11_OVERLOAD_PURE_NAME(
@@ -80,7 +80,7 @@ void PyComponent::Update(float dt)
 
 PyComponent::~PyComponent()
 {
-	Log::GetInstance()->Msg("Destroying PyComponent");
+	//Log::GetInstance()->Msg("Destroying PyComponent");
 
 }
 
@@ -96,7 +96,7 @@ PyComponent* PyComponent::LoadPythonScript(Engine& engine, json& componentJson, 
 			{
 				std::ostringstream oss;
 				oss << "PyComponent instance has id: " << componentInstanceId;
-				Log::GetInstance()->Msg(oss.str());
+				//Log::GetInstance()->Msg(oss.str());
 			}
 			auto pyComponent = pythonManager->GetPyComponent(componentInstanceId);
 			pyComponent->SetInstanceId(componentInstanceId);

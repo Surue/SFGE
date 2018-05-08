@@ -98,6 +98,10 @@ public:
 	* \brief call raycast of physics2D
 	*/
 	Body2d* Raycast(sf::Vector2f direction, sf::Vector2f position, float maxDistance);
+	/**
+	* \brief used to change value of iterative resolution
+	*/
+	void SetIterativeResolution(int iterativeCount);
 private:
 	friend class Body2d;
 	friend class Collider;
