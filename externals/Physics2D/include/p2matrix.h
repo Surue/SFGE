@@ -47,7 +47,7 @@ struct p2Mat22
 	p2Mat22 operator*(const p2Mat22 m) const;
 	p2Mat22 operator*=(const p2Mat22 m);
 
-	//function
+	//Methods
 	/**
 	* \brief generate tthe rotation matrix with the given angle (in radian). Counter clock wise
 	*/
@@ -90,7 +90,7 @@ struct p2Mat33
 	p2Mat33 operator*(float f) const;
 	p2Mat33 operator*=(float f);
 
-	//function
+	//Methods
 	/**
 	* \brief generate tthe rotation matrix with the given angle (in radian) and the axis
 	*/

@@ -43,11 +43,17 @@ struct p2AABB
 	* \brief Calculate the extends and return it
 	*/
 	const p2Vec2 GetExtends() const;
-
+	/**
+	* \brief Check if this contains the given aabb
+	*/
 	bool Contains(const p2AABB& aabb) const;
-
+	/**
+	* \brief Check if this overlap the giver aabb
+	*/
 	bool Overlap(const p2AABB& aabb) const;
-
+	/**
+	* \brief Used by the quadTree to get 4 subdivide aabb
+	*/
 	void GetSubAABBQuad(p2AABB p2AABB[]) const;
 };
 #endif // !SFGE_P2AABB:H

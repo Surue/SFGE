@@ -49,7 +49,7 @@ struct p2Vec2
 	p2Vec2 operator*=(float f);
 	bool operator==(const p2Vec2 v);
 
-	//Functions
+	//Methods
 	/**
 	* \brief Dot product of two vectors
 	*/
@@ -113,7 +113,7 @@ struct p2Vec3
 	p2Vec3 operator /(float f) const;
 	p2Vec3 operator *(float f) const;
 
-	//Function
+	//Methods
 	/**
 	* \brief Dot product of two vectors
 	*/
