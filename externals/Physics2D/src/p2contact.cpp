@@ -223,7 +223,7 @@ void p2Contact::SolveVelocity(p2Manifold & manifold)
 	float velocityT = p2Vec2::Dot(relativeVelocity, p2Vec2(manifold.normal.y, -manifold.normal.x));
 	float lambda = tangentMass * (-velocityT);
 	
-	float friction = 0;
+	float friction = 0; //TO DO
 
 	float maxFriction = friction * manifold.normalImpulse;
 	float newImpulse = manifold.tangentImpulse + lambda;

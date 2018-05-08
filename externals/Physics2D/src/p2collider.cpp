@@ -19,21 +19,22 @@ p2Collider::p2Collider()
 
 p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 {
-	userData = colliderDef.userData;
-	isSensor = colliderDef.isSensor;
-	restitution = colliderDef.restitution;
-	shape = colliderDef.shape->Clone();
-	shapeType = colliderDef.shapeType;
-
+	m_UserData = colliderDef.userData;
+	m_IsSensor = colliderDef.isSensor;
+	m_Restitution = colliderDef.restitution;
+	m_Shape = colliderDef.shape->Clone();
+	m_ShapeType = colliderDef.shapeType;
 
 	m_Body = body;
 
 	m_Offset = p2Vec2(colliderDef.offset.x, colliderDef.offset.y);
+
+
 	float radius = 0;
 	p2Vec2 size;
-	switch (shapeType) {
+	switch (m_ShapeType) {
 	case p2ColliderDef::ShapeType::CIRCLE:
-		m_Inertia = 0.5f * m_Body->GetMass() * static_cast<p2CircleShape*>(shape)->GetRadius() * static_cast<p2CircleShape*>(shape)->GetRadius();
+		m_Inertia = 0.5f * m_Body->GetMass() * static_cast<p2CircleShape*>(m_Shape)->GetRadius() * static_cast<p2CircleShape*>(m_Shape)->GetRadius();
 		m_InvInertia = 1.0f / m_Inertia;
 		m_Centroide = m_Offset;
 		break;
@@ -44,7 +45,7 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 
 		float inertia = 0;
 		float inertiaDivisor = 0;
-		std::vector<p2Vec2> tmpVertices = static_cast<p2PolygonShape*>(shape)->GetVertices();
+		std::vector<p2Vec2> tmpVertices = static_cast<p2PolygonShape*>(m_Shape)->GetVertices();
 		for (int i = 0; i < tmpVertices.size(); ++i) {
 			p2Vec2 p1 = tmpVertices[i];
 			p2Vec2 p2;
@@ -62,6 +63,7 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 		m_Inertia *= (inertia / inertiaDivisor);
 
 		m_InvInertia = 1.0f / m_Inertia;
+
 		//Find the centroide
 		p2Vec2 centroid = p2Vec2(0, 0);
 		float area = 0.0f;
@@ -106,22 +108,22 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 
 p2Collider::~p2Collider()
 {
-	delete(shape);
+	delete(m_Shape);
 }
 
 bool p2Collider::IsSensor() const
 {
-	return isSensor;
+	return m_IsSensor;
 }
 
 void * p2Collider::GetUserData() const
 {
-	return userData;
+	return m_UserData;
 }
 
 p2Shape* p2Collider::GetShape() const
 {	
-	return shape;
+	return m_Shape;
 }
 
 p2Vec2& p2Collider::GetOffset()
@@ -136,7 +138,7 @@ p2Vec2 p2Collider::GetPosition()
 
 p2ColliderDef::ShapeType p2Collider::GetShapeType() const
 {
-	return shapeType;
+	return m_ShapeType;
 }
 
 p2Body * p2Collider::GetBody() const
@@ -146,7 +148,7 @@ p2Body * p2Collider::GetBody() const
 
 float p2Collider::GetRestitution() const
 {
-	return restitution;
+	return m_Restitution;
 }
 
 p2Vec2 p2Collider::GetCentroide()

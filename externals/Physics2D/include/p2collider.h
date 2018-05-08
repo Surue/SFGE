@@ -70,31 +70,55 @@ public:
 	*/
 	void* GetUserData() const;
 
+	//Shape
+	/**
+	* \brief Return the shape link to the colliser
+	*/
 	p2Shape* GetShape() const;
-
-	p2Vec2& GetOffset();
-
-	p2Vec2 GetPosition();
-
+	/**
+	* \brief get shape type
+	*/
 	p2ColliderDef::ShapeType GetShapeType() const;
 
+	//Position
+	/**
+	* \brief get the offset of the collider to the body
+	*/
+	p2Vec2& GetOffset();
+	/**
+	* \brief get the position in world location
+	*/
+	p2Vec2 GetPosition();
+
+	/**
+	* \brief get the body linked to
+	*/
 	p2Body* GetBody() const;
 
+	/**
+	* \brief get the bounciness 
+	*/
 	float GetRestitution() const;
-
-	p2AABB aabb;
-
+	/**
+	* \brief get the centroid of shape
+	*/
 	p2Vec2 GetCentroide();
-
+	/**
+	* \brief get the inertia
+	*/
 	float GetInertia();
 
-private:
-	void* userData;
-	bool isSensor;
-	float restitution;
-	p2Shape *shape = nullptr;
 
-	p2ColliderDef::ShapeType shapeType;
+	//Variables
+	p2AABB aabb;
+
+private:
+	void* m_UserData;
+	bool m_IsSensor;
+	float m_Restitution;
+	p2Shape *m_Shape = nullptr;
+
+	p2ColliderDef::ShapeType m_ShapeType;
 	p2Vec2 m_Offset = p2Vec2(0.0f, 0.0f);
 
 	p2Body* m_Body = nullptr;
@@ -104,6 +128,4 @@ private:
 	float m_Inertia;
 	float m_InvInertia;
 };
-
-
 #endif

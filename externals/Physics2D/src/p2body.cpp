@@ -43,13 +43,13 @@ p2Body::p2Body()
 
 p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 {
-	position = bodyDef.position;
-	linearVelocity = bodyDef.linearVelocity;
-	type = bodyDef.type;
-	this->world = world;
-	gravityScale = bodyDef.gravityScale;
+	m_Position = bodyDef.position;
+	m_LinearVelocity = bodyDef.linearVelocity;
+	m_Type = bodyDef.type;
+	this->m_World = world;
+	m_GravityScale = bodyDef.gravityScale;
 
-	if (type == p2BodyType::STATIC || type == p2BodyType::KINEMATIC) {
+	if (m_Type == p2BodyType::STATIC || m_Type == p2BodyType::KINEMATIC) {
 		bodyDef.mass = 0;
 	}
 
@@ -62,7 +62,7 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 	}
 
 	m_Angle = bodyDef.angle;
-	angularVelocity = 0.0f;
+	m_AngularVelocity = 0.0f;
 
 	AddForce(bodyDef.InitialForce * m_InvMass);
 }
@@ -81,33 +81,33 @@ p2Body::~p2Body()
 
 p2Vec2 p2Body::GetLinearVelocity() const
 {
-	return linearVelocity;
+	return m_LinearVelocity;
 }
 
 void p2Body::SetLinearVelocity(p2Vec2& velocity)
 {
-	linearVelocity = velocity;
+	m_LinearVelocity = velocity;
 }
 
 float p2Body::GetAngularVelocity() const
 {
-	return angularVelocity;
+	return m_AngularVelocity;
 }
 
 void p2Body::SetAngularVelocity(float angularVelocity)
 {
-	this->angularVelocity = angularVelocity;
+	this->m_AngularVelocity = angularVelocity;
 }
 
 p2Vec2 p2Body::GetPosition() const
 {
-	return position;
+	return m_Position;
 }
 
 void p2Body::SetPosition(p2Vec2 position)
 {
 	ComputeAABB();
-	this->position = position;
+	this->m_Position = position;
 }
 
 float p2Body::GetAngle() const
@@ -137,23 +137,23 @@ p2Vec2 p2Body::GetForce()
 
 void p2Body::ApplyImpulse(p2Vec2 impulse, p2Vec2 contactPoint)
 {
-	linearVelocity += impulse * m_InvMass;
-	angularVelocity += p2Vec2::Cross(contactPoint, impulse).z * m_InvInertia;
+	m_LinearVelocity += impulse * m_InvMass;
+	m_AngularVelocity += p2Vec2::Cross(contactPoint, impulse).z * m_InvInertia;
 }
 
 p2BodyType p2Body::GetType() const
 {
-	return type;
+	return m_Type;
 }
 
 float p2Body::GetGravityScale() const
 {
-	return gravityScale;
+	return m_GravityScale;
 }
 
 void p2Body::SetGravityScale(float gravityScale)
 {
-	this->gravityScale = gravityScale;
+	this->m_GravityScale = gravityScale;
 }
 
 float p2Body::GetMass() const
@@ -176,7 +176,7 @@ p2Collider * p2Body::CreateCollider(p2ColliderDef * colliderDef)
 		m_Centroide += collider->GetCentroide();
 	}
 
-	m_Centroide /= m_CollidersList.size();
+	m_Centroide /= m_CollidersList.size(); // TO DO compute all centroide
 
 	m_Inertia = tmpCollider->GetInertia(); //TO DO compute all inertia together
 	if (m_Inertia == 0) {
@@ -216,8 +216,8 @@ void p2Body::ComputeAABB()
 
 		(*it)->GetShape()->ComputeAABB(&(*it)->aabb, (*it)->GetPosition(), m_Angle);
 
-		aabb.bottomLeft = (*it)->aabb.bottomLeft;
-		aabb.topRight = (*it)->aabb.topRight;
+		m_aabb.bottomLeft = (*it)->aabb.bottomLeft;
+		m_aabb.topRight = (*it)->aabb.topRight;
 
 		it++;
 
@@ -226,23 +226,23 @@ void p2Body::ComputeAABB()
 			(*it)->GetShape()->ComputeAABB(&(*it)->aabb, (*it)->GetPosition(), m_Angle);
 
 			//Check for the biggest aabb
-			aabb.bottomLeft.x = fmin(aabb.bottomLeft.x, (*it)->aabb.bottomLeft.x);
-			aabb.bottomLeft.y = fmax(aabb.bottomLeft.y, (*it)->aabb.bottomLeft.y);
+			m_aabb.bottomLeft.x = fmin(m_aabb.bottomLeft.x, (*it)->aabb.bottomLeft.x);
+			m_aabb.bottomLeft.y = fmax(m_aabb.bottomLeft.y, (*it)->aabb.bottomLeft.y);
 			
-			aabb.topRight.x = fmax(aabb.topRight.x, (*it)->aabb.topRight.x);
-			aabb.topRight.y = fmin(aabb.topRight.y, (*it)->aabb.topRight.y);
+			m_aabb.topRight.x = fmax(m_aabb.topRight.x, (*it)->aabb.topRight.x);
+			m_aabb.topRight.y = fmin(m_aabb.topRight.y, (*it)->aabb.topRight.y);
 		}
 	}
 }
 
 const p2AABB & p2Body::GetAABB() const
 {
-	return aabb;
+	return m_aabb;
 }
 
 p2World * p2Body::GetWorld()
 {
-	return world;
+	return m_World;
 }
 
 p2Vec2 p2Body::GetCentroide()
@@ -255,7 +255,7 @@ p2Vec2 p2Body::GetCentroide()
 	}
 
 	tmpCentroide = p2Mat22::RotationMatrix(-m_Angle) * tmpCentroide;
-	tmpCentroide += position;
+	tmpCentroide += m_Position;
 
 	return tmpCentroide;
 }
@@ -268,16 +268,18 @@ float p2Body::GetInvInertia()
 void p2Body::ApplyExplosiveForce(float explosiveForce, float explosionRadius, p2Vec2 explosionPosition)
 {
 	p2AABB aabb;
-	aabb.bottomLeft = position - p2Vec2(explosionRadius, -explosionRadius);
-	aabb.topRight = position + p2Vec2(explosionRadius, -explosionRadius);
+	aabb.bottomLeft = m_Position - p2Vec2(explosionRadius, -explosionRadius);
+	aabb.topRight = m_Position + p2Vec2(explosionRadius, -explosionRadius);
 
-	std::list<p2Body*> bodiesToApplyForce = world->CircleOverlap(aabb);
+	//Get all bodies that will recive force due to explosion
+	std::list<p2Body*> bodiesToApplyForce = m_World->CircleOverlap(aabb);
 
+	//Apply a certain amount of force to all bodies 
 	for (p2Body* body : bodiesToApplyForce) {
-		float distance = (body->position - position).GetMagnitude();
+		float distance = (body->m_Position - m_Position).GetMagnitude();
 
 		float force = explosiveForce * (explosionRadius / distance);
 
-		body->AddForce((body->position - position).Normalized() * force);
+		body->AddForce((body->m_Position - m_Position).Normalized() * force);
 	}
 }
