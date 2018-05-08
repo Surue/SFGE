@@ -311,10 +311,14 @@ void p2World::DrawDebugData()
 	uint32_t flags = m_DebugDraw->GetFlags();
 
 	//Debug draw quad tree
-	m_ContactManager.GetQuadTree()->Draw(m_DebugDraw);
+	if (flags & p2Draw::quadtreebit) {
+		m_ContactManager.GetQuadTree()->Draw(m_DebugDraw);
+	}
 
 	//Draw vector for sat
-	m_ContactManager.Draw(m_DebugDraw);
+	if (flags & p2Draw::contactBit) {
+		m_ContactManager.Draw(m_DebugDraw);
+	}
 
 	for (p2Body* body : m_BodyList) {
 		//Draw aabb of body

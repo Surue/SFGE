@@ -38,6 +38,7 @@ struct p2ColliderDef
 	void* userData;
 	p2Shape* shape;
 	float restitution = 0;
+	float friction = 0;
 	bool isSensor;
 	p2Vec2 offset = p2Vec2(0.0f, 0.0f);
 	enum ShapeType{
@@ -100,6 +101,10 @@ public:
 	*/
 	float GetRestitution() const;
 	/**
+	*\brief get the friction
+	*/
+	float GetFriction() const;
+	/**
 	* \brief get the centroid of shape
 	*/
 	p2Vec2 GetCentroide();
@@ -116,6 +121,7 @@ private:
 	void* m_UserData;
 	bool m_IsSensor;
 	float m_Restitution;
+	float m_Friction;
 	p2Shape *m_Shape = nullptr;
 
 	p2ColliderDef::ShapeType m_ShapeType;

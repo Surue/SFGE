@@ -123,7 +123,8 @@ void p2PolygonShape::SetVertice(p2Vec2 vertice, int index)
 
 		sum += ((m_Vertices[i + 1].x - m_Vertices[0].x)*(m_Vertices[i + 1].y + m_Vertices[0].y));
 
-		if (sum > 0) {
+		if (sum < 0) {
+			std::cout << "clockwise\n";
 			std::reverse(m_Vertices.begin(), m_Vertices.end());
 		}
 	}

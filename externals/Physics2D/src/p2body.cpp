@@ -63,8 +63,6 @@ p2Body::p2Body(p2BodyDef bodyDef, p2World* world)
 
 	m_Angle = bodyDef.angle;
 	m_AngularVelocity = 0.0f;
-
-	AddForce(bodyDef.InitialForce * m_InvMass);
 }
 
 p2Body::~p2Body()

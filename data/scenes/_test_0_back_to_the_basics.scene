@@ -1,0 +1,115 @@
+{
+  "name": "ColliderDrawScene",
+  "game_objects": [
+      {
+          "name": "Body0",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [700, 250],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": true
+              },
+			  {
+                  "name": "PolygonCollider",
+                  "type": 6,
+                  "collider_type": 4,
+                  "point_count": 3,
+				  "point0": [100, 100],
+				  "point1": [100, 50],
+				  "point2": [50, 0],
+				  "offset" : [100, 100],
+                  "sensor": true
+              },
+			  {
+                  "name": "CircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50.0,
+                  "bouncing": 0.5,
+				  "offset" : [50, -100],
+                  "sensor": false
+              }
+          ]
+      },
+	  {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 300],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 1
+              },
+              {
+                  "name": "CircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50.0,
+                  "bouncing": 0.5,
+                  "sensor": false
+              },
+			  {
+				  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "offset": [0, 50]
+			  }
+          ]
+      },
+	  {
+          "name": "Body2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "CircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50.0,
+                  "sensor": true
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
+      }
+  ]
+}

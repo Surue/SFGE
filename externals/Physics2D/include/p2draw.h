@@ -79,7 +79,9 @@ public:
 		aabbBit				= 0x0002,
 		aabbColliderBit		= 0x0004,
 		centerOfMassBit		= 0x0008,
-		raycastBit			= 0x0010,				
+		raycastBit			= 0x0010,	
+		quadtreebit			= 0x0020,
+		contactBit			= 0x0040,
 	};
 
 	/**

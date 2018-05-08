@@ -1,0 +1,82 @@
+{
+  "name": "_test_3_touch_my_tralala",
+  "game_objects": [
+      {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 100],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50.0
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1
+              },
+              {
+                  "name": "CircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50.0,
+                  "bouncing": 0,
+                  "sensor": false
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+      {
+          "name": "Ground",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [400, 600],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Rectangle Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [800, 200]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [800,200],
+                  "sensor": false
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
+      }
+  ]
+}

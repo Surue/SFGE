@@ -28,57 +28,10 @@ SOFTWARE.
 #include <p2collider.h>
 #include <p2body.h>
 #include <p2quadtree.h>
-
+#include <p2contactSolver.h>
 
 class p2ContactListener;
 
-struct p2Manifold {
-	p2Body *bodyA;
-	p2Body *bodyB;
-	float penetration;
-	p2Vec2 normal;
-
-	p2Vec2 contactPoint; 
-
-	bool ShouldResolve = false;
-
-	float normalImpulse = 0.0f;
-	float tangentImpulse = 0.0f;
-};
-
-struct p2Edge {
-	p2Vec2 max;
-	p2Vec2 pointA;
-	p2Vec2 pointB;
-	p2Vec2 vector;
-};
-
-class SAT{
-public:
-	static bool CheckCollisionSAT(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionCircles(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionPolygons(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionLineCircle(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionLinePolygon(p2Contact* contact, p2Manifold& manifold);
-
-	static p2Vec2 FindContactPoint(const p2Contact* contact, const p2Manifold& manifold);
-
-	static p2Edge FindClosestEdge(const std::vector<p2Vec2> vertices, const p2Vec2 normal);
-
-	static std::vector<p2Vec2> ClipPoints(p2Vec2 pointsA, p2Vec2 pointsB, p2Vec2 normal, float proj);
-private:
-	SAT();
-
-	static p2Vec2 GetMinMaxProj(p2Vec2 proj[], int sizeArray, p2Vec2 axis);
-
-	static p2Vec2 GetMinMaxProj(std::vector<p2Vec2>& proj, p2Vec2 axis);
-};
 /**
 * \brief Representation of a contact given as argument in a p2ContactListener
 */

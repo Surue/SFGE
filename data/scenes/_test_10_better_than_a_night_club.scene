@@ -1,0 +1,227 @@
+
+{
+  "name": "ContactTestScene",
+  "game_objects": [
+	{
+          "name": "Box1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [150, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [620, 100],
+                  "scale" : [1.0,1.0],
+                  "angle": 90.0
+              },
+			  {
+                  "name": "Polygon Shape Component",
+                  "type": 3,
+                  "shape_type": 3,
+                  "point_count": 5,
+				  "point0": [0, -100],
+				  "point1": [-95, -31],
+				  "point2": [-59, 81],
+				  "point3": [59, 81],
+				  "point4": [95, -31]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+			  {
+                  "name": "PolygonCollider",
+                  "type": 6,
+                  "collider_type": 4,
+                  "point_count": 5,
+				  "point0": [0, -100],
+				  "point1": [-95, -31],
+				  "point2": [-59, 81],
+				  "point3": [59, 81],
+				  "point4": [95, -31],
+                  "sensor": false
+              },
+			  {
+				"type": 4,
+				"script_path": "scripts/player_character_basic.py"
+			  },
+			  {
+                  "type": 4,
+                  "script_path": "scripts/transform_rotation.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 110],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 25
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 25,
+                  "sensor": false,
+				  "bouncing": 1.0
+              }
+          ]
+      },
+	  {
+          "name": "Box1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [500, 100],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "Box1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [500, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": false,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "Ground",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [550, 650],
+                  "scale" : [1.0,1.0],
+                  "angle": 5.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [1200,150]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 0,
+				  "mass": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [1200,150],
+                  "sensor": false,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  },
+			  {
+				  "type": 4,
+				  "script_path": "scripts/raycast_star.py"
+			  }
+          ]
+      }
+  ]
+}

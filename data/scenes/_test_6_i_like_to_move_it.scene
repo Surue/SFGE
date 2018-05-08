@@ -1,0 +1,679 @@
+{
+  "name": "ContactTestScene",
+  "game_objects": [
+      {
+          "name": "Circle0",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [200, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+				  "linear_velocity": [200, 0],
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [400, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [500, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle3",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [600, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle3",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [700, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle0",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [200, 200],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+				  "linear_velocity": [200, 0],
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 200],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+				  "linear_velocity": [200, 0],
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [500, 200],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle3",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [600, 200],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle3",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [700, 200],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle0",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [200, 350],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+				  "linear_velocity": [200, 0],
+                  "gravity_scale": 0,
+				  "mass" : 2
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 1
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [400, 350],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 25
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 25,
+                  "sensor": false,
+				  "bouncing": 1
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle00",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [200, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+				  "linear_velocity": [200, 0],
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 0.0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle01",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [400, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle02",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [500, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle03",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [600, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Circle04",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [700, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Circle Shape Component",
+                  "type": 3,
+                  "shape_type": 1,
+                  "radius": 50
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0
+              },
+              {
+                  "name": "BCircleCollider",
+                  "type": 6,
+                  "collider_type": 1,
+                  "radius": 50,
+                  "sensor": false,
+				  "bouncing": 0
+              },
+              {
+                  "type": 4,
+                  "script_path": "scripts/contact_test.py"
+              }
+          ]
+      },
+	  {
+          "name": "Wall",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [1050, 350],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [150,700]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 0,
+				  "mass": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [150, 700],
+                  "sensor": false,
+				  "bouncing": 1.0
+              }
+          ]
+      },
+	  {
+          "name": "Wall",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [50, 350],
+                  "scale" : [1.0,1.0],
+                  "angle": 0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [150,700]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 0,
+                  "gravity_scale": 0,
+				  "mass": 0
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [150, 700],
+                  "sensor": false,
+				  "bouncing": 1.0
+              }
+          ]
+      },
+	  {
+          "name": "ScriptDebugDraw",
+          "components": [
+			  {
+				  "type": 4,
+				  "script_path": "scripts/debug_draw_data.py"
+			  }
+          ]
+      }
+  ]
+}

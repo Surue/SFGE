@@ -1,0 +1,137 @@
+
+{
+  "name": "ContactTestScene",
+  "game_objects": [
+	{
+          "name": "Body0",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [200, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 1,
+				  "mass": 1
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": true,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "Body1",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [300, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1,
+				  "linear_velocity": [100, 0]
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": true,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "Body2",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [550, 50],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1,
+				  "linear_velocity": [0, 100]
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": true,
+				  "bouncing": 0
+              }
+          ]
+      },
+	  {
+          "name": "Body3",
+          "components": [
+              {
+                  "type": 1,
+                  "position": [200, 500],
+                  "scale" : [1.0,1.0],
+                  "angle": 0.0
+              },
+              {
+                  "name": "Box Shape Component",
+                  "type": 3,
+                  "shape_type": 2,
+                  "size": [50,50]
+              },
+              {
+                  "name": "Rigidbody",
+                  "type": 5,
+                  "body_type": 2,
+                  "gravity_scale": 0,
+				  "mass": 1,
+				  "linear_velocity": [100, -100]
+              },
+              {
+                  "name": "BoxCollider",
+                  "type": 6,
+                  "collider_type": 2,
+                  "size": [50,50],
+                  "sensor": true,
+				  "bouncing": 0
+              }
+          ]
+      }
+  ]
+}

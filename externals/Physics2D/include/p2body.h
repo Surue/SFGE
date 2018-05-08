@@ -48,7 +48,6 @@ struct p2BodyDef
 	p2BodyType type;
 	p2Vec2 position;
 	p2Vec2 linearVelocity;
-	p2Vec2 InitialForce;
 	float gravityScale = 1;
 	float mass = 1;
 	float angle = 0;

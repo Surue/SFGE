@@ -136,11 +136,6 @@ Body2d * Body2d::LoadBody2d(Engine & engine, GameObject * gameObject, json& comp
 		bodyDef.linearVelocity = sfge::pixel2meter(velocity);
 	}
 
-	if (CheckJsonParameter(componentJson, "initial_force", json::value_t::array)) {
-		sf::Vector2f force = GetVectorFromJson(componentJson, "initial_force");
-		bodyDef.InitialForce = sfge::pixel2meter(force);
-	}
-
 	p2Body* body = world->CreateBody(&bodyDef);
 	Body2d* bodyComponent = new Body2d(gameObject);
 	bodyComponent->m_Body = body;

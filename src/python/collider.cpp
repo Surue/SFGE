@@ -91,12 +91,6 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 		break;
 		case ColliderType::RECTANGLE:
 			{
-				/*colliderDef.shapeType = p2ColliderDef::ShapeType::RECT;
-				sf::Vector2f boxSize = GetVectorFromJson(componentJson, "size");
-
-				p2RectShape* rect = new p2RectShape();
-				rect->SetSize(pixel2meter(boxSize));
-				shape = rect;*/
 				sf::Vector2f boxSize = GetVectorFromJson(componentJson, "size");
 				p2PolygonShape* polyShape = new p2PolygonShape();
 				polyShape->SetVerticesCount(4);
@@ -131,6 +125,10 @@ Collider* Collider::LoadCollider(Engine & engine, GameObject * gameObject, json 
 		if (CheckJsonNumber(componentJson, "bouncing"))
 		{
 			colliderDef.restitution = componentJson["bouncing"];
+		}
+		if (CheckJsonNumber(componentJson, "friction"))
+		{
+			colliderDef.friction = componentJson["friction"];
 		}
 		if (shape != nullptr)
 		{

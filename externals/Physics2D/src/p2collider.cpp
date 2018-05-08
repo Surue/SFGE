@@ -24,6 +24,7 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 	m_Restitution = colliderDef.restitution;
 	m_Shape = colliderDef.shape->Clone();
 	m_ShapeType = colliderDef.shapeType;
+	m_Friction = colliderDef.friction;
 
 	m_Body = body;
 
@@ -149,6 +150,11 @@ p2Body * p2Collider::GetBody() const
 float p2Collider::GetRestitution() const
 {
 	return m_Restitution;
+}
+
+float p2Collider::GetFriction() const
+{
+	return m_Friction;
 }
 
 p2Vec2 p2Collider::GetCentroide()
