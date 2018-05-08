@@ -56,27 +56,56 @@ public:
 	*/
 	void SetContactListener(p2ContactListener* contactListener);
 
-	p2Vec2 GetGravity() const;
-
+	//Overlap methods
+	/**
+	* \brief test if bodies are inside a rect
+	* \param aabb representing a box around the circle
+	* \return liste of bodies on heap
+	*/
 	std::list<p2Body*> AABBOverlap(p2AABB aabb);
-
+	/**
+	* \brief test if bodies are inside a circle
+	* \param aabb representing a box around the circle
+	* \return liste of bodies on heap
+	*/
 	std::list<p2Body*> CircleOverlap(p2AABB aabb);
 
+	//Raycast methods
+	/**
+	* \brief raycast from a position to a maxDistance and return all object
+	* \param vector used as a direction
+	* \param position is starting position of object
+	* \param maxDistance indicate length of raycast
+	* \return a list of bodies touched by the raycast
+	*/
 	std::list<p2Body*> RaycastAll(p2Vec2 vector, p2Vec2 position, float maxDistance = std::numeric_limits<float>::infinity());
-
+	/**
+	* \brief raycast from a position to a maxDistance and return first object touch
+	* \param vector used as a direction
+	* \param position is starting position of object
+	* \param maxDistance indicate length of raycast
+	* \return first body touch
+	*/
 	p2Body* Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance = std::numeric_limits<float>::infinity());
-
+	
+	//Debug draw methods
+	/**
+	* \brief Call for drawing all physical debug data (collider's shape, aabb)
+	*/
+	void DrawDebugData();
+	/**
+	* \Get the DebugDraw(), it's use to draw from outside world.cpp
+	*/
+	p2Draw* GetDebugDraw() const;
 	/**
 	* \brief Register methods for debug drawing.
 	*/
 	void SetDebugDraw(p2Draw* debugDraw);
 
 	/**
-	* \brief Call for drawing all dphysical debug data (collider's shape, aabb)
+	* \brief get the gravity
 	*/
-	void DrawDebugData();
-
-	p2Draw* GetDebugDraw() const;
+	p2Vec2 GetGravity() const;
 
 private:
 	std::list<p2Body *> m_BodyList;

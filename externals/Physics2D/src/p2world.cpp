@@ -57,17 +57,16 @@ p2World::~p2World()
 void p2World::Step(float dt)
 {
 	for (auto body : m_BodyList) {
-		//Calcule des forces
-		//Gravitation
+		//Compute force (Currently only gravity on dynamic object)
 		p2Vec2 forces;
-		dt = 1 / 60.0f;
 		if (body->GetType() == p2BodyType::DYNAMIC) {
 			body->AddForce(m_Gravity * body->GetGravityScale());
 		}
 
-		//Calcule des accélérations
+		//Compute new velocities
 		body->SetLinearVelocity((body->GetForce() * dt) + body->GetLinearVelocity());
 
+		//Set position and angle according to current linear and angular velocities
 		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
 		body->SetAngle(body->GetAngularVelocity() * dt + body->GetAngle());
 	}
@@ -78,35 +77,14 @@ void p2World::Step(float dt)
 	//Solve collision
 	m_ContactManager.Solve();
 
-	//Check existing contact AABB
+	//Check existing contact AABB, and remove those who are not colliding anymore
 	m_ContactManager.Collide();
 
+	//Clear all force
 	for (p2Body* body : m_BodyList)
 	{
 		body->ClearForce();
 	}
-
-	for (auto body : m_BodyList) {
-		//Calcule des forces
-		//Gravitation
-		p2Vec2 forces;
-		dt = 1 / 60.0f;
-		if (body->GetType() == p2BodyType::DYNAMIC) {
-			body->AddForce(m_Gravity * body->GetGravityScale());
-		}
-
-		//Calcule des accélérations
-		body->SetLinearVelocity((body->GetForce() * dt) + body->GetLinearVelocity());
-
-		body->SetPosition((body->GetLinearVelocity() * dt) + body->GetPosition());
-		body->SetAngle(body->GetAngularVelocity() * dt + body->GetAngle());
-	}
-
-	//TO REMOVE
-	RaycastAll(p2Vec2(1, -1), p2Vec2(5, 5), 10);
-	RaycastAll(p2Vec2(-1, 1), p2Vec2(5, 5), 10);
-	RaycastAll(p2Vec2(-1, -1), p2Vec2(5, 5), 10);
-	RaycastAll(p2Vec2(1, 1), p2Vec2(5, 5), 10);
 }
 
 p2Body * p2World::CreateBody(p2BodyDef* bodyDef)
@@ -134,12 +112,14 @@ std::list<p2Body*> p2World::AABBOverlap(p2AABB aabb)
 
 std::list<p2Body*> p2World::CircleOverlap(p2AABB aabb)
 {
+	//Get circle information from aabb  (assuming it's a square)
 	p2Vec2 center = aabb.GetCenter();
-
 	float radius = aabb.topRight.x - center.x;
 
+	//Get all bodies from the aabb
 	std::list<p2Body*> bodies = AABBOverlap(aabb);
 
+	//Remove all bodies not inside the circle
 	auto it = bodies.begin();
 	while (it != bodies.end())
 	{
@@ -170,12 +150,9 @@ std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float max
 	aabb.topRight.x = std::fmax(position.x, posB.x);
 	aabb.topRight.y = std::fmin(position.y, posB.y);
 
-	m_DebugDraw->DrawRect(aabb.bottomLeft, 0, aabb.GetExtends() * 2, p2Color(153, 153, 0));
-
 	//Get all possible contact
 	std::list<p2Body*> bodies = AABBOverlap(aabb);
 
-	//Remove non-colliding object
 	p2Body body;
 
 	//Create collider used as raycast
@@ -186,6 +163,7 @@ std::list<p2Body*> p2World::RaycastAll(p2Vec2 vector, p2Vec2 position, float max
 	colliderDef.shape = line;
 	p2Collider* lineCollider =  new p2Collider(colliderDef, &body);
 
+	//Remove all bodies not collidings with the raycast
 	auto it = bodies.begin();
 	while (it != bodies.end()) {
 		bool isTouching = false;
@@ -249,22 +227,20 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 	aabb.topRight.x = std::fmax(position.x, posB.x);
 	aabb.topRight.y = std::fmin(position.y, posB.y);
 
-	m_DebugDraw->DrawRect(aabb.bottomLeft, 0, aabb.GetExtends() * 2, p2Color(153, 153, 0));
-
 	//Get all possible contact
 	std::list<p2Body*> bodies = AABBOverlap(aabb);
 
-	//Remove non-colliding object
 	p2Body body;
-	p2ColliderDef colliderDef;
 
 	//Create collider used as raycast
+	p2ColliderDef colliderDef;
 	p2LineShape* line = new p2LineShape();
 	line->posA = position;
 	line->posB = position + vector.Normalized() * maxDistance;
 	colliderDef.shape = line;
 	p2Collider* lineCollider = new p2Collider(colliderDef, &body);
 
+	//Remove all non colliding bodies
 	auto it = bodies.begin();
 	while (it != bodies.end()) {
 		bool isTouching = false;
