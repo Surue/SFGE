@@ -32,12 +32,6 @@ p2Collider::p2Collider(p2ColliderDef colliderDef, p2Body* body)
 	float radius = 0;
 	p2Vec2 size;
 	switch (shapeType) {
-	case p2ColliderDef::ShapeType::RECT:
-		size = static_cast<p2RectShape*>(shape)->GetSize();
-		m_Inertia = (1.0f / 12.0f) * m_Body->GetMass() * (size.x * size.x + size.y * size.y);
-		m_InvInertia = 1.0f / m_Inertia;
-		m_Centroide = m_Offset;
-		break;
 	case p2ColliderDef::ShapeType::CIRCLE:
 		m_Inertia = 0.5f * m_Body->GetMass() * static_cast<p2CircleShape*>(shape)->GetRadius() * static_cast<p2CircleShape*>(shape)->GetRadius();
 		m_InvInertia = 1.0f / m_Inertia;

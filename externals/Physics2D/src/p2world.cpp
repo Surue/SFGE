@@ -338,16 +338,6 @@ void p2World::DrawDebugData()
 		for (p2Collider* collider : body->GetColliders()) {
 			//Draw collider
 			if (flags & p2Draw::colliderBit) {
-				if (collider->GetShapeType() == p2ColliderDef::ShapeType::RECT){
-					p2RectShape* rect = static_cast<p2RectShape*>(collider->GetShape());
-
-					p2Vec2 size = rect->GetSize();
-					p2Vec2 position = collider->GetPosition() - (size * 0.5f);
-					float angle = body->GetAngle();
-
-					m_DebugDraw->DrawRectFilled(position, angle, size, p2Color(0, 0, 153));
-				}
-
 				if (collider->GetShapeType() == p2ColliderDef::ShapeType::CIRCLE){
 					p2CircleShape *circle = static_cast<p2CircleShape*>(collider->GetShape());
 

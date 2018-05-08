@@ -64,28 +64,9 @@ private:
 	float m_Radius;
 };
 
-/** 
-* \brief Representation of a rectangle
+/**
+* \brief Representation of a circle
 */
-class p2RectShape : public p2Shape
-{
-public:
-	p2Shape * Clone() const override;
-
-	void SetSize(p2Vec2 size);
-	p2Vec2 GetSize();
-
-	void ComputeAABB(p2AABB* aabb, p2Vec2 position, float angle) const override;
-
-	void GetVectorsCenter(p2Vec2 vectors[], p2Vec2 position, float angle);
-	void GetVectorsVertices(p2Vec2 vectors[], p2Vec2 position, float angle);
-	void GetVectorsVertices(std::vector<p2Vec2>& vectors, p2Vec2 position, float angle);
-	void GetCorners(p2Vec2 corners[], p2Vec2 position, float angle);
-	void GetCorners(std::vector<p2Vec2>& corners, p2Vec2 position, float angle);
-private:
-	p2Vec2 m_Size;
-};
-
 class p2PolygonShape : public p2Shape
 {
 public:

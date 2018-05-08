@@ -480,28 +480,8 @@ bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
 			return CheckCollisionCircles(contact, manifold);
 			break;
 
-		case p2ColliderDef::ShapeType::RECT:
-			return CheckCollisionCircleRect(contact, manifold);
-			break;
-
 		case p2ColliderDef::ShapeType::POLYGON:
 			return CheckCollisionPolygonCircle(contact, manifold);
-			break;
-		}
-		break;
-
-	case p2ColliderDef::ShapeType::RECT:
-		switch (contact->GetColliderB()->GetShapeType()) {
-		case p2ColliderDef::ShapeType::CIRCLE:
-			return CheckCollisionCircleRect(contact, manifold);
-			break;
-
-		case p2ColliderDef::ShapeType::RECT:
-			return CheckCollisionRects(contact, manifold);
-			break;
-
-		case p2ColliderDef::ShapeType::POLYGON:
-			return CheckCollisionPolygonRect(contact, manifold);
 			break;
 		}
 		break;
@@ -512,10 +492,6 @@ bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
 			return CheckCollisionPolygonCircle(contact, manifold);
 			break;
 
-		case p2ColliderDef::ShapeType::RECT:
-			return CheckCollisionPolygonRect(contact, manifold);
-			break;
-
 		case p2ColliderDef::ShapeType::POLYGON:
 			return CheckCollisionPolygons(contact, manifold);
 			break;
@@ -523,108 +499,6 @@ bool SAT::CheckCollisionSAT(p2Contact * contact, p2Manifold& manifold)
 		break;
 	}
 	return false;
-}
-
-bool SAT::CheckCollisionRects(p2Contact * contact, p2Manifold& manifold)
-{
-	//Get all vectors and normal from rectA
-	p2Vec2 vectorsA[4];
-	p2Vec2 normalsA[4];
-
-	p2Collider* colliderA = contact->GetColliderA();
-	p2RectShape* shapeA = static_cast<p2RectShape*>(colliderA->GetShape());
-	p2Vec2 positionA = colliderA->GetPosition();
-	float angleA = colliderA->GetBody()->GetAngle();
-
-	shapeA->GetVectorsCenter(vectorsA, positionA, angleA);
-
-	p2Vec2 vectorsVerticesA[4];
-	shapeA->GetVectorsVertices(vectorsVerticesA, positionA, angleA);
-
-	shapeA->GetNormals(normalsA, vectorsVerticesA, 4);
-
-	//Get all vectors and normal from rectB
-	p2Vec2 vectorsB[4];
-	p2Vec2 normalsB[4];
-
-	p2Collider* colliderB = contact->GetColliderB();
-	p2RectShape* shapeB = static_cast<p2RectShape*>(colliderB->GetShape());
-	p2Vec2 positionB = colliderB->GetPosition();
-	float angleB = colliderB->GetBody()->GetAngle();
-
-	shapeB->GetVectorsCenter(vectorsB, positionB, angleB);
-
-	p2Vec2 vectorsVerticesB[4];
-	shapeB->GetVectorsVertices(vectorsVerticesB, positionB, angleB);
-
-	shapeB->GetNormals(normalsB, vectorsVerticesB, 4);
-
-	float mtv = std::numeric_limits<float>::max();
-	p2Vec2 normalMinimal;
-
-	//Get MinMax projection on each normal
-	bool isSeparated = false;
-
-	bool chooseA = false;
-
-	for (int i = 0; i < 4; i++) { //Force to go through all to have the right normal
-		p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsA[i]);
-		p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsA[i]);
-
-		float minA = minMaxA.x; float maxA = minMaxA.y;
-		float minB = minMaxB.x; float maxB = minMaxB.y;
-
-		isSeparated = maxA < minB || maxB < minA;
-		if (isSeparated) {
-			break;
-		}
-		else {
-			if (mtv > maxA - minB) {
-				mtv = maxA - minB;
-				normalMinimal = normalsA[i];
-			}
-			else if(mtv > maxB - minA){
-				mtv = maxB - minA;
-				normalMinimal = normalsA[i] * -1;
-			}
-		}
-	}
-	if (!isSeparated) {
-		for (int i = 0; i < 4; i++) {
-			p2Vec2 minMaxA = GetMinMaxProj(vectorsA, 4, normalsB[i]);
-			p2Vec2 minMaxB = GetMinMaxProj(vectorsB, 4, normalsB[i]);
-
-			float minA = minMaxA.x; float maxA = minMaxA.y;
-			float minB = minMaxB.x; float maxB = minMaxB.y;
-
-			isSeparated = maxA < minB || maxB < minA;
-			if (isSeparated) {
-				break;
-			}
-			else {
-				if (mtv > maxA - minB) {
-					mtv = maxA - minB;
-					normalMinimal = normalsB[i];
-				}
-				else if (mtv > maxB - minA) {
-					mtv = maxB - minA;
-					normalMinimal = normalsB[i] * -1;
-				}
-			}
-		}
-	}
-
-	if (!isSeparated) {
-		manifold.penetration = mtv;
-		manifold.normal = normalMinimal;
-		manifold.ShouldResolve = contact->ShouldResolveCollision();
-
-		if (manifold.ShouldResolve) {
-			manifold.contactPoint = FindContactPoint(contact, manifold);
-		}
-	}
-
-	return !isSeparated;
 }
 
 bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
@@ -649,119 +523,6 @@ bool SAT::CheckCollisionCircles(p2Contact * contact, p2Manifold& manifold)
 	else {
 		return false;
 	}
-}
-
-bool SAT::CheckCollisionCircleRect(p2Contact * contact, p2Manifold& manifold)
-{
-	//Variable
-	p2Collider* colliderA = contact->GetColliderA();
-	p2Collider* colliderB = contact->GetColliderB();
-
-	p2RectShape* rect;
-	p2Vec2 rectPosition;
-	float rectAngle;
-	p2Vec2 rectExtends;
-
-	p2CircleShape* circle;
-	p2Vec2 circlePosition;
-
-	bool flip = false;
-
-	//Associate variable
-	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
-		rect = static_cast<p2RectShape*>(colliderA->GetShape());
-		rectPosition = colliderA->GetPosition();
-		rectAngle = colliderA->GetBody()->GetAngle();
-		rectExtends = rect->GetSize() / 2;
-
-		circle = static_cast<p2CircleShape*>(colliderB->GetShape());
-		circlePosition = colliderB->GetPosition();
-	}
-	else {
-		rect = static_cast<p2RectShape*>(colliderB->GetShape());
-		rectPosition = colliderB->GetPosition();
-		rectAngle = colliderB->GetBody()->GetAngle();
-		rectExtends = rect->GetSize() / 2;
-
-		circle = static_cast<p2CircleShape*>(colliderA->GetShape());
-		circlePosition = colliderA->GetPosition();
-
-		flip = true;
-	}
-
-	p2Vec2 rect2circle = circlePosition - rectPosition;
-
-	p2Vec2 unrotedCircle = (p2Mat22::RotationMatrix(rectAngle) * rect2circle) + rectPosition;
-		
-	p2Vec2 closestPoint;
-
-	//Look for closest point on the rect to the circle
-
-	//Clamp to don't be futher than the rect
-	if (unrotedCircle.x > rectPosition.x + rectExtends.x) {
-		closestPoint.x = rectPosition.x + rectExtends.x;
-	} else if (unrotedCircle.x < rectPosition.x - rectExtends.x) {
-		closestPoint.x = rectPosition.x - rectExtends.x;
-	} else {
-		closestPoint.x = unrotedCircle.x;
-	}
-
-	if (unrotedCircle.y > rectPosition.y + rectExtends.y) {
-		closestPoint.y = rectPosition.y + rectExtends.y;
-	} else if (unrotedCircle.y < rectPosition.y - rectExtends.y) {
-		closestPoint.y = rectPosition.y -  rectExtends.y;
-	} else {
-		closestPoint.y = unrotedCircle.y;
-	}
-
-	bool isInside = false;
-
-	//If center of circle is inside, clamp to the edge
-	if (unrotedCircle == closestPoint) {
-		isInside = true;
-
-		float extX = 0;
-		if (closestPoint.x < rectPosition.x) {
-			extX = rectExtends.x;
-		}
-		else {
-			extX = -rectExtends.x;
-		}
-
-		float extY = 0;
-		if (closestPoint.y < rectPosition.y) {
-			extY = rectExtends.y;
-		}
-		else {
-			extY = -rectExtends.y;
-		}
-
-		if (abs(closestPoint.x - rectPosition.x + extX) < abs(closestPoint.y - rectPosition.y + extY)) {
-			if (closestPoint.x > rectPosition.x)
-				closestPoint.x = rectPosition.x + rectExtends.x;
-			else 
-				closestPoint.x = rectPosition.x - rectExtends.x;
-		} else {
-			if (closestPoint.y > rectPosition.y)
-				closestPoint.y = rectPosition.y + rectExtends.y;
-			else
-				closestPoint.y = rectPosition.y - rectExtends.y;
-		}
-	}
-
-	closestPoint = p2Mat22::RotationMatrix(-rectAngle) * (closestPoint - rectPosition) + rectPosition;
-
-	manifold.contactPoint = closestPoint;
-	if (isInside || flip) {
-		manifold.normal = (circlePosition - manifold.contactPoint).Normalized() * (-1);
-	}
-	else {
-		manifold.normal = (circlePosition - manifold.contactPoint).Normalized();
-	}
-	manifold.penetration = circle->GetRadius() - (manifold.contactPoint - circlePosition).GetMagnitude();
-	manifold.ShouldResolve = ((circlePosition - manifold.contactPoint).GetMagnitude() < circle->GetRadius() || isInside)  && contact->ShouldResolveCollision();
-
-	return (circlePosition - manifold.contactPoint).GetMagnitude() < circle->GetRadius() || isInside;
 }
 
 bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
@@ -870,141 +631,6 @@ bool SAT::CheckCollisionPolygons(p2Contact * contact, p2Manifold& manifold)
 		manifold.penetration = mtv;
 		manifold.normal = normalMinimal;
 		manifold.ShouldResolve = contact->ShouldResolveCollision();
-
-		if (manifold.ShouldResolve) {
-			manifold.contactPoint = FindContactPoint(contact, manifold);
-		}
-	}
-
-	return !isSeparated;
-}
-
-bool SAT::CheckCollisionPolygonRect(p2Contact * contact, p2Manifold& manifold)
-{
-	p2Collider* colliderA = contact->GetColliderA();
-	p2Collider* colliderB = contact->GetColliderB();
-
-	p2RectShape* rect;
-	p2Vec2 rectPosition;
-	float rectAngle;
-
-	//Get all vectors and normal from rectB
-
-	p2PolygonShape* polygon;
-	p2Vec2 polygonPosition;
-	float polygonAngle;
-
-	//Must flip if doing from polygon to rect
-	bool flip = false; 
-
-	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
-		rect = static_cast<p2RectShape*>(colliderA->GetShape());
-		rectPosition = colliderA->GetPosition();
-		rectAngle = colliderA->GetBody()->GetAngle();
-
-		polygon = static_cast<p2PolygonShape*>(colliderB->GetShape());
-		polygonPosition = colliderB->GetPosition();
-		polygonAngle = colliderB->GetBody()->GetAngle();
-	}
-	else {
-		rect = static_cast<p2RectShape*>(colliderB->GetShape());
-		rectPosition = colliderB->GetPosition();
-		rectAngle = colliderB->GetBody()->GetAngle();
-
-		polygon = static_cast<p2PolygonShape*>(colliderA->GetShape());
-		polygonPosition = colliderA->GetPosition();
-		polygonAngle = colliderA->GetBody()->GetAngle();
-
-		flip = true;
-	}
-
-	//Get all vectors and normal from rect
-	p2Vec2 rectVectors[4];
-	p2Vec2 rectNormals[4];
-
-	rect->GetVectorsCenter(rectVectors, rectPosition, rectAngle);
-
-	p2Vec2 rectVectorsVertices[4];
-	rect->GetVectorsVertices(rectVectorsVertices, rectPosition, rectAngle);
-
-	rect->GetNormals(rectNormals, rectVectorsVertices, 4);
-
-	//Get all vectors and normal from polygon
-	std::vector<p2Vec2> polygonVectors;
-	std::vector<p2Vec2> polygonNormals;
-
-	polygonVectors.resize(polygon->GetVerticesCount());
-	polygonNormals.resize(polygon->GetVerticesCount());
-
-	polygonVectors = polygon->GetVerticesWorld(polygonPosition, polygonAngle);
-
-	std::vector<p2Vec2> polygonVectorsVertices;
-	polygonVectorsVertices.resize(polygon->GetVerticesCount());
-	polygon->GetVectorsVertices(polygonVectorsVertices, polygonPosition, polygonAngle);
-
-	polygon->GetNormals(polygonNormals, polygonVectorsVertices);
-
-	//Get MinMax projection on each normal
-	bool isSeparated = false;
-
-	p2Vec2 normalMinimal;
-	float mtv = std::numeric_limits<float>::max();
-
-	for (int i = 0; i < 4; i++) {
-		p2Vec2 minMaxA = GetMinMaxProj(rectVectors, 4, rectNormals[i]);
-		p2Vec2 minMaxB = GetMinMaxProj(polygonVectors, rectNormals[i]);
-
-		float minA = minMaxA.x; float maxA = minMaxA.y;
-		float minB = minMaxB.x; float maxB = minMaxB.y;
-
-		isSeparated = maxA < minB || maxB < minA;
-		if (isSeparated) {
-			break;
-		}
-
-		if (mtv > maxA - minB) {
-			mtv = maxA - minB;
-			normalMinimal = rectNormals[i];
-		}
-		else if (mtv > maxB - minA) {
-			mtv = maxB - minA;
-			normalMinimal = rectNormals[i] * -1;
-		}
-	}
-	if (!isSeparated) {
-		for (int i = 0; i < polygon->GetVerticesCount(); i++) {
-			p2Vec2 minMaxA = GetMinMaxProj(rectVectors, 4, polygonNormals[i]);
-			p2Vec2 minMaxB = GetMinMaxProj(polygonVectors, polygonNormals[i]);
-
-			float minA = minMaxA.x; float maxA = minMaxA.y;
-			float minB = minMaxB.x; float maxB = minMaxB.y;
-
-			isSeparated = maxA < minB || maxB < minA;
-
-			if (isSeparated) {
-				break;
-			}
-
-			if (mtv > maxA - minB) {
-				mtv = maxA - minB;
-				normalMinimal = polygonNormals[i];
-			}
-			else if (mtv > maxB - minA) {
-				mtv = maxB - minA;
-				normalMinimal = polygonNormals[i] * -1;
-			}
-		}
-	}
-
-	if (!isSeparated) {
-		manifold.penetration = mtv;
-		manifold.normal = normalMinimal;
-
-		manifold.ShouldResolve = contact->ShouldResolveCollision();
-
-		if (flip) {
-			manifold.normal = manifold.normal * -1;
-		}
 
 		if (manifold.ShouldResolve) {
 			manifold.contactPoint = FindContactPoint(contact, manifold);
@@ -1274,23 +900,11 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 	std::vector<p2Vec2> cornersA;
 	std::vector<p2Vec2> cornersB;
 
-	bool bothRect = false; //If both are rect, no need to inverse normal later in the code because the normal is already in the right direction
-	bool bothPoly = false;
-	
-	bool rectToPoly = false;
-
 	//We now this function is only called if we have rect or polygon
 	if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::POLYGON) {
 		p2PolygonShape* shapeA = static_cast<p2PolygonShape*>(colliderA->GetShape());
 		cornersA.resize(shapeA->GetVerticesCount());
 		cornersA = shapeA->GetVerticesWorld(colliderA->GetPosition(), colliderA->GetBody()->GetAngle());
-		bothPoly = true;
-		rectToPoly = true;
-	}
-	else if (colliderA->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
-		cornersA.resize(4);
-		static_cast<p2RectShape*>(colliderA->GetShape())->GetCorners(cornersA, colliderA->GetPosition(), colliderA->GetBody()->GetAngle());
-		bothRect = true;
 	}
 	else {
 		std::cout << "ERROR: FIND CONTACT POINT COLLIDER A\n";
@@ -1301,13 +915,6 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 		p2PolygonShape* shapeB = static_cast<p2PolygonShape*>(colliderB->GetShape());
 		cornersB.resize(shapeB->GetVerticesCount());
 		cornersB = shapeB->GetVerticesWorld(colliderB->GetPosition(), colliderB->GetBody()->GetAngle());
-		bothRect = false;
-	}
-	else if (colliderB->GetShapeType() == p2ColliderDef::ShapeType::RECT) {
-		cornersB.resize(4);
-		static_cast<p2RectShape*>(colliderB->GetShape())->GetCorners(cornersB, colliderB->GetPosition(), colliderB->GetBody()->GetAngle());
-		bothPoly = false;
-		rectToPoly = rectToPoly && true && !bothPoly && !bothRect;
 	}
 	else {
 		std::cout << "ERROR: FIND CONTACT POINT COLLIDER B\n";
@@ -1318,17 +925,10 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 
 	p2Edge closestA = FindClosestEdge(cornersA, normalContact);
 	p2Edge closestB = FindClosestEdge(cornersB, normalContact * (-1));
-	
-	//std::cout << "( max ) | ( v1 ) | ( v2) \n";
-	//std::cout << "-------------------------\n";
-	//std::cout << "( " << closestA.max.x << ", " << closestA.max.y << ") | (" << closestA.pointA.x << ", " << closestA.pointA.y << ") | (" << closestA.pointB.x << ", " << closestA.pointB.y << ")\n";
-	//std::cout << "( " << closestB.max.x << ", " << closestB.max.y << ") | (" << closestB.pointA.x << ", " << closestB.pointA.y << ") | (" << closestB.pointB.x << ", " << closestB.pointB.y << ")\n";
 
 	//Find the reference and incident edge
 	p2Edge ref;
 	p2Edge inc;
-
-	bool flip = false;
 
 	if (abs(p2Vec2::Dot(closestA.vector, normalContact)) <= abs(p2Vec2::Dot(closestB.vector, normalContact))) {
 		ref = closestA;
@@ -1337,8 +937,6 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 	else {
 		ref = closestB;
 		inc = closestA;
-		//std::cout << "flip";
-		flip = true;
 	}
 	
 	//Start clipping the points
@@ -1367,14 +965,6 @@ p2Vec2 SAT::FindContactPoint(const p2Contact* contact, const p2Manifold & manifo
 	}
 
 	p2Vec2 refNormal = ref.vector.Normal().Normalized();
-	
-	//Must be upgraded: peut être regarder dans findClosestEdge qui devrait pouvoir savoir s'il doit inverser ou pas la valeur
-	if (rectToPoly) refNormal = refNormal * -1;
-
-	if (flip && !bothRect) refNormal = refNormal * -1;
-
-	if (!flip && bothPoly)  refNormal = refNormal * -1;
-	//Must be upgraded
 
 	float max = p2Vec2::Dot(refNormal, ref.max);
 

@@ -57,15 +57,9 @@ class SAT{
 public:
 	static bool CheckCollisionSAT(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionRects(p2Contact* contact, p2Manifold& manifold);
-
 	static bool CheckCollisionCircles(p2Contact* contact, p2Manifold& manifold);
 
-	static bool CheckCollisionCircleRect(p2Contact* contact, p2Manifold& manifold);
-
 	static bool CheckCollisionPolygons(p2Contact* contact, p2Manifold& manifold);
-
-	static bool CheckCollisionPolygonRect(p2Contact* contact, p2Manifold& manifold);
 
 	static bool CheckCollisionPolygonCircle(p2Contact* contact, p2Manifold& manifold);
 
