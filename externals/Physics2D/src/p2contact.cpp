@@ -130,14 +130,17 @@ bool p2Contact::ShouldResolveCollision() const
 
 bool p2Contact::SolvePosition(p2Manifold & manifold)
 {
-	const float k_slop = 0.001f; // Penetration allowance
-	const float percent = 0.2f; // Penetration percentage to correct
+	// Penetration allowance
+	const float penetrationAllowance = 0.001f;
+	// Penetration percentage to correct
+	const float percent = 0.2f;
 
-	float mA = manifold.bodyA->GetInvMass();
-	float mB = manifold.bodyB->GetInvMass();
+	//Get information from manifold
+	float massA = manifold.bodyA->GetInvMass();
+	float massB = manifold.bodyB->GetInvMass();
 
-	float iA = manifold.bodyA->GetInvInertia();
-	float iB = manifold.bodyB->GetInvInertia();
+	float inertiaA = manifold.bodyA->GetInvInertia();
+	float inertiaB = manifold.bodyB->GetInvInertia();
 
 	p2Vec2 rA = manifold.contactPoint - manifold.bodyA->GetPosition();
 	p2Vec2 rB = manifold.contactPoint - manifold.bodyB->GetPosition();
@@ -150,59 +153,62 @@ bool p2Contact::SolvePosition(p2Manifold & manifold)
 		minPenetration = penetration;
 	}
 
-	float C = percent * (penetration + k_slop);
-	if (C > 0.0f) {
-		C = 0.0f;
+	//Compute the correction to applie and clamp it to not over correct
+	float correction = percent * (penetration + penetrationAllowance);
+	if (correction > 0.0f) {
+		correction = 0.0f;
 	}
 
-	if (C < -0.2f) {
-		C = -0.2f;
+	if (correction < -percent) {
+		correction = -percent;
 	}
 
 	float rnA = p2Vec2::Cross(rA, manifold.normal).z;
 	float rnB = p2Vec2::Cross(rB, manifold.normal).z;
-	float K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+	float divisor = massA + massB + inertiaA * rnA * rnA + inertiaB * rnB * rnB;
 
 	float impulse = 0.0f;
 
-	if (K > 0.0f) {
-		impulse = -C / K;
+	if (divisor > 0.0f) {
+		impulse = -correction / divisor;
 	}
 
 	p2Vec2 P = manifold.normal * impulse;
 
-	manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - P * mA);
-	manifold.bodyA->SetAngle(manifold.bodyA->GetAngle() - iA * p2Vec2::Cross(rA, P).z);
+	manifold.bodyA->SetPosition(manifold.bodyA->GetPosition() - P * massA);
+	manifold.bodyA->SetAngle(manifold.bodyA->GetAngle() - inertiaA * p2Vec2::Cross(rA, P).z);
 	
-	manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + P * mB);
-	manifold.bodyB->SetAngle(manifold.bodyB->GetAngle() + iB * p2Vec2::Cross(rB, P).z);
+	manifold.bodyB->SetPosition(manifold.bodyB->GetPosition() + P * massB);
+	manifold.bodyB->SetAngle(manifold.bodyB->GetAngle() + inertiaB * p2Vec2::Cross(rB, P).z);
 	
-	return minPenetration >= -3.0f * k_slop;
+	return minPenetration >= -3.0f * penetrationAllowance;
 }
 
 void p2Contact::SolveVelocity(p2Manifold & manifold)
 {
-	float mA = manifold.bodyA->GetInvMass();
-	float mB = manifold.bodyB->GetInvMass();
+	//Get all info from manifold
+	float massA = manifold.bodyA->GetInvMass();
+	float massB = manifold.bodyB->GetInvMass();
 
-	float iA = (manifold.bodyA->GetInvInertia());
-	float iB = (manifold.bodyB->GetInvInertia());
+	float inertiaA = (manifold.bodyA->GetInvInertia());
+	float inertiaB = (manifold.bodyB->GetInvInertia());
 
-	p2Vec2 vA = manifold.bodyA->GetLinearVelocity();
-	float wA = manifold.bodyA->GetAngularVelocity();
+	p2Vec2 velocityA = manifold.bodyA->GetLinearVelocity();
+	float angularVelocityA = manifold.bodyA->GetAngularVelocity();
 
-	p2Vec2 vB = manifold.bodyB->GetLinearVelocity();
-	float wB = manifold.bodyB->GetAngularVelocity();
+	p2Vec2 velocityB = manifold.bodyB->GetLinearVelocity();
+	float angularVelocityB = manifold.bodyB->GetAngularVelocity();
 
 	p2Vec2 tangent = p2Vec2(manifold.normal.y, -manifold.normal.x);
 
+	//get vector from centroid to contact point
 	p2Vec2 rA = manifold.contactPoint - manifold.bodyA->GetCentroide();
 	p2Vec2 rB = manifold.contactPoint - manifold.bodyB->GetCentroide();
 
 	float rtA = p2Vec2::Cross(rA, tangent).z;
 	float rtB = p2Vec2::Cross(rB, tangent).z;
 
-	p2Vec2 relativeVelocity = vB + p2Vec2(-wB * rB.y, wB * rB.x) - vA - p2Vec2(-wA * rA.y, wA * rA.x);
+	p2Vec2 relativeVelocity = velocityB + p2Vec2(-angularVelocityB * rB.y, angularVelocityB * rB.x) - velocityA - p2Vec2(-angularVelocityA * rA.y, angularVelocityA * rA.x);
 
 	float velocityAlongNormal = p2Vec2::Dot(relativeVelocity, manifold.normal);
 
@@ -212,12 +218,12 @@ void p2Contact::SolveVelocity(p2Manifold & manifold)
 	}
 
 	//tangent
-	float kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
+	float divisorTangent = massA + massB + inertiaA * rtA * rtA + inertiaB * rtB * rtB;
 
 	float tangentMass = 0.0f;
 
-	if (kTangent > 0.0f) {
-		tangentMass = 1.0f / kTangent;
+	if (divisorTangent > 0.0f) {
+		tangentMass = 1.0f / divisorTangent;
 	}
 
 	float velocityT = p2Vec2::Dot(relativeVelocity, p2Vec2(manifold.normal.y, -manifold.normal.x));
@@ -236,24 +242,24 @@ void p2Contact::SolveVelocity(p2Manifold & manifold)
 
 	p2Vec2 P = tangent * lambda;
 
-	vA -= P * mA;
-	wA -= p2Vec2::Cross(rA, P).z * iA;
+	velocityA -= P * massA;
+	angularVelocityA -= p2Vec2::Cross(rA, P).z * inertiaA;
 
-	vB += P * mB;
-	wB += p2Vec2::Cross(rB, P).z * iB;
+	velocityB += P * massB;
+	angularVelocityB += p2Vec2::Cross(rB, P).z * inertiaB;
 
 
 	//Normal
 	float vn = p2Vec2::Dot(relativeVelocity, manifold.normal);
 
-	float kNormal = mA + mB + iA * p2Vec2::Cross(rA, manifold.normal).z * p2Vec2::Cross(rA, manifold.normal).z + iB * p2Vec2::Cross(rB, manifold.normal).z * p2Vec2::Cross(rB, manifold.normal).z;
+	float divisorNormal = massA + massB + inertiaA * p2Vec2::Cross(rA, manifold.normal).z * p2Vec2::Cross(rA, manifold.normal).z + inertiaB * p2Vec2::Cross(rB, manifold.normal).z * p2Vec2::Cross(rB, manifold.normal).z;
 
 	float normalMass = 0.0f;
-	if (kNormal > 0.0f) {
-		normalMass = 1.0f / kNormal;
+	if (divisorNormal > 0.0f) {
+		normalMass = 1.0f / divisorNormal;
 	}
 
-	float vRel = p2Vec2::Dot(manifold.normal, vB + p2Vec2(-wB * rB.y, wB * rB.x) - vA - p2Vec2(-wA * rA.y, wA * rA.x));
+	float vRel = p2Vec2::Dot(manifold.normal, velocityB + p2Vec2(-angularVelocityB * rB.y, angularVelocityB * rB.x) - velocityA - p2Vec2(-angularVelocityA * rA.y, angularVelocityA * rA.x));
 	float restitution = std::fmin(GetColliderA()->GetRestitution(), GetColliderB()->GetRestitution());
 
 	float velocityBias = -restitution * vRel;
@@ -265,17 +271,17 @@ void p2Contact::SolveVelocity(p2Manifold & manifold)
 	manifold.normalImpulse = newImpulse;
 
 	P = manifold.normal * lambda;
-	vA -= P * mA;
-	wA -= iA * p2Vec2::Cross(rA, P).z;
+	velocityA -= P * massA;
+	angularVelocityA -= inertiaA * p2Vec2::Cross(rA, P).z;
 
-	vB += P * mB;
-	wB += iB * p2Vec2::Cross(rB, P).z;
+	velocityB += P * massB;
+	angularVelocityB += inertiaB * p2Vec2::Cross(rB, P).z;
 
-	manifold.bodyA->SetLinearVelocity(vA);
-	manifold.bodyA->SetAngularVelocity(wA);
+	manifold.bodyA->SetLinearVelocity(velocityA);
+	manifold.bodyA->SetAngularVelocity(angularVelocityA);
 
-	manifold.bodyB->SetLinearVelocity(vB);
-	manifold.bodyB->SetAngularVelocity(wB);
+	manifold.bodyB->SetLinearVelocity(velocityB);
+	manifold.bodyB->SetAngularVelocity(angularVelocityB);
 }
 
 bool p2Contact::isOnContact()
@@ -342,19 +348,17 @@ void p2ContactManager::Solve()
 			
 		contact->Update(*m_ContactListener, manifold);
 
-		//Correction collision
+		//If the collision should be resolved, then resolved it
 		if (manifold.ShouldResolve) {
-			//Compute Impulse
-
-			//TO REMOVE
+			
 			PointsToDraw.push_back(manifold.contactPoint);
-			//TO REMOVE
 
-			for (int i = 0; i < 10; i++) {
+			//Iterative resolution
+			for (int i = 0; i < m_VelocityCorrectionIteration; i++) {
 				contact->SolveVelocity(manifold);
 			}
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < m_PositionCorrectionIteration; i++) {
 				if (contact->SolvePosition(manifold)) {
 					break;
 				}
@@ -396,7 +400,7 @@ void p2ContactManager::CreateContact(p2Collider * colliderA, p2Collider * collid
 	m_ContactList.push_front(new p2Contact(colliderA, colliderB));
 }
 
-void p2ContactManager::Destroy()
+void p2ContactManager::Clear()
 {
 	auto it = m_ContactList.begin();
 	while (it != m_ContactList.end()) {

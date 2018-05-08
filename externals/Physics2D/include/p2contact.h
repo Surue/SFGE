@@ -43,19 +43,38 @@ public:
 
 	~p2Contact();
 
+	/**
+	* \brief called every step, create a manifold containing all information about the collision
+	*/
 	void Update(p2ContactListener& contactListener, p2Manifold& manifold);
 
+	//Get colliders 
 	p2Collider* GetColliderA() const;
 	p2Collider* GetColliderB() const;
 
+	/**
+	* \brief simple test to remove some contact
+	*/
 	bool OverlapAABB() const;
-
+	/**
+	* \brief return if there is a collision depending on both body type
+	*/
 	static bool CheckIfCollision(p2Contact& contact);
+	/**
+	* \brief return true if the collision should be solved
+	*/
 	bool ShouldResolveCollision() const;
-
+	/**
+	* \brief solve position
+	*/
 	bool SolvePosition(p2Manifold& manifold);
+	/**
+	* \brief solve velocity
+	*/
 	void SolveVelocity(p2Manifold& manifold);
-
+	/**
+	* \briefe return true if there both collider are touching
+	*/
 	bool isOnContact();
 
 private:
@@ -84,29 +103,55 @@ public:
 	p2ContactManager();
 	~p2ContactManager();
 
+	/**
+	* \brief use the quadtree to retrive all possible contact
+	*/
 	void FindNewContact(std::list<p2Body*>& bodies);
-
+	/**
+	* \brief loop through all contact to check if there is a collision and resolve it if needed
+	*/
 	void Solve();
-
+	/**
+	* \brief used to remove non colliding contact
+	*/
 	void Collide();
-
+	/**
+	* \brief set the contact listener
+	*/
 	void SetContactListener(p2ContactListener* contactListener);
-
+	/**
+	* \brief factory to create contact
+	*/
 	void CreateContact(p2Collider* colliderA, p2Collider* colliderB);
-
-	void Destroy();
+	/**
+	* \brief clear all contact
+	*/
+	void Clear();
+	/**
+	* \brief destroy an unique contact
+	*/
 	void Destroy(p2Contact *contact);
-
+	/**
+	* \brief return the quadtree
+	*/
 	p2QuadTree* GetQuadTree();
-
+	/**
+	* \used to draw debug info
+	*/
 	void Draw(p2Draw* debugDraw);
 
-	std::list<p2Vec2> PointsToDraw; //TO REMOVE
+	/**
+	* \brief list of contact points
+	*/
+	std::list<p2Vec2> PointsToDraw;
 
 private:
 	std::list<p2Contact*> m_ContactList;
 	p2ContactListener* m_ContactListener;
 
 	p2QuadTree m_QuadTree;
+
+	int m_VelocityCorrectionIteration = 10;
+	int m_PositionCorrectionIteration = 10;
 };
 #endif
