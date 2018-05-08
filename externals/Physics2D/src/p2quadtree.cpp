@@ -15,7 +15,7 @@ p2QuadTree::p2QuadTree()
 	m_NodeLevel = 0;
 	m_Objects = std::list<p2Body*>();
 	for (int i = 0; i < CHILD_TREE_NMB; i++) {
-		nodes[i] = nullptr;
+		m_Nodes[i] = nullptr;
 	}
 }
 
@@ -25,7 +25,7 @@ p2QuadTree::p2QuadTree(int nodeLevel, p2AABB aabb)
 	m_Bounds = aabb;
 	m_Objects = std::list<p2Body*>();
 	for (int i = 0; i < CHILD_TREE_NMB; i++) {
-		nodes[i] = nullptr;
+		m_Nodes[i] = nullptr;
 	}
 }
 
@@ -37,22 +37,24 @@ void p2QuadTree::Clear()
 {
 	m_Objects.clear();
 	
-	if (nodes[0] != nullptr) {
+	if (m_Nodes[0] != nullptr) {
 		for (int i = 0; i < 4; i++) {
-			nodes[i]->Clear();
-			delete(nodes[i]);
-			nodes[i] = nullptr;
+			m_Nodes[i]->Clear();
+			delete(m_Nodes[i]);
+			m_Nodes[i] = nullptr;
 		}
 	}
 }
 
 void p2QuadTree::Split()
 {
+	//Get sub aabb for all child node
 	p2AABB subAABB[CHILD_TREE_NMB];
 	m_Bounds.GetSubAABBQuad(subAABB);
-
+	
+	//Create all child node
 	for (int i = 0; i < CHILD_TREE_NMB; i++) {
-		nodes[i] = new p2QuadTree(m_NodeLevel + 1, subAABB[i]);
+		m_Nodes[i] = new p2QuadTree(m_NodeLevel + 1, subAABB[i]);
 	}
 }
 
@@ -74,10 +76,10 @@ int p2QuadTree::GetIndex(const p2Body* obj) const
 void p2QuadTree::Insert(p2Body* obj)
 {
 	//If the node is already split
-	if (nodes[0] != nullptr) {
+	if (m_Nodes[0] != nullptr) {
 		int index = GetIndex(obj);
 		if (index != -1) {
-			nodes[index]->Insert(obj);
+			m_Nodes[index]->Insert(obj);
 			return;
 		}
 	}
@@ -85,7 +87,7 @@ void p2QuadTree::Insert(p2Body* obj)
 	m_Objects.push_back(obj);
 	//Check if must split the node
 	if (m_Objects.size() > MAX_OBJECTS && m_NodeLevel < MAX_LEVELS) {
-		if (nodes[0] == nullptr) {
+		if (m_Nodes[0] == nullptr) {
 			Split();
 		}
 
@@ -94,7 +96,7 @@ void p2QuadTree::Insert(p2Body* obj)
 		{
 			int index = GetIndex(*it);
 			if (index != -1) {
-				nodes[index]->Insert(*it);
+				m_Nodes[index]->Insert(*it);
 				m_Objects.erase(it++);
 			}
 			else {
@@ -106,7 +108,7 @@ void p2QuadTree::Insert(p2Body* obj)
 
 void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 {
-	if (nodes[0] == nullptr) {
+	if (m_Nodes[0] == nullptr) {
 		if (m_Objects.size() > 1) {
 			auto itrObj = m_Objects.begin();
 			auto itrObjToCheck = m_Objects.begin();
@@ -138,7 +140,7 @@ void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 	else {
 		//Add children to contacts
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
-			nodes[i]->Retrieve(contacts);
+			m_Nodes[i]->Retrieve(contacts);
 		}
 
 		//Retrive all parents objects
@@ -146,7 +148,7 @@ void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 			for (int i = 0; i < CHILD_TREE_NMB; i++) {
 
 				//Test this object with every object in child node
-				for (auto itrObjToCheck = nodes[i]->m_Objects.begin(); itrObjToCheck != nodes[i]->m_Objects.end(); itrObjToCheck++) {
+				for (auto itrObjToCheck = m_Nodes[i]->m_Objects.begin(); itrObjToCheck != m_Nodes[i]->m_Objects.end(); itrObjToCheck++) {
 					if ((*itrObj)->GetAABB().Overlap((*itrObjToCheck)->GetAABB())) {
 						//Test if two collider collide
 						for (auto colliderA : (*itrObj)->GetColliders()) {
@@ -193,7 +195,7 @@ void p2QuadTree::Retrieve(std::list<p2Contact>& contacts) const
 std::list<p2Body*> p2QuadTree::AABBOverlap(p2AABB aabb) const
 {
 	std::list<p2Body*> bodies;
-	if (nodes[0] == nullptr) {
+	if (m_Nodes[0] == nullptr) {
 		if (aabb.Contains(m_Bounds)){
 			return m_Objects;
 		}
@@ -209,7 +211,7 @@ std::list<p2Body*> p2QuadTree::AABBOverlap(p2AABB aabb) const
 	}
 	else {
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
-			std::list<p2Body*> tmp = nodes[i]->AABBOverlap(aabb);
+			std::list<p2Body*> tmp = m_Nodes[i]->AABBOverlap(aabb);
 			bodies.insert(bodies.end(), tmp.begin(), tmp.end());
 		}
 
@@ -235,9 +237,9 @@ p2AABB & p2QuadTree::GetAABB()
 
 void p2QuadTree::Draw(const p2Draw* debugDraw) const
 {
-	if (nodes[0] != nullptr) {
+	if (m_Nodes[0] != nullptr) {
 		for (int i = 0; i < CHILD_TREE_NMB; i++) {
-			nodes[i]->Draw(debugDraw);
+			m_Nodes[i]->Draw(debugDraw);
 		}
 	}
 	else {

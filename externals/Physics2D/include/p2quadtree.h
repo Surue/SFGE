@@ -45,32 +45,43 @@ public:
 	~p2QuadTree();
 
 	/**
-	* Remove all objects leafs and quadtrees children
+	* \brief Remove all objects leafs and quadtrees children
 	*/
 	void Clear();
 	/**
-	* Called when node have too much objects and split the current node into four
+	* \brief Called when node have too much objects and split the current node into four
 	*/
 	void Split();
-
 	/**
-	* Get the index of the child trees of the p2Body
+	* \brief Get the index of the child trees of the p2Body
 	*/
 	int GetIndex(const p2Body* obj) const;
 	/**
-	* Insert a new p2Body in the tree
+	* \brief Insert a new p2Body in the tree
 	*/
 	void Insert(p2Body* obj);
 	/**
-	* Return a list of all the p2Body that might collide
+	* \brief Return a list of all the p2Body that might collide
 	*/
 	void Retrieve(std::list<p2Contact>& contacts) const;
-
+	/**
+	* \brief Return a list of all bodies inside the given aabb
+	*/
 	std::list<p2Body*> AABBOverlap(p2AABB aabb) const;
-
+	
+	//AABB
+	/**
+	* \brief set the aabb for this quadTree
+	*/
 	void SetAABB(const p2AABB aabb);
+	/**
+	* \brief get the aabb
+	*/
 	p2AABB& GetAABB();
 
+	/**
+	* \brief Part of Debug Draw
+	*/
 	void Draw(const p2Draw* debugDraw) const;
 	
 private:
@@ -79,7 +90,7 @@ private:
 	static const int CHILD_TREE_NMB = 4;
 
 	int m_NodeLevel = 0;
-	p2QuadTree* nodes[CHILD_TREE_NMB];
+	p2QuadTree* m_Nodes[CHILD_TREE_NMB];
 	std::list<p2Body*> m_Objects;
 	p2AABB m_Bounds;
 };
