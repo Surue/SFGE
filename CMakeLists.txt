@@ -39,16 +39,16 @@ include_directories(include ${CMAKE_SOURCE_DIR}/include)
 
 file(GLOB_RECURSE SFGE_SRC src/*/*.cpp include/*.h)
 if(WIN32)
-set_property(GLOBAL PROPERTY USE_FOLDERS On) 
+set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
-SET_SOURCE_FILES_PROPERTIES( ${SFGE_SRC} PROPERTIES 
-                FOLDER "${CMAKE_SOURCE_DIR}/src" ) 
+SET_SOURCE_FILES_PROPERTIES( ${SFGE_SRC} PROPERTIES
+                FOLDER "${CMAKE_SOURCE_DIR}/src" )
 endif(WIN32)
 #SFML
 set(SFML_DIR ${EXTERNAL_DIR}/SFML)
 set(SFML_BUILD_EXAMPLES FALSE)
 add_subdirectory(${SFML_DIR})
-include_directories(${SFML_DIR}/include)
+include_directories(${SFML_DIR}/include ${SFML_DIR}/src)
 LIST(APPEND SFGE_LIBRARIES
 	sfml-system
 	sfml-window
@@ -63,27 +63,20 @@ set(IMGUI_ROOT ${EXTERNAL_DIR}/imgui/)
 set(SFML_ROOT ${EXTERNAL_DIR}/SFML/)
 add_subdirectory(${SFML_IMGUI})
 include_directories(${IMGUI_ROOT} ${SFML_IMGUI})
-LIST(APPEND SFGE_LIBRARIES 
+LIST(APPEND SFGE_LIBRARIES
 	imgui-sfml)
 
 
-#Physics2D
-set(Physics2D_DIR ${EXTERNAL_DIR}/Physics2D)
+#BOX2D
+set(BOX2D_DIR ${EXTERNAL_DIR}/Physics2D)
 
-SET(Physics2D_INSTALL ON CACHE INTERNAL "")
-SET(Physics2D_BUILD_STATIC ON  CACHE INTERNAL "")
+SET(BOX2D_INSTALL ON CACHE INTERNAL "")
+SET(BOX2D_BUILD_STATIC ON  CACHE INTERNAL "")
 
-add_subdirectory(${Physics2D_DIR})
-include_directories(${Physics2D_DIR}/include/)
+add_subdirectory(${BOX2D_DIR})
+include_directories(${BOX2D_DIR}/include/)
 LIST(APPEND SFGE_LIBRARIES
 	Physics2D)
-
-#JSON
-set(JSON_DIR ${EXTERNAL_DIR}/json/)
-add_subdirectory(${JSON_DIR})
-include_directories(${JSON_DIR}/src/)
-LIST(APPEND SFGE_LIBRARIES
-	nlohmann_json)
 
 #PYTHON
 #IF(NOT WIN32)
@@ -115,15 +108,38 @@ include_directories(${PYBIND11_DIR})
 LIST(APPEND SFGE_LIBRARIES
   pybind11::embed)
 
+if(APPLE)
+	set(boost_min_ver 1.50.0)
+	set(boost_libs system filesystem)
+	find_package(Boost ${boost_min_ver})
+
+	if(Boost_FOUND)
+		find_package(Boost ${boost_min_ver} COMPONENTS ${boost_libs})
+	endif()
+	include_directories(${Boost_INCLUDE_DIRS})
+	LIST(APPEND SFGE_LIBRARIES
+	  ${Boost_LIBRARIES})
+endif(APPLE)
+
+#MISCELLANEOUS UTILITIES
+set(UTILITIES_DIR ${EXTERNAL_DIR}/utilities/)
+include_directories(${UTILITIES_DIR})
+
+
 #SFGE_COMMON
-if(NOT WIN32)
-LIST(APPEND SFGE_LIBRARIES
-  stdc++fs)
+if(NOT WIN32 AND NOT APPLE)
+	LIST(APPEND SFGE_LIBRARIES
+		stdc++fs)
 ENDIF()
 add_library(SFGE_COMMON STATIC ${SFGE_SRC})
 include_directories(include/)
 target_link_libraries(SFGE_COMMON PUBLIC ${SFGE_LIBRARIES})
-
+set_property(TARGET SFGE_COMMON PROPERTY CXX_STANDARD 17)
+if(APPLE)
+set_target_properties(SFGE_COMMON PROPERTIES
+ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}
+ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR})
+ENDIF(APPLE)
 #SFGE_TEST
 SET(SFGE_TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 file(GLOB TEST_FILES ${SFGE_TEST_DIR}/*.cpp )
@@ -134,11 +150,31 @@ foreach(test_file ${TEST_FILES} )
     add_executable(${test_name} ${SFGE_TEST_DIR}/${test_relative_path})
     # Make sure YourLib is linked to each app
     target_link_libraries(${test_name} PUBLIC SFGE_COMMON)
+	set_property(TARGET ${test_name} PROPERTY CXX_STANDARD 17)
+		set_target_properties(${test_name} PROPERTIES COMPILE_FLAGS "-save-temps")
+  if(APPLE)
+    set_target_properties(${test_name} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR})
+  ENDIF(APPLE)
 endforeach()
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}" )
+elseif()
+	SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -masm=intel" )
+endif()
 #SFGE
 add_executable(SFGE src/main.cpp)
 
 MESSAGE("SFGE_COMMON: " ${SFGE_COMMON})
 
 target_link_libraries(SFGE PUBLIC SFGE_COMMON)
+set_property(TARGET SFGE PROPERTY CXX_STANDARD 17)
+if(APPLE)
+  set_target_properties(SFGE PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR})
+ENDIF(APPLE)
+file(COPY data/ DESTINATION ${CMAKE_BINARY_DIR}/data/)
+file(COPY scripts/ DESTINATION ${CMAKE_BINARY_DIR}/scripts/)

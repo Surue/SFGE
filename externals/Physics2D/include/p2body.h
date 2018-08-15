@@ -72,7 +72,7 @@ public:
 	/**
 	* \brief set the linear velocity
 	*/
-	void SetLinearVelocity(p2Vec2& velocity);
+	void SetLinearVelocity(const p2Vec2 velocity);
 	/**
 	* \biref get the angular velocity
 	*/

@@ -142,7 +142,7 @@ GameObject::~GameObject()
 
 void GameObject::Init()
 {
-	for (auto comp : m_Components)
+	for (auto& comp : m_Components)
 	{
 		comp->Init();
 	}

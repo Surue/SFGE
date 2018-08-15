@@ -100,6 +100,7 @@ Body2d* PhysicsManager::Raycast(sf::Vector2f direction, sf::Vector2f position, f
 			return body;
 		}
 	}
+	//2return nullptr;
 }
 
 void PhysicsManager::SetIterativeResolution(int iterativeCount)

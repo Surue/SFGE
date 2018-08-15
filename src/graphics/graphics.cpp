@@ -28,7 +28,7 @@ SOFTWARE.
 #include <graphics/shape.h>
 #include <engine/log.h>
 #include <engine/config.h>
-#include <physics\physics.h>
+#include <physics/physics.h>
 
 //Dependencies includes
 #include <SFML/Graphics/RenderWindow.hpp>

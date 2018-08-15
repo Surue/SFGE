@@ -1,5 +1,6 @@
-#include "..\include\p2quadtree.h"
+#include <p2quadtree.h>
 
+#if WIN32
 #define _CRTDBG_MAP_ALLOC
 #include<iostream>
 #include <crtdbg.h>
@@ -7,8 +8,9 @@
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
 #endif
+#endif
 
-#include <p2Contact.h>
+#include <p2contact.h>
 
 p2QuadTree::p2QuadTree()
 {

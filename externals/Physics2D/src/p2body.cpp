@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#if WIN32
 #define _CRTDBG_MAP_ALLOC
 #include<iostream>
 #include <crtdbg.h>
@@ -29,13 +30,15 @@ SOFTWARE.
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
 #endif
+#endif
 
 #include <p2body.h>
-#include <p2Collider.h>
-#include <p2World.h>
-#include <p2Matrix.h>
+#include <p2collider.h>
+#include <p2world.h>
+#include <p2matrix.h>
 
 #include <iostream>
+#include <cmath>
 
 p2Body::p2Body()
 {
@@ -82,7 +85,7 @@ p2Vec2 p2Body::GetLinearVelocity() const
 	return m_LinearVelocity;
 }
 
-void p2Body::SetLinearVelocity(p2Vec2& velocity)
+void p2Body::SetLinearVelocity(const p2Vec2 velocity)
 {
 	m_LinearVelocity = velocity;
 }
@@ -198,7 +201,7 @@ std::list<p2Shape *>& p2Body::GetShape()
 {
 	std::list<p2Shape *> tmp;
 
-	for each (auto collider in m_CollidersList)
+	for(auto& collider : m_CollidersList)
 	{
 		tmp.push_back(collider->GetShape());
 	}
@@ -224,11 +227,11 @@ void p2Body::ComputeAABB()
 			(*it)->GetShape()->ComputeAABB(&(*it)->aabb, (*it)->GetPosition(), m_Angle);
 
 			//Check for the biggest aabb
-			m_aabb.bottomLeft.x = fmin(m_aabb.bottomLeft.x, (*it)->aabb.bottomLeft.x);
-			m_aabb.bottomLeft.y = fmax(m_aabb.bottomLeft.y, (*it)->aabb.bottomLeft.y);
+			m_aabb.bottomLeft.x = std::fmin(m_aabb.bottomLeft.x, (*it)->aabb.bottomLeft.x);
+			m_aabb.bottomLeft.y = std::fmax(m_aabb.bottomLeft.y, (*it)->aabb.bottomLeft.y);
 			
-			m_aabb.topRight.x = fmax(m_aabb.topRight.x, (*it)->aabb.topRight.x);
-			m_aabb.topRight.y = fmin(m_aabb.topRight.y, (*it)->aabb.topRight.y);
+			m_aabb.topRight.x = std::fmax(m_aabb.topRight.x, (*it)->aabb.topRight.x);
+			m_aabb.topRight.y = std::fmin(m_aabb.topRight.y, (*it)->aabb.topRight.y);
 		}
 	}
 }

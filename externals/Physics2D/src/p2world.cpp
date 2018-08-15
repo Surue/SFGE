@@ -22,12 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#if WIN32
 #define _CRTDBG_MAP_ALLOC
 #include<iostream>
 #include <crtdbg.h>
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
+#endif
 #endif
 
 #include <p2world.h>
@@ -277,20 +279,26 @@ p2Body * p2World::Raycast(p2Vec2 vector, p2Vec2 position, float maxDistance)
 	}
 
 	//Draw raycast if needed
-	uint32_t flags = m_DebugDraw->GetFlags();
+	if(m_DebugDraw)
+	{
 
-	if (flags && p2Draw::raycastBit) {
+	uint32_t flags = m_DebugDraw->GetFlags ();
+
+	if (flags && p2Draw::raycastBit)
+		{
 		raycastStruct tmp;
 		tmp.posA = position;
-		if (closestBody == nullptr) {
+		if (closestBody == nullptr)
+			{
 			tmp.posB = posB;
-		}
-		else {
+			}
+		else
+			{
 			tmp.posB = contactpoint;
+			}
+		m_DebugDraw->m_Segment.push_front (tmp);
 		}
-		m_DebugDraw->m_Segment.push_front(tmp);
 	}
-
 	delete(line);
 	delete(lineCollider);
 

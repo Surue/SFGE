@@ -2,14 +2,15 @@ from SFGE import *
 from math import *
 
 class RaycastStar(Component):
+
     def init(self):
         self.max_distance = 1000
 
-        self.nbRaycast = 50;
+        self.nbRaycast = 50
 
         self.directions = [Vector2f()] * self.nbRaycast
 
-        self.dir = Vector2f(1, 0);
+        self.dir = Vector2f(1, 0)
 
         ratio = 360 / self.nbRaycast
 

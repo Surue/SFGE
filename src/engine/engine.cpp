@@ -157,7 +157,8 @@ void Engine::Collect()
 
 void Engine::SetDebugDrawData()
 {
-	if (m_PhysicsManager->GetWorld()->GetDebugDraw() == nullptr) {
+	if (m_Window and !m_PhysicsManager->GetWorld()->GetDebugDraw())
+	{
 		m_PhysicsManager->GetWorld()->SetDebugDraw(new DebugDraw(&*m_Window));
 	}
 
@@ -171,7 +172,9 @@ void Engine::SetDebugDrawData()
 
 void Engine::SetDebugDrawDataFlags(uint32_t flags)
 {
-	m_PhysicsManager->GetWorld()->GetDebugDraw()->SetFlags(flags);
+	auto debugDraw = m_PhysicsManager->GetWorld()->GetDebugDraw();
+	if(debugDraw)
+		debugDraw->SetFlags(flags);
 }
 
 void Engine::SetDebugDrawDataFlagsSwitch(uint32_t flags)

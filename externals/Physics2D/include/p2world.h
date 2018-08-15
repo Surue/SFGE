@@ -31,6 +31,7 @@ SOFTWARE.
 
 #include <list>
 #include <map>
+#include <limits>
 
 class p2Body;
 

@@ -4,6 +4,7 @@ from SFGE import *
 class PlayerCharacterBasic(Component):
 
     def init(self):
+        print("Initialize the PlayerCharacterBasic")
         self.speed = 1.0
         self.body = self.game_object.get_component(Component.Body)
 

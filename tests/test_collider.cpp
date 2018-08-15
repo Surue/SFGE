@@ -24,7 +24,7 @@ SOFTWARE.
 #include <engine/engine.h>
 #include <engine/scene.h>
 
-#include <graphics\shape.h>
+#include <graphics/shape.h>
 
 #include <iostream>
 
