@@ -42,7 +42,7 @@ int main()
 	file.clear();
 	file.exceptions(std::ios::goodbit);
 
-	int columns = 20, row = 15;
+	int columns = 10, row = 10;
 
 	srand(time(NULL));
 
@@ -53,11 +53,11 @@ int main()
 				file << "\n\t{\n\t\t\"name\": \"Body" << i*columns + j<< "\",\n\t\t\"components\" : [ \n\t\t{";
 				file << "\n\t\t\t\"type\" : 1, \n\t\t\t\"position\": [" << i * 50 << ", " << j * 50  << "],";
 				file << "\n\t\t\t\"scale\": [1.0, 1.0], \n\t\t\t\"angle\": 0.0 \n\t\t},\n\t\t{";
-				file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 2, \n\t\t\t\"gravity_scale\": 0 \n\t\t},\n\t\t{";
-				float radius = 5;
+				file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 2, \n\t\t\t\"gravity_scale\": 1 \n\t\t},\n\t\t{";
+				float radius = 10;
 				file << "\n\t\t\t\"name\": \"BoxCollider\",\n\t\t\t\"type\" : 6,\n\t\t\t\"collider_type\" : 1, \n\t\t\t\"radius\" : " << radius << ",\n\t\t\t\"sensor\" : false \n\t\t},\n\t\t{";
-				file << "\n\t\t\t\"name\": \"Shape\",\n\t\t\t\"type\" : 3,\n\t\t\t\"shape_type\" : 1, \n\t\t\t\"radius\" : " << radius << " \n\t\t},\n\t\t{";
-				file << "\n\t\t}\n\t\t]\n\t},";
+				file << "\n\t\t\t\"name\": \"Shape\",\n\t\t\t\"type\" : 3,\n\t\t\t\"shape_type\" : 1, \n\t\t\t\"radius\" : " << radius << " \n\t\t}";
+				file << "\n\t\t]\n\t},";
 			}
 		}
 		file << "\n\t{\n\t\t\"name\": \"Body\",\n\t\t\"components\" : [ \n\t\t{";
@@ -70,6 +70,14 @@ int main()
 		file << "\n\t\t\t\"type\" : 4,\n\t\t\t\"script_path\" : \"scripts/add_explosive_force_on_click.py\" \n\t\t},\n\t\t{";
 		file << "\n\t\t}\n\t\t]\n\t},";
 
+		file << "\n\t{\n\t\t\"name\": \"Ground\",\n\t\t\"components\" : [ \n\t\t{";
+		file << "\n\t\t\t\"type\" : 1, \n\t\t\t\"position\": [" << 550 << ", " << 650 << "],";
+		file << "\n\t\t\t\"scale\": [1.0, 1.0], \n\t\t\t\"angle\": 0.0 \n\t\t},\n\t\t{";
+		file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 0, \n\t\t\t\"gravity_scale\": 0 \n\t\t},\n\t\t{";
+		file << "\n\t\t\t\"name\": \"BoxCollider\",\n\t\t\t\"type\" : 6,\n\t\t\t\"collider_type\" : 2, \n\t\t\t\"size\" : [" << 1000 << ", " << 100 << "],\n\t\t\t\"sensor\" : false \n\t\t},\n\t\t{";
+		file << "\n\t\t\t\"name\": \"Shape\",\n\t\t\t\"type\" : 3,\n\t\t\t\"shape_type\" : 2, \n\t\t\t\"size\" : [" << 1000 << ", " << 100 << "] \n\t\t},\n\t\t{";
+		file << "\n\t\t}\n\t\t]\n\t},";
+
 		file << "\n\t\t{\"name\": \"ScriptDebugDraw\",\n\t\t\"components\" : [\n\t\t{\n\t\t\t\"type\": 4,\n\t\t\t\"script_path\" : \"scripts/debug_draw_data.py\"}]}";
 		file << "\n\t]\n}";
 
@@ -80,6 +88,10 @@ int main()
 	engine.Init(false, true);
 
 	engine.GetSceneManager()->SetCurrentScene("data/scenes/test_aabb_overlap.scene");
+
+	uint32_t flags = 0x00000;
+
+	engine.SetDebugDrawDataFlags(flags);
 
 	engine.Start();
 #if WIN32

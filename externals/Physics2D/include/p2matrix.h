@@ -56,6 +56,7 @@ struct p2Mat22
 	* \brief Calculate the invert of the 2x2 matrix
 	*/
 	p2Mat22 Invert();
+
 	/**
 	* \brief display the matrix in the console
 	*/
@@ -92,7 +93,7 @@ struct p2Mat33
 
 	//Methods
 	/**
-	* \brief generate tthe rotation matrix with the given angle (in radian) and the axis
+	* \brief generate the rotation matrix with the given angle (in radian) and the axis
 	*/
 	static p2Mat33 RotationMatrix(float angle, const p2Vec3 axis);
 	/**

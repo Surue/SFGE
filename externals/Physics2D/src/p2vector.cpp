@@ -247,3 +247,8 @@ void p2Vec3::Show() const
 {
 	std::cout << "(" << x << ", " << y << ", " << z << ")" << "\n";
 }
+
+p2Vec2 operator*(int i, p2Vec2 v)
+{
+	return v * i;
+}

@@ -278,6 +278,7 @@ void p2Body::ApplyExplosiveForce(float explosiveForce, float explosionRadius, p2
 
 		float force = explosiveForce * (explosionRadius / distance);
 
+		if(body->GetType() == p2BodyType::DYNAMIC)
 		body->AddForce((body->m_Position - m_Position).Normalized() * force);
 	}
 }

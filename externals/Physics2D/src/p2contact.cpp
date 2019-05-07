@@ -133,7 +133,7 @@ bool p2Contact::SolvePosition(p2Manifold & manifold)
 	// Penetration allowance
 	const float penetrationAllowance = 0.001f;
 	// Penetration percentage to correct
-	const float percent = 0.2f;
+	const float percent = 0.8f;
 
 	//Get information from manifold
 	float massA = manifold.bodyA->GetInvMass();

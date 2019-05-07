@@ -44,7 +44,7 @@ int main()
 	file.clear();
 	file.exceptions(std::ios::goodbit);
 
-	int nbObject = 100;
+	int nbObject = 2000;
 
 	srand(time(NULL));
 
@@ -55,8 +55,8 @@ int main()
 			file << "\n\t\t\t\"type\" : 1, \n\t\t\t\"position\": [" << rand() % 1280 << ", " << rand() % 720 << "],";
 			file << "\n\t\t\t\"scale\": [1.0, 1.0], \n\t\t\t\"angle\": 0.0 \n\t\t},\n\t\t{";
 			file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 2, \n\t\t\t\"gravity_scale\": 0 \n\t\t},\n\t\t{";
-			float sizeX = (rand() % 10) + 10;
-			float sizeY = (rand() % 10) + 10;
+			float sizeX = (rand() % 10) + 1;
+			float sizeY = (rand() % 10) + 1;
 			file << "\n\t\t\t\"name\": \"BoxShape\",\n\t\t\t\"type\" : 3,\n\t\t\t\"shape_type\" : 2, \n\t\t\t\"size\" : [" << sizeX << "," << sizeY << "]\n\t\t},\n\t\t{";
 			file << "\n\t\t\t\"name\": \"BoxCollider\",\n\t\t\t\"type\" : 6,\n\t\t\t\"collider_type\" : 2, \n\t\t\t\"size\" : [" << sizeX << "," << sizeY << "],\n\t\t\t\"sensor\" : true \n\t\t},\n\t\t{";
 			file << "\n\t\t\t\"type\": 4,\n\t\t\t\"script_path\" : \"scripts/box_random_movement.py\"\n\t\t},\n\t\t{";

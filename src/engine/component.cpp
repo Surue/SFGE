@@ -113,12 +113,12 @@ Component* Component::LoadComponent(Engine& engine, json& componentJson, GameObj
 		}
 		else
 		{
-			Log::GetInstance()->Error("Undefined type for component");
+			//Log::GetInstance()->Error("Undefined type for component");
 		}
 	}
 	else
 	{
-		Log::GetInstance()->Error("No type defined for component");
+		//Log::GetInstance()->Error("No type defined for component");
 	}
 	
 	return component;

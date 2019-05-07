@@ -24,8 +24,6 @@ SOFTWARE.
 #include <engine/engine.h>
 #include <engine/scene.h>
 
-#include <iostream>
-
 int main()
 {
 	sfge::Engine engine;

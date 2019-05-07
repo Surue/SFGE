@@ -29,7 +29,7 @@ Transform* Transform::LoadTransform(json& componentJson, GameObject* gameObject)
 		return nullptr;
 	}
 	Transform* newTransform = new Transform(gameObject);
-	Log::GetInstance()->Msg("Loading Transform");
+	//Log::GetInstance()->Msg("Loading Transform");
 	if (CheckJsonParameter(componentJson, "position", json::value_t::array))
 	{
 		auto positionJson = componentJson["position"];
@@ -74,7 +74,7 @@ Transform* Transform::LoadTransform(json& componentJson, GameObject* gameObject)
 	{
 		std::ostringstream oss;
 		oss << "New Transform with position: " << newTransform->GetPosition().x << ", " << newTransform->GetPosition().y<< " from: "<<componentJson;
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 	return newTransform;
 }

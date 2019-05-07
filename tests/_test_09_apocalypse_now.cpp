@@ -42,7 +42,7 @@ int main()
 	file.clear();
 	file.exceptions(std::ios::goodbit);
 
-	int columns = 20, row = 15;
+	int columns = 30, row = 30;
 
 	srand(time(NULL));
 
@@ -51,13 +51,13 @@ int main()
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < row; j++) {
 				file << "\n\t{\n\t\t\"name\": \"Body" << i*columns + j<< "\",\n\t\t\"components\" : [ \n\t\t{";
-				file << "\n\t\t\t\"type\" : 1, \n\t\t\t\"position\": [" << i * 50 << ", " << j * 50  << "],";
+				file << "\n\t\t\t\"type\" : 1, \n\t\t\t\"position\": [" << ( i * 25 ) + 200 << ", " << j * 25  << "],";
 				file << "\n\t\t\t\"scale\": [1.0, 1.0], \n\t\t\t\"angle\": 0.0 \n\t\t},\n\t\t{";
 				file << "\n\t\t\t\"name\": \"Rigidbody\",\n\t\t\t\"type\" : 5, \n\t\t\t\"body_type\": 2, \n\t\t\t\"gravity_scale\": 0 \n\t\t},\n\t\t{";
 				float radius = 5;
 				file << "\n\t\t\t\"name\": \"BoxCollider\",\n\t\t\t\"type\" : 6,\n\t\t\t\"collider_type\" : 1, \n\t\t\t\"radius\" : " << radius << ",\n\t\t\t\"sensor\" : false \n\t\t},\n\t\t{";
-				file << "\n\t\t\t\"name\": \"Shape\",\n\t\t\t\"type\" : 3,\n\t\t\t\"shape_type\" : 1, \n\t\t\t\"radius\" : " << radius << " \n\t\t},\n\t\t{";
-				file << "\n\t\t}\n\t\t]\n\t},";
+				file << "\n\t\t\t\"name\": \"Shape\",\n\t\t\t\"type\" : 3,\n\t\t\t\"shape_type\" : 1, \n\t\t\t\"radius\" : " << radius << " \n\t\t}";
+				file << "\n\t\t]\n\t},";
 			}
 		}
 		file << "\n\t{\n\t\t\"name\": \"Body\",\n\t\t\"components\" : [ \n\t\t{";

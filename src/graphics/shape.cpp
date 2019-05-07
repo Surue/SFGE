@@ -92,7 +92,7 @@ Shape* Shape::LoadShape(Engine& engine, json& componentJson, GameObject* gameObj
 	if(shape != nullptr)
 	{
 		{
-			Log::GetInstance()->Msg("Load shape");
+			//Log::GetInstance()->Msg("Load shape");
 		}
 		shape->SetOffset(offset);
 		auto graphicsManager = engine.GetGraphicsManager();
@@ -158,7 +158,7 @@ Rectangle* Rectangle::LoadRectangle(json& componentJson, GameObject* gameObject)
 	{
 		std::ostringstream oss;
 		oss << "Loading Rectangle with size: " << size.x << ", " << size.y;
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 	return new Rectangle(gameObject, size);
 }
@@ -243,7 +243,7 @@ Polygon * Polygon::LoadPolygon(json & componentJson, GameObject * gameObject)
 		for (sf::Vector2f point : points) {
 			oss << "[" << point.x << ", " << point.y << "]";
 		}
-		Log::GetInstance()->Msg(oss.str());
+		//Log::GetInstance()->Msg(oss.str());
 	}
 
 	return new Polygon(gameObject, pointCount, points);

@@ -35,7 +35,7 @@ int main()
 
 	engine.GetSceneManager()->SetCurrentScene("data/scenes/_test_0_back_to_the_basics.scene");
 
-	uint32_t flags = p2Draw::aabbBit + p2Draw::aabbColliderBit + p2Draw::colliderBit;
+	uint32_t flags = 0x00000;
 
 	engine.SetDebugDrawDataFlags(flags);
 
