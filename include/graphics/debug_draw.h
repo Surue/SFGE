@@ -38,23 +38,23 @@ public:
 	DebugDraw(sf::RenderWindow *window);
 	virtual ~DebugDraw();
 
-	void DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const;
+	void DrawRect(const p2Vec2 position, float angle, const p2Vec2 size,p2Color color) const;
 
-	void DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const;
+	void DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color color) const;
 
-	void DrawCircle(const p2Vec2 center, float radius, p2Color& color) const;
+	void DrawCircle(const p2Vec2 center, float radius, p2Color color) const;
 
-	void DrawCircleFilled(const p2Vec2 center, float radius, p2Color& color) const;
+	void DrawCircleFilled(const p2Vec2 center, float radius, p2Color color) const;
 
-	void DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) const;
+	void DrawPolygon(const std::vector<p2Vec2> vertices, p2Color color) const;
 
-	void DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color& color) const;
+	void DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color color) const;
 
 	void DrawTransform(const p2Vec2 transform) const;
 
 	void DrawLine(const p2Vec2 posA, const p2Vec2 posB) const;
 
-	sf::Color p2Color2SfColor(const p2Color &color) const;
+	sf::Color p2Color2SfColor(p2Color color) const;
 private:
 	sf::RenderWindow *m_Window;
 };

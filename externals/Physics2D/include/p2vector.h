@@ -54,15 +54,15 @@ struct p2Vec2
 	/**
 	* \brief Dot product of two vectors
 	*/
-	static float Dot(const p2Vec2 const v1, const p2Vec2 const v2);
+	static float Dot(const p2Vec2 v1, const p2Vec2 v2);
 	/**
 	* \brief Cross product of two vectors
 	*/
-	static p2Vec3 Cross(const p2Vec2 const v1, const p2Vec2 const v2);
+	static p2Vec3 Cross(const p2Vec2 v1, const p2Vec2 v2);
 	/**
 	* \brief Compute angle between 2 vector
 	*/
-	static float p2Vec2::AnglesBetween(const p2Vec2 v1, const p2Vec2 v2);
+	static float AnglesBetween(const p2Vec2 v1, const p2Vec2 v2);
 	/**
 	* \brief Project v1 on v2
 	*/

@@ -29,11 +29,11 @@ SOFTWARE.
 #include <engine/game_object.h>
 #include <engine/transform.h>
 
-#include <graphics\shape.h>
+#include <graphics/shape.h>
 
 #define _USE_MATH_DEFINES
 
-#include <math.h>
+#include <cmath>
 
 namespace sfge
 {

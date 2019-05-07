@@ -94,17 +94,17 @@ public:
 	*/
 	uint32_t GetFlags() const;
 
-	virtual void DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const = 0;
+	virtual void DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color color) const = 0;
 
-	virtual void DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const = 0;
+	virtual void DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color color) const = 0;
 
-	virtual void DrawCircle(const p2Vec2 center, float radius, p2Color& color) const = 0;
+	virtual void DrawCircle(const p2Vec2 center, float radius, p2Color color) const = 0;
 
-	virtual void DrawCircleFilled(const p2Vec2 center, float radius, p2Color& color) const = 0;
+	virtual void DrawCircleFilled(const p2Vec2 center, float radius, p2Color color) const = 0;
 
-	virtual void DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) const = 0;
+	virtual void DrawPolygon(const std::vector<p2Vec2> vertices, p2Color color) const = 0;
 
-	virtual void DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color& color) const = 0;
+	virtual void DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color color) const = 0;
 
 	virtual void DrawTransform(const p2Vec2 transform) const = 0;
 

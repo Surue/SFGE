@@ -34,7 +34,7 @@ SOFTWARE.
 #include <engine/config.h>
 #include <utility/singleton.h>
 
-#include<graphics\debug_draw.h>
+#include<graphics/debug_draw.h>
 
 namespace sfge
 {

@@ -1,4 +1,4 @@
-#include "..\..\include\graphics\debug_draw.h"
+#include <graphics/debug_draw.h>
 /*
 MIT License
 
@@ -41,7 +41,7 @@ DebugDraw::~DebugDraw()
 {
 }
 
-void DebugDraw::DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const
+void DebugDraw::DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, p2Color color) const
 {
 	sf::RectangleShape rect(meter2pixel(size));
 	rect.setOrigin(meter2pixel(size / 2.0f));
@@ -50,12 +50,12 @@ void DebugDraw::DrawRect(const p2Vec2 position, float angle, const p2Vec2 size, 
 
 	rect.setFillColor(sf::Color(0, 0, 0, 0));
 	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(p2Color2SfColor(color / 2));
+	rect.setOutlineColor(p2Color2SfColor(color / 2.0f));
 
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color& color) const
+void DebugDraw::DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 size, p2Color color) const
 {
 	sf::RectangleShape rect(meter2pixel(size));
 	rect.setOrigin(meter2pixel(size / 2.0f));
@@ -64,12 +64,12 @@ void DebugDraw::DrawRectFilled(const p2Vec2 position, float angle, const p2Vec2 
 
 	rect.setFillColor(p2Color2SfColor(color.Set(color.r, color.g, color.b, 100)));
 	rect.setOutlineThickness(1.0f);
-	rect.setOutlineColor(p2Color2SfColor(color / 2));
+	rect.setOutlineColor(p2Color2SfColor(color / 2.0f));
 
 	m_Window->draw(rect);
 }
 
-void DebugDraw::DrawCircle(const p2Vec2 center, float radius, p2Color& color) const
+void DebugDraw::DrawCircle(const p2Vec2 center, float radius, p2Color color) const
 {
 	sf::CircleShape circle(meter2pixel(radius));
 	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
@@ -82,7 +82,7 @@ void DebugDraw::DrawCircle(const p2Vec2 center, float radius, p2Color& color) co
 	m_Window->draw(circle);
 }
 
-void DebugDraw::DrawCircleFilled(const p2Vec2 center, float radius, p2Color& color) const
+void DebugDraw::DrawCircleFilled(const p2Vec2 center, float radius, p2Color color) const
 {
 	sf::CircleShape circle(meter2pixel(radius));
 	circle.setOrigin(sf::Vector2f(meter2pixel(radius), meter2pixel(radius)));
@@ -95,7 +95,7 @@ void DebugDraw::DrawCircleFilled(const p2Vec2 center, float radius, p2Color& col
 	m_Window->draw(circle);
 }
 
-void DebugDraw::DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) const
+void DebugDraw::DrawPolygon(const std::vector<p2Vec2> vertices, p2Color color) const
 {
 	sf::ConvexShape polygon(vertices.size());
 
@@ -110,7 +110,7 @@ void DebugDraw::DrawPolygon(const std::vector<p2Vec2> vertices, p2Color& color) 
 	m_Window->draw(polygon);
 }
 
-void DebugDraw::DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color& color) const
+void DebugDraw::DrawPolygonFilled(const std::vector<p2Vec2> vertices, p2Color color) const
 {
 	sf::ConvexShape polygon(vertices.size());
 
@@ -139,7 +139,7 @@ void DebugDraw::DrawLine(const p2Vec2 posA, const p2Vec2 posB) const
 	m_Window->draw(line, 2, sf::Lines);
 }
 
-sf::Color DebugDraw::p2Color2SfColor(const p2Color & color) const
+sf::Color DebugDraw::p2Color2SfColor(p2Color  color) const
 {
 	sf::Color result((sf::Uint8)(color.r), (sf::Uint8)(color.g), (sf::Uint8)(color.b), (sf::Uint8)(color.a)); // TO DO
 	return result;

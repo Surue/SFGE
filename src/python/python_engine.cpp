@@ -232,15 +232,15 @@ PYBIND11_EMBEDDED_MODULE(SFGE, m)
 
 void PythonManager::Init()
 {
-	//Log::GetInstance()->Msg("Initialise the python embed interpretor");
+	Log::GetInstance()->Msg("Initialise the python embed interpretor");
 	py::initialize_interpreter();
 	//Adding refecrence to c++ engine modules
 	py::module sfgeModule = py::module::import("SFGE");
-	sfgeModule.attr("engine")=  py::cast(&m_Engine);
-	sfgeModule.attr("scene_manager") = py::cast(m_Engine.GetSceneManager());
-	sfgeModule.attr("input_manager") = py::cast(m_Engine.GetInputManager());
-	sfgeModule.attr("graphic_manager") = py::cast(m_Engine.GetGraphicsManager());
-	sfgeModule.attr("physic_manager") = py::cast(m_Engine.GetPhysicsManager());
+	sfgeModule.attr("engine")=  py::cast(&m_Engine, py::return_value_policy::reference);
+	sfgeModule.attr("scene_manager") = py::cast(m_Engine.GetSceneManager(), py::return_value_policy::reference);
+	sfgeModule.attr("input_manager") = py::cast(m_Engine.GetInputManager(), py::return_value_policy::reference);
+	sfgeModule.attr("graphic_manager") = py::cast(m_Engine.GetGraphicsManager(), py::return_value_policy::reference);
+	sfgeModule.attr("physic_manager") = py::cast(m_Engine.GetPhysicsManager(), py::return_value_policy::reference);
 }
 
 void PythonManager::Update(sf::Time)
@@ -252,7 +252,7 @@ void PythonManager::Destroy()
 {
 	pythonInstanceMap.clear();
 	pythonModuleObjectMap.clear();
-	//Log::GetInstance()->Msg("Finalize the python embed interpretor");
+	Log::GetInstance()->Msg("Finalize the python embed interpretor");
 	py::finalize_interpreter();
 }
 
@@ -286,7 +286,7 @@ unsigned int PythonManager::LoadPyComponentFile(std::string script_path, GameObj
 				{
 					std::ostringstream oss;
 					oss << "Loaded Python script: " << script_path << " has id: " << scriptId;
-					//Log::GetInstance()->Msg(oss.str());
+					Log::GetInstance()->Msg(oss.str());
 				}
 				try
 				{
@@ -313,7 +313,7 @@ unsigned int PythonManager::LoadPyComponentFile(std::string script_path, GameObj
 				{
 					std::ostringstream oss;
 					oss << "Loading module: "<<module_name<<" with Component: "<<class_name;
-					//Log::GetInstance()->Msg(oss.str());
+					Log::GetInstance()->Msg(oss.str());
 				}
 				py::object globals  = py::globals();
 

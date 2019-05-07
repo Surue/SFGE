@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #ifndef SFGE_BODY2D_H
-#define SFGE_BODY2D_G
+#define SFGE_BODY2D_H
 
 #include <engine/log.h>
 #include <engine/component.h>

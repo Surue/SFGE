@@ -1,9 +1,10 @@
 from SFGE import *
 
 class DebugDrawData(Component):
+
     def init(self):
-        engine.set_debug_draw_data();
-		
+        engine.set_debug_draw_data()
+
     def update(self, dt):
         if input_manager.keyboard.is_key_down(KeyboardManager.Key.Num1):
             engine.set_debug_draw_data_flag_switch(0x0001)

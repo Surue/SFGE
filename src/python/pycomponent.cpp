@@ -47,7 +47,7 @@ void PyComponent::Init()
 	catch(std::runtime_error& e)
 	{
 		std::stringstream oss;
-		oss << "Python error on PyComponent Init\n"<<e.what();
+		oss << "Python error on PyComponent Init\n" << e.what();
 		Log::GetInstance()->Error(oss.str());
 	}
 }
@@ -90,13 +90,14 @@ PyComponent* PyComponent::LoadPythonScript(Engine& engine, json& componentJson, 
 	auto pythonManager = engine.GetPythonManager();
 	if(CheckJsonParameter(componentJson, "script_path", json::value_t::string))
 	{
-		unsigned int componentInstanceId = pythonManager->LoadPyComponentFile(componentJson["script_path"], gameObject);
+		std::string scriptPath = componentJson["script_path"];
+		unsigned int componentInstanceId = pythonManager->LoadPyComponentFile(scriptPath, gameObject);
 		if(componentInstanceId != 0U)
 		{
 			{
 				std::ostringstream oss;
-				oss << "PyComponent instance has id: " << componentInstanceId;
-				//Log::GetInstance()->Msg(oss.str());
+				oss << "PyComponent: "<< scriptPath << " instance has id: " << componentInstanceId;
+				Log::GetInstance()->Msg(oss.str());
 			}
 			auto pyComponent = pythonManager->GetPyComponent(componentInstanceId);
 			pyComponent->SetInstanceId(componentInstanceId);

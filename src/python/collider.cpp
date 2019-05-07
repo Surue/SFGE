@@ -27,7 +27,7 @@ SOFTWARE.
 #include <physics/body2d.h>
 #include <physics/physics.h>
 
-#include <graphics\shape.h>
+#include <graphics/shape.h>
 
 namespace sfge
 {
