@@ -85,6 +85,9 @@ void Engine::Init(bool windowless, bool editor)
 void Engine::Start()
 {
 	sf::Clock clock;
+
+	bool isPaused = true;
+
 	while (running && m_Window != nullptr)
 	{
 		sf::Time dt = clock.restart();
@@ -97,9 +100,13 @@ void Engine::Start()
 				running = false;
 				m_Window->close();
 			}
+
+            if(event.type == sf::Event::KeyPressed) {
+				isPaused = !isPaused;
+            }
 			
 		}
-		if (!running)
+		if (!running || isPaused)
 		{
 			continue;
 		}

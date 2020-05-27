@@ -4,9 +4,10 @@ from math import *
 class RaycastStar(Component):
 
     def init(self):
-        self.max_distance = 1000
+        self.initial_distance = 1000
+        self.max_distance = self.initial_distance
 
-        self.nbRaycast = 50
+        self.nbRaycast = 100
 
         self.directions = [Vector2f()] * self.nbRaycast
 
@@ -16,10 +17,14 @@ class RaycastStar(Component):
 
         angle = 0;
 
+        self.time = 0;
+
         for i in range(self.nbRaycast):
             self.directions[i] = RaycastStar.rotation(self, ratio)
 
     def update(self, dt):
+        self.time += dt;
+
         mousePosition = input_manager.mouse.local_position(graphic_manager.get_window())
         position = Vector2f(mousePosition.x, mousePosition.y)
 

@@ -22,18 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <p2physics.h>
-
 #include <physics/body2d.h>
 #include <physics/physics.h>
 #include <engine/game_object.h>
 #include <engine/transform.h>
 
-#include <graphics/shape.h>
-
-#define _USE_MATH_DEFINES
-
-#include <cmath>
+#include <corecrt_math_defines.h>
 
 namespace sfge
 {
